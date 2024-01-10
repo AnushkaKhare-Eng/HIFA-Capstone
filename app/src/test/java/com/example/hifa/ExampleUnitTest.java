@@ -1,4 +1,4 @@
-package com.example.hifa_capstone;
+package com.example.hifa;
 
 import org.junit.Test;
 

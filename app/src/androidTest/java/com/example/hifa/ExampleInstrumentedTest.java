@@ -1,4 +1,4 @@
-package com.example.hifa_capstone;
+package com.example.hifa;
 
 import android.content.Context;
 
@@ -21,6 +21,6 @@ public class ExampleInstrumentedTest {
     public void useAppContext() {
         // Context of the app under test.
         Context appContext = InstrumentationRegistry.getInstrumentation().getTargetContext();
-        assertEquals("com.example.hifa_capstone", appContext.getPackageName());
+        assertEquals("com.example.hifa", appContext.getPackageName());
     }
 }
