@@ -13,3 +13,5 @@
 .externalNativeBuild
 .cxx
 local.properties
+
+nRF52840/app/build*
