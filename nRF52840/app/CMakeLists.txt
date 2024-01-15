@@ -11,9 +11,8 @@ project(Sample1)
 # NORDIC SDK APP START
 target_sources(app PRIVATE
   src/main.c
-  src/pwm_led.c
-  src/peer.c
-  src/service.c
+  src/blinky.c
+  src/multiple_ads.c
   )
 # NORDIC SDK APP END
 
