@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#C9BF8C"
-    tools:context=".MainActivity">
+    tools:context=".DevicesScreen">
 
     <TextView
         android:id="@+id/HomePageLogo"
@@ -23,5 +23,24 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.144" />
+
+    <ListView
+        android:id="@+id/devicesListView"
+        android:layout_width="401dp"
+        android:layout_height="542dp"
+        android:layout_marginStart="1dp"
+        android:layout_marginTop="15dp"
+        android:background="#B39D6C"
+        android:divider="#523A28"
+        android:dividerHeight="2dp"
+        android:textAlignment="center"
+        android:textColor="@color/white"
+        android:textDirection="firstStrong"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/HomePageLogo"
+        app:layout_constraintVertical_bias="0.0" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
