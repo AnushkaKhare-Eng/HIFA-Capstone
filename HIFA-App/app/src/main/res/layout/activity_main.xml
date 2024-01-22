@@ -2,9 +2,10 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/signupButton"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#BBAACC"
+    android:background="#3DA35D"
     tools:context=".MainActivity">
 
     <TextView
@@ -35,6 +36,7 @@
         android:fontFamily="sans-serif-black"
         android:text="Enter first name"
         android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+        android:textColor="@color/white"
         android:textSize="20sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -52,6 +54,7 @@
         android:fontFamily="sans-serif-black"
         android:text="Enter last name"
         android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+        android:textColor="@color/white"
         android:textSize="20sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -71,6 +74,7 @@
         android:fontFamily="sans-serif-black"
         android:text="Enter Email"
         android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+        android:textColor="@color/white"
         android:textSize="20sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -79,20 +83,25 @@
         app:layout_constraintTop_toBottomOf="@+id/lastNameTextView"
         app:layout_constraintVertical_bias="0.428" />
 
-    <Button
+    <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/signUpButton"
-        android:layout_width="wrap_content"
+        android:layout_width="300dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="151dp"
         android:layout_marginTop="171dp"
         android:layout_marginEnd="169dp"
         android:layout_marginBottom="94dp"
+        android:background="@drawable/rounded_button"
+        android:backgroundTint="@color/green"
         android:text="Sign up"
+        android:textColor="#FFFFFF"
         android:textSize="25sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.44"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/emailTextView" />
+        app:layout_constraintTop_toBottomOf="@+id/emailTextView"
+        app:layout_constraintVertical_bias="0.75" />
 
     <EditText
         android:id="@+id/editTextText"
@@ -105,6 +114,7 @@
         android:ems="10"
         android:inputType="text"
         android:text="Name"
+        android:textColor="@color/white"
         app:layout_constraintBottom_toTopOf="@+id/lastNameTextView"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -121,6 +131,7 @@
         android:ems="10"
         android:inputType="textEmailAddress"
         android:text="Email"
+        android:textColor="@color/white"
         app:layout_constraintBottom_toTopOf="@+id/signUpButton"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
@@ -139,38 +150,47 @@
         android:ems="10"
         android:inputType="text"
         android:text="Name"
+        android:textColor="@color/white"
         app:layout_constraintBottom_toTopOf="@+id/emailTextView"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/lastNameTextView" />
 
-    <Button
+    <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/datePickerButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="150dp"
+        android:layout_height="40dp"
         android:layout_marginStart="21dp"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="32dp"
         android:layout_marginEnd="102dp"
-        android:layout_marginBottom="48dp"
-        android:text="Select "
+        android:layout_marginBottom="40dp"
+        android:background="@drawable/rounded_button"
+        android:backgroundTint="#134611"
+        android:text="Select"
+        android:textColor="@color/white"
+        android:textColorLink="#4CAF50"
         android:textSize="18sp"
+        app:cornerRadius="2dp"
         app:layout_constraintBottom_toTopOf="@+id/signUpButton"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toEndOf="@+id/datePickerTextView"
         app:layout_constraintTop_toBottomOf="@+id/editTextTextEmailAddress"
-        app:layout_constraintVertical_bias="1.0" />
+        app:layout_constraintVertical_bias="0.0" />
 
     <TextView
         android:id="@+id/datePickerTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="85dp"
+        android:layout_marginStart="100dp"
         android:layout_marginTop="42dp"
-        android:layout_marginEnd="20dp"
+        android:layout_marginEnd="10dp"
         android:layout_marginBottom="203dp"
         android:text="Date of Birth"
-        android:textSize="20sp"
+        android:textAlignment="center"
+        android:textColor="@color/white"
+        android:textSize="22sp"
+        android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/datePickerButton"
         app:layout_constraintStart_toStartOf="parent"
