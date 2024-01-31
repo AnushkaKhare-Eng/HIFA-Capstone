@@ -14,6 +14,7 @@
 #include <zephyr/settings/settings.h>
 
 #include <dk_buttons_and_leds.h>
+#include <bluetooth/services/nus.h>
 
 #define NON_CONNECTABLE_ADV_IDX 0
 #define CONNECTABLE_ADV_IDX     1
@@ -21,6 +22,8 @@
 #define RUN_STATUS_LED          DK_LED1
 #define CON_STATUS_LED          DK_LED2
 #define RUN_LED_BLINK_INTERVAL  1000
+
+#define UART_BUF_SIZE 1024
 
 #define NON_CONNECTABLE_DEVICE_NAME "Nordic Beacon"
 
@@ -81,6 +84,27 @@ static void advertising_work_handle(struct k_work *work)
 	connectable_adv_start();
 }
 
+void on_press_send(){
+	uint8_t data[UART_BUF_SIZE];
+	data[0] = 0x01;
+	uint16_t len = UART_BUF_SIZE;
+
+	for(int i = 0; i < 10; i++) {
+		if (bt_nus_send(NULL, data, len) == 0){
+			// FIX ME, the above call is always failing
+			dk_set_led(CON_STATUS_LED, 1);
+			dk_set_led(RUN_STATUS_LED, 1);
+		} else {
+			dk_set_led(RUN_STATUS_LED, 0);
+			dk_set_led(CON_STATUS_LED, 0);
+		}
+		k_sleep(K_MSEC(500));
+		dk_set_led(RUN_STATUS_LED, 0);
+		dk_set_led(CON_STATUS_LED, 1);
+		k_sleep(K_MSEC(500));
+	}
+}
+
 static void connected(struct bt_conn *conn, uint8_t err)
 {
 	char addr[BT_ADDR_LE_STR_LEN];
@@ -95,6 +119,8 @@ static void connected(struct bt_conn *conn, uint8_t err)
 	dk_set_led_on(CON_STATUS_LED);
 
 	printk("Connected %s\n", addr);
+
+	dk_buttons_init(on_press_send);
 }
 
 static void disconnected(struct bt_conn *conn, uint8_t reason)
@@ -186,10 +212,10 @@ static int connectable_adv_create(void)
 	return err;
 }
 
+
 int multiple_ads(void)
 {
 	int err;
-	int blink_status = 0;
 
 	printk("Starting Bluetooth multiple advertising sets example\n");
 
@@ -207,6 +233,12 @@ int multiple_ads(void)
 
 	printk("Bluetooth initialized\n");
 
+	err = bt_nus_init(NULL);
+	if (err) {
+		printk("Failed to initialize UART service (err %d)\n", err);
+		return 0;
+	}
+
 	err = non_connectable_adv_create();
 	if (err) {
 		return 0;
@@ -221,8 +253,11 @@ int multiple_ads(void)
 
 	printk("Connectable advertising started\n");
 
-	for (;;) {
-		dk_set_led(RUN_STATUS_LED, (++blink_status) % 2);
-		k_sleep(K_MSEC(RUN_LED_BLINK_INTERVAL));
-	}
+	
+	
+
+	// for (;;) {
+	// 	dk_set_led(RUN_STATUS_LED, (++blink_status) % 2);
+	// 	k_sleep(K_MSEC(RUN_LED_BLINK_INTERVAL));
+	// }
 }

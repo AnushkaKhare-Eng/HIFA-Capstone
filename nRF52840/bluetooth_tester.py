@@ -3,8 +3,19 @@ from bleak import BleakScanner
 from bleak import BleakClient
 from time import sleep
 
+UUID = "0000180a-0000-1000-8000-00805f9b34fb"
 
-MODEL_NBR_UUID = "2A24"
+def notification_handler(sender, data):
+    """Simple notification handler which prints the data received."""
+    print(data)
+    print("hi")
+
+async def list_client_services(client):
+    await client.get_services()
+    for s in client.services:
+            print(s.description)
+            for c in s.characteristics:
+                print(f"\tDescription: {c.description}, UUID: {c.uuid}")
 
 async def main():
     print("Scanning for devices...",end=" ")
@@ -22,15 +33,13 @@ async def main():
     print(f"Attempting to connect to {devices[int(user_resp)]}")
     
 
-    try:
-        async with BleakClient(devices[int(user_resp)].address) as client:
-            if client.is_connected():
-                print("Successfully connected")
-                sleep(5)
-            else:
-                print("Failed to connect")
-    except Exception as error:
-        print("Failed to connect with Exception:", type(error).__name__) # An exception occurred: division by zero
+    async with BleakClient(devices[int(user_resp)].address) as client:
+        await client.start_notify("6e400003-b5a3-f393-e0a9-e50e24dcca9e",notification_handler)
+        print("here")
+        await asyncio.sleep(20.0)
+        print("there")
+        
+        # await client.stop_notify("6e400003-b5a3-f393-e0a9-e50e24dcca9e")
 
 
 asyncio.run(main())
