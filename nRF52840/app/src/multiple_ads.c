@@ -146,6 +146,7 @@ static int advertising_set_create(struct bt_le_ext_adv **adv,
 	return bt_le_ext_adv_start(adv_set, BT_LE_EXT_ADV_START_DEFAULT);
 }
 
+// creates non connectable advertisement
 static int non_connectable_adv_create(void)
 {
 	int err;
@@ -165,6 +166,7 @@ static int non_connectable_adv_create(void)
 	return err;
 }
 
+// creates connectable advertisement
 static int connectable_adv_create(void)
 {
 	int err;
@@ -197,7 +199,7 @@ int multiple_ads(void)
 		return 0;
 	}
 
-	err = bt_enable(NULL);
+	err = bt_enable(NULL); // NULL -> no callback to notify completion -> enabling BT dont synchronously
 	if (err) {
 		printk("Bluetooth init failed (err %d)\n", err);
 		return 0;
