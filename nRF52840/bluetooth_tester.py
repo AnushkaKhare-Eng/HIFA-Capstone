@@ -18,6 +18,7 @@ async def list_client_services(client):
                 print(f"\tDescription: {c.description}, UUID: {c.uuid}")
 
 async def main():
+   
     print("Scanning for devices...",end=" ")
     devices = await BleakScanner.discover()
     print("Found devices:")
@@ -34,12 +35,12 @@ async def main():
     
 
     async with BleakClient(devices[int(user_resp)].address) as client:
-        await client.start_notify("6e400003-b5a3-f393-e0a9-e50e24dcca9e",notification_handler)
-        print("here")
-        await asyncio.sleep(20.0)
-        print("there")
+        if not client.is_connected():
+             raise Exception("Could not connect to client")
         
-        # await client.stop_notify("6e400003-b5a3-f393-e0a9-e50e24dcca9e")
+        await client.start_notify("6e400003-b5a3-f393-e0a9-e50e24dcca9e",notification_handler)
+        await asyncio.sleep(60.0)
+        await client.stop_notify("6e400003-b5a3-f393-e0a9-e50e24dcca9e")
 
 
 asyncio.run(main())

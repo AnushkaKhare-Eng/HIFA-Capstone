@@ -19,11 +19,11 @@
 #define NON_CONNECTABLE_ADV_IDX 0
 #define CONNECTABLE_ADV_IDX     1
 
-#define RUN_STATUS_LED          DK_LED1
+#define SEND_LED          DK_LED1
 #define CON_STATUS_LED          DK_LED2
 #define RUN_LED_BLINK_INTERVAL  1000
 
-#define UART_BUF_SIZE 1024
+#define UART_BUF_SIZE 8
 
 #define NON_CONNECTABLE_DEVICE_NAME "Nordic Beacon"
 
@@ -87,23 +87,23 @@ static void advertising_work_handle(struct k_work *work)
 void on_press_send(){
 	uint8_t data[UART_BUF_SIZE];
 	data[0] = 0x01;
+	data[1] = 0x02;
+	data[2] = 0x03;
+	data[3] = 0x04;
+	data[4] = 0x05;
+	data[5] = 0x06;
+	data[6] = 0x07;
+	data[7] = 0x08;
 	uint16_t len = UART_BUF_SIZE;
 
-	for(int i = 0; i < 10; i++) {
-		if (bt_nus_send(NULL, data, len) == 0){
-			// FIX ME, the above call is always failing
-			dk_set_led(CON_STATUS_LED, 1);
-			dk_set_led(RUN_STATUS_LED, 1);
-		} else {
-			dk_set_led(RUN_STATUS_LED, 0);
-			dk_set_led(CON_STATUS_LED, 0);
-		}
+	while (bt_nus_send(NULL, data, len)){
+		dk_set_led(SEND_LED, 1);
 		k_sleep(K_MSEC(500));
-		dk_set_led(RUN_STATUS_LED, 0);
-		dk_set_led(CON_STATUS_LED, 1);
+		dk_set_led(SEND_LED, 0);
 		k_sleep(K_MSEC(500));
-	}
-}
+	}	
+}	
+
 
 static void connected(struct bt_conn *conn, uint8_t err)
 {
@@ -119,8 +119,6 @@ static void connected(struct bt_conn *conn, uint8_t err)
 	dk_set_led_on(CON_STATUS_LED);
 
 	printk("Connected %s\n", addr);
-
-	dk_buttons_init(on_press_send);
 }
 
 static void disconnected(struct bt_conn *conn, uint8_t reason)
@@ -252,9 +250,9 @@ int multiple_ads(void)
 	}
 
 	printk("Connectable advertising started\n");
-
+	dk_buttons_init(on_press_send);
 	
-	
+	return 0;
 
 	// for (;;) {
 	// 	dk_set_led(RUN_STATUS_LED, (++blink_status) % 2);
