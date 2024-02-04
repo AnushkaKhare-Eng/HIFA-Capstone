@@ -1,12 +1,14 @@
 package com.example.hifa;
 
+import static com.example.hifa.DatabaseFirestore.addingMedicalInfo;
+
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
 
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.EditText;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -23,7 +25,10 @@ public class Medical_info extends Fragment {
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
-
+    private Button saveChangesbutton;
+    private EditText driverlicense;
+    private EditText healthcard;
+    private EditText healthcardnumber;
     public Medical_info() {
         // Required empty public constructor
     }
@@ -46,19 +51,45 @@ public class Medical_info extends Fragment {
         return fragment;
     }
 
+    //TODO: implement the spinners
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
+
         }
+        saveChangesbutton = getView().findViewById(R.id.savechaangesButton);
+        driverlicense = getView().findViewById(R.id.driverseditText);
+        healthcardnumber = getView().findViewById(R.id.healtheditText);
+        saveChangesbutton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                boolean incompletedata;
+                String driverlicenseString = driverlicense.getText().toString();
+                String healthcardnumberString = healthcardnumber.getText().toString();
+
+                incompletedata = false;
+
+                if(driverlicenseString.isEmpty()){
+                    driverlicense.setError("Driver's License Number is required");
+                    incompletedata = true;
+                }
+                if(healthcardnumberString.isEmpty()){
+                    healthcardnumber.setError("Healthcard Number is required");
+                    incompletedata = true;
+                }
+                addingMedicalInfo(driverlicenseString, healthcardnumberString);
+            }
+        });
+
     }
 
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_medical_info, container, false);
+    private void addingMedicalInfo(String driverlicenseString,String healthcardnumberString) {
+    // get user and then add the medical info to the user.
+        
+
     }
+
 }
