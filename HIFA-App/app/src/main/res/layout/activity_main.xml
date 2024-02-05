@@ -139,27 +139,6 @@
         app:layout_constraintTop_toBottomOf="@+id/lastNameTextView" />
 
     <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/datePickerButton"
-        android:layout_width="150dp"
-        android:layout_height="40dp"
-        android:layout_marginStart="21dp"
-        android:layout_marginTop="76dp"
-        android:layout_marginEnd="102dp"
-        android:background="@drawable/rounded_button"
-        android:backgroundTint="#134611"
-        android:text="Select"
-        android:textColor="@color/white"
-        android:textColorLink="#4CAF50"
-        android:textSize="18sp"
-        app:cornerRadius="2dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toEndOf="@+id/datePickerTextView"
-        app:layout_constraintTop_toBottomOf="@+id/emailAddressEditText"
-        app:layout_constraintVertical_bias="0.407" />
-
-    <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/signUpButton"
         android:layout_width="300dp"
         android:layout_height="wrap_content"
@@ -167,35 +146,17 @@
         android:layout_marginTop="171dp"
         android:layout_marginEnd="169dp"
         android:layout_marginBottom="46dp"
-        android:background="@drawable/rounded_button"
+        android:background="@color/green"
         android:backgroundTint="@color/green"
         android:text="Sign up"
         android:textColor="#FFFFFF"
         android:textSize="25sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.516"
+        app:layout_constraintHorizontal_bias="0.521"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/emailTextView"
         app:layout_constraintVertical_bias="1.0" />
-
-    <TextView
-        android:id="@+id/datePickerTextView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="100dp"
-        android:layout_marginTop="88dp"
-        android:layout_marginEnd="10dp"
-        android:text="Date of Birth"
-        android:textAlignment="center"
-        android:textColor="@color/white"
-        android:textSize="22sp"
-        android:textStyle="bold"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/datePickerButton"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/emailAddressEditText"
-        app:layout_constraintVertical_bias="0.401" />
 
     <TextView
         android:id="@+id/passwordTextView"
@@ -224,33 +185,5 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.66" />
-
-    <TextView
-        android:id="@+id/phoneNumbertextView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Enter Phone Number"
-        android:textColor="@color/white"
-        android:textSize="20sp"
-        android:textStyle="bold"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.234"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.707" />
-
-    <EditText
-        android:id="@+id/phoneEditText"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:ems="10"
-        android:inputType="phone"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.258"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.747" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
