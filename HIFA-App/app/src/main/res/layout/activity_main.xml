@@ -1,6 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+<<<<<<< HEAD
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".MainActivity">
+
+=======
     android:id="@+id/signupButton"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -23,6 +30,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.043" />
+>>>>>>> master
 
     <FrameLayout
         android:id="@+id/frame_layout"
@@ -38,6 +46,10 @@
         android:id="@+id/bottomNavigationView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+<<<<<<< HEAD
+        app:itemIconSize="50dp"
+        app:labelVisibilityMode="unlabeled"
+=======
         android:layout_marginStart="83dp"
         android:layout_marginTop="40dp"
         android:layout_marginEnd="229dp"
@@ -47,10 +59,14 @@
         android:textAppearance="@style/TextAppearance.AppCompat.Medium"
         android:textColor="@color/white"
         android:textSize="20sp"
+>>>>>>> master
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.462"
         app:layout_constraintStart_toStartOf="parent"
+<<<<<<< HEAD
+        app:menu="@menu/bottom_navigation_menu" />
+=======
         app:layout_constraintTop_toBottomOf="@+id/HomePageLogo"
         app:layout_constraintVertical_bias="0.0" />
 
@@ -195,4 +211,5 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.66" />
 
+>>>>>>> master
 </androidx.constraintlayout.widget.ConstraintLayout>
