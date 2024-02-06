@@ -3,12 +3,12 @@ from bleak import BleakScanner
 from bleak import BleakClient
 from time import sleep
 
-UUID = "0000180a-0000-1000-8000-00805f9b34fb"
+PERI_TX_UUID = "6e400003-b5a3-f393-e0a9-e50e24dcca9e"
+PERI_RX_UUID = "6e400002-b5a3-f393-e0a9-e50e24dcca9e"
 
 def notification_handler(sender, data):
-    """Simple notification handler which prints the data received."""
-    print(data)
-    print("hi")
+    # print received data
+    print(f"Received: {data.decode()}")
 
 async def list_client_services(client):
     await client.get_services()
@@ -31,16 +31,27 @@ async def main():
     if ('q' in user_resp):
         return
     
-    print(f"Attempting to connect to {devices[int(user_resp)]}")
-    
-
+    print(f"Attempting to connect to {devices[int(user_resp)]}... ",end="")
     async with BleakClient(devices[int(user_resp)].address) as client:
         if not client.is_connected():
+             print("Failed")
              raise Exception("Could not connect to client")
-        
-        await client.start_notify("6e400003-b5a3-f393-e0a9-e50e24dcca9e",notification_handler)
-        await asyncio.sleep(60.0)
-        await client.stop_notify("6e400003-b5a3-f393-e0a9-e50e24dcca9e")
+        print("Success")
 
+        print("Getting services...",end="")
+        await list_client_services(client)
+        print("Got services")
+        
+        # Receiving from ND
+        await client.start_notify(PERI_TX_UUID,notification_handler)
+        await asyncio.sleep(60.0)
+        await client.stop_notify(PERI_TX_UUID)
+
+        ## Sending to ND
+        # await asyncio.sleep(2.0)
+        # await client.write_gatt_char(PERI_RX_UUID, b'Hello World!')
+        # await asyncio.sleep(2.0)
+
+        
 
 asyncio.run(main())

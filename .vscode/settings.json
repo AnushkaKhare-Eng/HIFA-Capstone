@@ -6,6 +6,7 @@
         "dk_buttons_and_leds.h": "c",
         "types.h": "c",
         "uuid.h": "c",
-        "bluetooth.h": "c"
+        "bluetooth.h": "c",
+        "nus.h": "c"
     }
 }
