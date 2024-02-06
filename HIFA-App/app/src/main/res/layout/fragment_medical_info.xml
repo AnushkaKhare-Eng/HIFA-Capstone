@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/medicalsymbol"
+    android:layout_width="wrap_content"
+    android:layout_height="match_parent"
+    android:background="#3DA35D"
+    tools:context=".Medical_info">
+
+    <ImageView
+        android:id="@+id/imageView2"
+        android:layout_width="38dp"
+        android:layout_height="42dp"
+        android:src="?attr/actionModeCloseDrawable"
+        app:tint="@color/black"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.083"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.059"
+        android:contentDescription="TODO" />
+
+    <TextView
+        android:id="@+id/MedicalProfile"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="108dp"
+        android:fontFamily="sans-serif-medium"
+        android:text="Medical Profile"
+        android:textAllCaps="false"
+        android:textColor="@color/black"
+        android:textSize="30sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toEndOf="@+id/imageButton3"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.12" />
+
+    <EditText
+        android:id="@+id/healtheditText"
+        android:layout_width="274dp"
+        android:layout_height="37dp"
+        android:layout_marginStart="79dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="82dp"
+        android:background="@color/white"
+        android:ems="10"
+        android:inputType="text"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/DriversLicensetext"
+        app:layout_constraintVertical_bias="0.212"
+        android:autofillHints="Health Card Number"
+        tools:ignore="LabelFor" />
+
+    <TextView
+        android:id="@+id/DriversLicensetext"
+        android:layout_width="wrap_content"
+        android:layout_height="25sp"
+        android:layout_marginTop="24dp"
+        android:text="Driver's License"
+        android:textColor="@color/white"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.294"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.202" />
+
+    <TextView
+        android:id="@+id/HealthcardText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Health Card Number"
+        android:textColor="@color/white"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.349"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.372" />
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/savechaangesButton"
+        android:layout_width="250dp"
+        android:layout_height="wrap_content"
+        android:background="@color/green"
+        android:text="Save Changes"
+        android:textColor="@color/white"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.695" />
+
+    <ImageButton
+        android:id="@+id/imageButton3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="52dp"
+        android:backgroundTint="#3DA25D"
+        android:contentDescription="TODO"
+        android:src="?attr/actionModePasteDrawable"
+        app:layout_constraintBottom_toTopOf="@+id/DriversLicensetext"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.19"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imageView2"
+        app:layout_constraintVertical_bias="0.0"
+        app:tint="@color/black" />
+
+    <EditText
+        android:id="@+id/driverseditText"
+        android:layout_width="275dp"
+        android:layout_height="39dp"
+        android:background="@color/white"
+        android:backgroundTint="@color/white"
+        android:ems="10"
+        android:inputType="text"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.573"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.283"
+        android:autofillHints="Driver's license Number"
+        tools:ignore="LabelFor" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

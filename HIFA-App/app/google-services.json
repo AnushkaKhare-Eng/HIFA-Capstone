@@ -1,0 +1,31 @@
+{
+
+  "project_info": {
+    "project_number": "1047654444524",
+    "project_id": "hifa-ce3d3",
+    "storage_bucket": "hifa-ce3d3.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1047654444524:android:f825d27779b137d15324c9",
+        "android_client_info": {
+          "package_name": "com.example.hifa"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDz2-vJ6e5CUcBuJ4SjwxG_xcGIpgVdFB4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+
+    }
+  ],
+  "configuration_version": "1"
+}

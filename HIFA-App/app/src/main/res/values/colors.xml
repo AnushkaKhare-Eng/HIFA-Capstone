@@ -2,6 +2,10 @@
 <resources>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+<<<<<<< HEAD
     <color name="background">#3DA35D</color>
     <color name="subsetting_separation"></color>
+=======
+    <color name="green">#134611</color>
+>>>>>>> master
 </resources>
