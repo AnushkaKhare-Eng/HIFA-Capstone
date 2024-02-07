@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#C9BF8C"
-    tools:context=".DevicesScreen">
+    tools:context=".Devices">
 
     <TextView
         android:id="@+id/HomePageLogo"

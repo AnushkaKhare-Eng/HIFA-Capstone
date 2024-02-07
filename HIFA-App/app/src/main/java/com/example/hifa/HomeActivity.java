@@ -7,14 +7,14 @@ import androidx.fragment.app.FragmentTransaction;
 
 import android.os.Bundle;
 
-import com.example.hifa.databinding.ActivityMainBinding;
+import com.example.hifa.databinding.ActivityHomeBinding;
 
 public class HomeActivity extends AppCompatActivity {
-    ActivityMainBinding binding;
+    ActivityHomeBinding binding;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        binding = ActivityMainBinding.inflate(getLayoutInflater());
+        binding = ActivityHomeBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
         replaceFragment(new HomeFragment());
 
