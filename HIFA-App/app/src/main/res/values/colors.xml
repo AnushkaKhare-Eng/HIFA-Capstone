@@ -4,4 +4,5 @@
     <color name="white">#FFFFFFFF</color>
     <color name="green">#134611</color>
     <color name="background">#3DA35D</color>
+    <color name="subsetting_separation"></color>
 </resources>
