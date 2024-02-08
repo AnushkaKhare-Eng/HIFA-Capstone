@@ -1,14 +1,19 @@
 package com.example.hifa;
 
-import static com.example.hifa.DatabaseFirestore.addingMedicalInfo;
 
+
+import android.content.Intent;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentResultListener;
 
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
+import android.widget.Toast;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -27,8 +32,9 @@ public class Medical_info extends Fragment {
     private String mParam2;
     private Button saveChangesbutton;
     private EditText driverlicense;
-    private EditText healthcard;
     private EditText healthcardnumber;
+    int age;
+    String phonenumber;
     public Medical_info() {
         // Required empty public constructor
     }
@@ -63,12 +69,15 @@ public class Medical_info extends Fragment {
         saveChangesbutton = getView().findViewById(R.id.savechaangesButton);
         driverlicense = getView().findViewById(R.id.driverseditText);
         healthcardnumber = getView().findViewById(R.id.healtheditText);
+        String driverlicenseString = driverlicense.getText().toString();
+        String healthcardnumberString = healthcardnumber.getText().toString();
+
+
         saveChangesbutton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 boolean incompletedata;
-                String driverlicenseString = driverlicense.getText().toString();
-                String healthcardnumberString = healthcardnumber.getText().toString();
+
 
                 incompletedata = false;
 
@@ -80,16 +89,45 @@ public class Medical_info extends Fragment {
                     healthcardnumber.setError("Healthcard Number is required");
                     incompletedata = true;
                 }
-                addingMedicalInfo(driverlicenseString, healthcardnumberString);
+
+            }
+        });
+        Intent intent = getActivity().getIntent();
+
+
+// Retrieve data using key
+        String userEmail = intent.getStringExtra("UserEmail");
+        String firstName = intent.getStringExtra("FirstName");
+        String lastName = intent.getStringExtra("LastName");
+        String userPassword = intent.getStringExtra("UserPassword");
+
+        getParentFragmentManager().setFragmentResultListener("phonenumber", this, new FragmentResultListener() {
+            @Override
+            public void onFragmentResult(@NonNull String requestKey, @NonNull Bundle result) {
+
+                phonenumber = result.getString("phonenumber");
+                age = result.getInt("age");
             }
         });
 
-    }
-
-    private void addingMedicalInfo(String driverlicenseString,String healthcardnumberString) {
-    // get user and then add the medical info to the user.
-        
+        creatingNewUser(userEmail, userPassword,firstName,lastName,age,healthcardnumberString,driverlicenseString,phonenumber);
 
     }
+
+    private void creatingNewUser(String email, String password, String firstname, String lastname, int age, String healthcard, String driversLicense, String phonenumber) {
+        DatabaseFirestore.userSignUp(new User(email, password, firstname, lastname, age, healthcard, driversLicense, phonenumber), new DatabaseFirestore.CallbackAddNewUser() {
+            @Override
+            public void onCallBack(Boolean userExists) {
+                if(!userExists) getActivity().finish();
+                else {
+                    // telling the user that the user profile already exists
+                    TextView txtView = (TextView)getView().findViewById(R.id.errorTextView);
+                    txtView.setVisibility(View.VISIBLE);
+                }
+            }
+        });
+    }
+
+
 
 }

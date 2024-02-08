@@ -95,14 +95,14 @@
         android:layout_width="250dp"
         android:layout_height="wrap_content"
         android:background="@color/green"
-        android:text="Save Changes"
+        android:text="COMPLETE REGISTRATION"
         android:textColor="@color/white"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintHorizontal_bias="0.484"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.695" />
+        app:layout_constraintVertical_bias="0.645" />
 
     <ImageButton
         android:id="@+id/imageButton3"
@@ -136,5 +136,22 @@
         app:layout_constraintVertical_bias="0.283"
         android:autofillHints="Driver's license Number"
         tools:ignore="LabelFor" />
+
+    <TextView
+        android:id="@+id/errorTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:cursorVisible="false"
+        android:text="User Profile Already Exists! Log In Instead?"
+        android:textColor="#FB0303"
+        android:textSize="17sp"
+        android:textStyle="bold"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.638"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.521" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

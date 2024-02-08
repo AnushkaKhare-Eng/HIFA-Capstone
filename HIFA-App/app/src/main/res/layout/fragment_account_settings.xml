@@ -47,23 +47,6 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Email"
-            android:textColor="#36454F"
-            android:textSize="20sp" />
-
-        <EditText
-            android:id="@+id/emailAccountSettings"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="20dp"
-            android:ems="10"
-            android:hint="Filler"
-            android:inputType="textEmailAddress"
-            android:paddingHorizontal="5dp" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
             android:text="Phone Number"
             android:textColor="#36454F"
             android:textSize="20sp" />
@@ -100,7 +83,7 @@
             android:layout_gravity="center"
             android:layout_marginBottom="64dp"
             android:background="@color/green"
-            android:text="Save Changes"
+            android:text="NEXT"
             android:textAllCaps="false"
             android:textColor="@color/white"
             android:textSize="16sp"

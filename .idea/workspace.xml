@@ -5,18 +5,17 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="9e10a67f-862e-4bed-b138-83f3912faf4d" name="Changes" comment="Updating the sign in page. Adding the datepicker">
-      <change afterPath="$PROJECT_DIR$/HIFA-App/app/google-services.json" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/HIFA-App/app/src/main/java/com/example/hifa/Notification_page.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/HIFA-App/app/src/main/java/com/example/hifa/notificationpage2.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/HIFA-App/app/src/main/res/layout/activity_notification.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/HIFA-App/app/src/main/res/layout/fragment_notification_page2.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/HIFA-App/app/src/main/res/layout/fragment_notificationpage2.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/HIFA-App/app/src/main/res/values/refs.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/HIFA-App/app/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/HIFA-App/app/build.gradle" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/HIFA-App/app/src/main/AndroidManifest.xml" beforeDir="false" afterPath="$PROJECT_DIR$/HIFA-App/app/src/main/AndroidManifest.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/HIFA-App/app/src/main/java/com/example/hifa/Devices_page.java" beforeDir="false" afterPath="$PROJECT_DIR$/HIFA-App/app/src/main/java/com/example/hifa/Devices_page.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/HIFA-App/app/src/main/java/com/example/hifa/LoginPage.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/HIFA-App/app/src/main/res/layout/fragment_login_page.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/HIFA-App/app/src/main/java/com/example/hifa/AccountSettingsFragment.java" beforeDir="false" afterPath="$PROJECT_DIR$/HIFA-App/app/src/main/java/com/example/hifa/AccountSettingsFragment.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/HIFA-App/app/src/main/java/com/example/hifa/DatabaseFirestore.java" beforeDir="false" afterPath="$PROJECT_DIR$/HIFA-App/app/src/main/java/com/example/hifa/DatabaseFirestore.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/HIFA-App/app/src/main/java/com/example/hifa/MainActivity.java" beforeDir="false" afterPath="$PROJECT_DIR$/HIFA-App/app/src/main/java/com/example/hifa/MainActivity.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/HIFA-App/app/src/main/java/com/example/hifa/Medical_info.java" beforeDir="false" afterPath="$PROJECT_DIR$/HIFA-App/app/src/main/java/com/example/hifa/Medical_info.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/HIFA-App/app/src/main/res/layout/fragment_devices_page.xml" beforeDir="false" afterPath="$PROJECT_DIR$/HIFA-App/app/src/main/res/layout/fragment_devices_page.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/HIFA-App/app/src/main/java/com/example/hifa/User.java" beforeDir="false" afterPath="$PROJECT_DIR$/HIFA-App/app/src/main/java/com/example/hifa/User.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/HIFA-App/app/src/main/res/drawable/rounded_button.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/HIFA-App/app/src/main/res/layout/activity_main.xml" beforeDir="false" afterPath="$PROJECT_DIR$/HIFA-App/app/src/main/res/layout/activity_main.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/HIFA-App/app/src/main/res/layout/fragment_account_settings.xml" beforeDir="false" afterPath="$PROJECT_DIR$/HIFA-App/app/src/main/res/layout/fragment_account_settings.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/HIFA-App/app/src/main/res/layout/fragment_medical_info.xml" beforeDir="false" afterPath="$PROJECT_DIR$/HIFA-App/app/src/main/res/layout/fragment_medical_info.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />

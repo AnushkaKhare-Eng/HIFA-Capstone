@@ -114,7 +114,7 @@
         android:inputType="textEmailAddress"
         android:text="Email"
         android:textColor="@color/white"
-        app:layout_constraintBottom_toTopOf="@+id/signUpButton"
+        app:layout_constraintBottom_toTopOf="@+id/nextButton"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
@@ -139,7 +139,7 @@
         app:layout_constraintTop_toBottomOf="@+id/lastNameTextView" />
 
     <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/signUpButton"
+        android:id="@+id/nextButton"
         android:layout_width="300dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="151dp"
@@ -148,15 +148,15 @@
         android:layout_marginBottom="46dp"
         android:background="@color/green"
         android:backgroundTint="@color/green"
-        android:text="Sign up"
+        android:text="Next"
         android:textColor="#FFFFFF"
         android:textSize="25sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.521"
+        app:layout_constraintHorizontal_bias="0.473"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/emailTextView"
-        app:layout_constraintVertical_bias="1.0" />
+        app:layout_constraintVertical_bias="0.242" />
 
     <TextView
         android:id="@+id/passwordTextView"

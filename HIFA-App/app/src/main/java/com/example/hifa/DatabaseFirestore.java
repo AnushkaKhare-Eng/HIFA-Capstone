@@ -2,6 +2,8 @@ package com.example.hifa;
 
 
 
+import static androidx.constraintlayout.helper.widget.MotionEffect.TAG;
+
 import android.util.Log;
 
 import androidx.annotation.NonNull;
@@ -12,6 +14,8 @@ import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 
 import javax.security.auth.callback.Callback;
 
@@ -60,19 +64,40 @@ public class DatabaseFirestore {
             }
         });
     }
-    // updating the medical information
-    static protected void addingMedicalInfo(User user, int driverslicense, int healthcard){
-        if(user.getDriversLicense() == 0 && user.getHealthcard()==0){
-            user.setDriversLicense(driverslicense);
-            user.setHealthcard(healthcard);
-        }
-    }
 
+    /**
+     * Function for user verification
+     *
+     * */
+
+    static protected void verifyUser (String email, String password, CallBackverifyUser callbackverifyuser){
+        collectionReferencePersonalInfo.whereEqualTo("email", email)
+                .whereEqualTo("password", password)
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                                           @Override
+                                           public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                               if (task.isSuccessful()) {
+                                                   for (QueryDocumentSnapshot document : task.getResult()) {
+
+                                                       User user = document.toObject(User.class);
+                                                       // Do something with the user object
+                                                   }
+                                               } else {
+                                                   Log.d("Tag","Error getting documents: ", task.getException());
+                                               }
+                                           }
+                                       }
+                );
+    }
 
     static protected void deviceInfo(Devices device, Callback callback) {
         // need to set UUID in for the devices
     }
     public interface CallbackAddNewUser {
         void onCallBack(Boolean userExists);
+    }
+    public interface CallBackverifyUser {
+        void onCallBack(User user);
     }
 }
