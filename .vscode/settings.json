@@ -7,6 +7,10 @@
         "types.h": "c",
         "uuid.h": "c",
         "bluetooth.h": "c",
-        "nus.h": "c"
+        "nus.h": "c",
+        "settings.h": "c",
+        "gpio.h": "c",
+        "my_gpio.h": "c",
+        "kernel.h": "c"
     }
 }

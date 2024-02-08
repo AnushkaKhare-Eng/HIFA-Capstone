@@ -11,6 +11,8 @@ project(Sample1)
 # NORDIC SDK APP START
 target_sources(app PRIVATE
   src/main.c
+  src/my_gpio.c
+  src/button_monitor.c
   )
 # NORDIC SDK APP END
 

@@ -10,16 +10,30 @@
 		ncs,dm-timer = &timer2;
 	};
 
-	/* The selected pins will be used by Distance Measurement module for debug purposes. */
-	dm_gpio {
+	my_gpio {
 		compatible = "gpio-leds";
-		dm_ranging: dm-ranging {
-			gpios = <&gpio0 27 GPIO_ACTIVE_LOW>;
-			label = "DM Ranging Pin";
+		gpioA: gpioA_subnode {
+			gpios = <&gpio0 13 GPIO_ACTIVE_LOW>;
+			label = "GPIO A";
 		};
-		dm_add_request: dm-add-request {
-			gpios = <&gpio0 26 GPIO_ACTIVE_LOW>;
-			label = "DM Add request Pin";
+	};
+
+	buttons {
+		compatible = "gpio-keys";
+		buttonA: buttonA_subnode {
+			gpios = <&gpio1 10 (GPIO_PULL_UP | GPIO_ACTIVE_LOW)>;
+			label = "Push button switch A";
+			zephyr,code = <INPUT_KEY_0>;
+		};
+	};
+
+	leds {
+		led_ext_0 {
+			gpios = <&gpio0 13 0>;
+		};
+
+		led_ext_1 {
+			gpios = <&gpio0 15 0>;
 		};
 	};
 };
