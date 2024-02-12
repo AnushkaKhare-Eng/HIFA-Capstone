@@ -19,16 +19,15 @@ public class HomeActivity extends AppCompatActivity {
         replaceFragment(new HomeFragment());
 
         binding.bottomNavigationView.setOnItemSelectedListener(item -> {
-
             if (item.getItemId() == R.id.action_home){
                 replaceFragment(new HomeFragment());
+            } else if (item.getItemId() == R.id.action_devices){
+                replaceFragment(new Devices_page());
             } else if (item.getItemId() == R.id.action_profile){
                 replaceFragment(new ProfileFragment());
-            }
-            else if (item.getItemId() == R.id.action_settings){
+            } else if (item.getItemId() == R.id.action_settings){
                 replaceFragment(new SettingsFragment());
             }
-
             return true;
         });
     }

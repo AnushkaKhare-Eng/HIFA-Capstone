@@ -27,7 +27,5 @@ public class MyViewHolderSubSettings extends RecyclerView.ViewHolder implements 
 
     @Override
     public void onClick(View view) {
-        Toast toast = Toast.makeText(view.getContext(), "position = " + getLayoutPosition(), Toast.LENGTH_SHORT);
-        toast.show();
     }
 }

@@ -20,6 +20,7 @@ public class SubSettingAdapter extends RecyclerView.Adapter<MyViewHolderSubSetti
     Context context;
     List<SubSettingItem> items;
 
+
     public SubSettingAdapter(Context context, List<SubSettingItem> items) {
         this.context = context;
         this.items = items;
@@ -33,20 +34,30 @@ public class SubSettingAdapter extends RecyclerView.Adapter<MyViewHolderSubSetti
 
     @Override
     public void onBindViewHolder(@NonNull MyViewHolderSubSettings holder, int position) {
-        holder.titleView.setText(items.get(position).getSetting_title());
-        holder.imageView.setImageResource(items.get(position).getImage());
+        String title = items.get(holder.getAbsoluteAdapterPosition()).getSetting_title();
+        holder.titleView.setText(title);
+        holder.imageView.setImageResource(items.get(holder.getAbsoluteAdapterPosition()).getImage());
 
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
-                switch(position){
+                switch(holder.getAbsoluteAdapterPosition()){
                     case 0:
                         replaceFragment(new AccountSettingsFragment(), view);
+                        break;
+                    case 1:
+                        replaceFragment(new MedicalInfoFragment(), view);
+                        break;
+                    case 2:
+                        replaceFragment(new Notification_page(), view);
+                        break;
+                    case 3:
+                        replaceFragment(new EmergencyContactFragment(), view);
+                        break;
                 }
             }
         });
-
     }
 
     @Override

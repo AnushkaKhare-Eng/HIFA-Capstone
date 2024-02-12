@@ -3,6 +3,7 @@ package com.example.hifa;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.DatePickerDialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -30,10 +31,15 @@ public class SignupActivity extends AppCompatActivity {
         lastName = findViewById(R.id.lastNameEditText);
         emaileditText = findViewById(R.id.emailAddressEditText);
         password = findViewById(R.id.passwordeditText);
-        // ensuring that the fields are not empty for the sign up page
+         //ensuring that the fields are not empty for the sign up page
         signUpButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
+                // Remove bottom two lines to implement actual sign up
+                Intent i = new Intent(SignupActivity.this,HomeActivity.class);
+                startActivity(i);
+
                 boolean incompletedata;
                 String firstname = firstName.getText().toString();
                 String lastname = lastName.getText().toString();
@@ -66,19 +72,6 @@ public class SignupActivity extends AppCompatActivity {
 
                 creatingNewUser(emailString, passwordString,firstname,lastname,0,0,0);
 
-            }
-        });
-        datePickerButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                datePickerDialog = new DatePickerDialog(SignupActivity.this,
-                        new DatePickerDialog.OnDateSetListener(){
-                            public void onDateSet(DatePicker datePicker, int year, int month, int day){
-                                date.setText(day+"/"+month+"/"+year);
-
-                            }
-                        },0,0,0 );
-                datePickerDialog.show();
             }
         });
     }

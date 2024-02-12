@@ -1,7 +1,6 @@
 package com.example.hifa;
 
 public class SubSettingItem {
-
     String setting_title;
     int image;
 
