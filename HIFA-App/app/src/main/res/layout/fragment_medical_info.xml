@@ -6,7 +6,7 @@
     android:layout_width="wrap_content"
     android:layout_height="match_parent"
     android:background="#3DA35D"
-    tools:context=".HomeActivity">
+    tools:context=".MedicalInfoFragment">
 
     <ImageView
         android:id="@+id/imageView2"

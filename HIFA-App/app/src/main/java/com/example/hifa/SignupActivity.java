@@ -20,12 +20,13 @@ public class SignupActivity extends AppCompatActivity {
     private EditText emaileditText;
     private EditText password;
     private EditText phoneNumber;
+    boolean incompletedata;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_signup);
-        signUpButton= findViewById(R.id.signUpButton);
+        signUpButton= findViewById(R.id.nextButton);
         firstName = findViewById(R.id.firstNameEditText);
         lastName = findViewById(R.id.lastNameEditText);
         emaileditText = findViewById(R.id.emailAddressEditText);
@@ -39,7 +40,7 @@ public class SignupActivity extends AppCompatActivity {
                 Intent i = new Intent(SignupActivity.this,HomeActivity.class);
                 startActivity(i);
 
-                boolean incompletedata;
+
                 String firstname = firstName.getText().toString();
                 String lastname = lastName.getText().toString();
                 String emailString = emaileditText.getText().toString();
@@ -74,16 +75,18 @@ public class SignupActivity extends AppCompatActivity {
 
             }
         });
-        Intent intent = new Intent(this, Medical_info.class);
+        if(!incompletedata) {
+            Intent intent = new Intent(this, Medical_info.class);
 
-        // Put the data into the Intent
-        intent.putExtra("UserEmail", emailString);
-        intent.putExtra("FirstName", firstname);
-        intent.putExtra("LastName", lastname);
-        intent.putExtra("UserPassword", passwordString);
+            // Put the data into the Intent
+            intent.putExtra("UserEmail", emailString);
+            intent.putExtra("FirstName", firstname);
+            intent.putExtra("LastName", lastname);
+            intent.putExtra("UserPassword", passwordString);
 
-        // Start the activity
-        startActivity(intent);
+            // Start the activity
+            startActivity(intent);
+        }
     }
 
 
