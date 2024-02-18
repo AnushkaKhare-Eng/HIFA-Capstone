@@ -3,6 +3,7 @@ package com.example.hifa;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.DatePickerDialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -10,7 +11,7 @@ import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.TextView;
 
-public class MainActivity extends AppCompatActivity {
+public class SignupActivity extends AppCompatActivity {
     private Button datePickerButton;
     private TextView date;
     private DatePickerDialog datePickerDialog;
@@ -24,19 +25,21 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-        datePickerButton = findViewById(R.id.datePickerButton);
-        date = findViewById(R.id.datePickerTextView);
+        setContentView(R.layout.activity_signup);
         signUpButton= findViewById(R.id.signUpButton);
         firstName = findViewById(R.id.firstNameEditText);
         lastName = findViewById(R.id.lastNameEditText);
         emaileditText = findViewById(R.id.emailAddressEditText);
         password = findViewById(R.id.passwordeditText);
-        phoneNumber = findViewById(R.id.phoneEditText);
-        // ensuring that the fields are not empty for the sign up page
+         //ensuring that the fields are not empty for the sign up page
         signUpButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
+                // Remove bottom two lines to implement actual sign up
+                Intent i = new Intent(SignupActivity.this,HomeActivity.class);
+                startActivity(i);
+
                 boolean incompletedata;
                 String firstname = firstName.getText().toString();
                 String lastname = lastName.getText().toString();
@@ -44,7 +47,7 @@ public class MainActivity extends AppCompatActivity {
                 String passwordString = password.getText().toString();
                 String phoneString = phoneNumber.getText().toString();
 
-                 incompletedata = false;
+                incompletedata = false;
 
                 if (firstname.isEmpty()) {
                     firstName.setError("First name is required");
@@ -69,19 +72,6 @@ public class MainActivity extends AppCompatActivity {
 
                 creatingNewUser(emailString, passwordString,firstname,lastname,0,0,0);
 
-            }
-        });
-        datePickerButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                datePickerDialog = new DatePickerDialog(MainActivity.this,
-                        new DatePickerDialog.OnDateSetListener(){
-                            public void onDateSet(DatePicker datePicker, int year, int month, int day){
-                                date.setText(day+"/"+month+"/"+year);
-
-                            }
-                        },0,0,0 );
-                datePickerDialog.show();
             }
         });
     }
