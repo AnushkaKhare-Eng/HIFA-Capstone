@@ -3,6 +3,7 @@ package com.example.hifa;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.DatePickerDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -21,6 +22,7 @@ public class SignupActivity extends AppCompatActivity {
     private EditText password;
     private EditText phoneNumber;
     boolean incompletedata;
+    Context context;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,6 +33,7 @@ public class SignupActivity extends AppCompatActivity {
         lastName = findViewById(R.id.lastNameEditText);
         emaileditText = findViewById(R.id.emailAddressEditText);
         password = findViewById(R.id.passwordeditText);
+        context = this;
          //ensuring that the fields are not empty for the sign up page
         signUpButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -70,23 +73,24 @@ public class SignupActivity extends AppCompatActivity {
                     incompletedata = true;
                 }
 
+                if(!incompletedata) {
+                    Intent intent = new Intent(context, MedicalInfoFragment.class);
 
+                    // Put the data into the Intent
+                    intent.putExtra("UserEmail", emailString);
+                    intent.putExtra("FirstName", firstname);
+                    intent.putExtra("LastName", lastname);
+                    intent.putExtra("UserPassword", passwordString);
+
+                    // Start the activity
+                    startActivity(intent);
+                }
 
 
             }
+
         });
-        if(!incompletedata) {
-            Intent intent = new Intent(this, Medical_info.class);
 
-            // Put the data into the Intent
-            intent.putExtra("UserEmail", emailString);
-            intent.putExtra("FirstName", firstname);
-            intent.putExtra("LastName", lastname);
-            intent.putExtra("UserPassword", passwordString);
-
-            // Start the activity
-            startActivity(intent);
-        }
     }
 
 
