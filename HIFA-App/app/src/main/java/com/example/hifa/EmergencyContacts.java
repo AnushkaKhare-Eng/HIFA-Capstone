@@ -2,14 +2,14 @@ package com.example.hifa;
 
 public class EmergencyContacts {
     private String name;
-    private float phoneNumber;
+    private String phoneNumber;
 
-    public EmergencyContacts(String name, float phoneNumber){
+    public EmergencyContacts(String name, String phoneNumber){
         this.name = name;
         this.phoneNumber = phoneNumber;
     }
 
-    public float getPhoneNumber() {
+    public String getPhoneNumber() {
         return phoneNumber;
     }
 
@@ -21,7 +21,7 @@ public class EmergencyContacts {
         this.name = name;
     }
 
-    public void setPhoneNumber(float phoneNumber) {
+    public void setPhoneNumber(String phoneNumber) {
         this.phoneNumber = phoneNumber;
     }
 }

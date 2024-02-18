@@ -8,14 +8,17 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-public class Devices_page extends Fragment {
-
-    public Devices_page() {
+/**
+ * A simple {@link Fragment} subclass.
+ * Use the {@link ProfileFragment#newInstance} factory method to
+ * create an instance of this fragment.
+ */
+public class ProfileFragment extends Fragment {
+    public ProfileFragment() {
         // Required empty public constructor
     }
-
-    public static Devices_page newInstance(String param1, String param2) {
-        Devices_page fragment = new Devices_page();
+    public static ProfileFragment newInstance(String param1, String param2) {
+        ProfileFragment fragment = new ProfileFragment();
         Bundle args = new Bundle();
         fragment.setArguments(args);
         return fragment;
@@ -30,6 +33,6 @@ public class Devices_page extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_devices_page, container, false);
+        return inflater.inflate(R.layout.fragment_profile, container, false);
     }
 }

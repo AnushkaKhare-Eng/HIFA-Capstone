@@ -1,12 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#3DA35D"
-    tools:context=".AccountSettingsFragment">
+    android:background="@color/background"
+    tools:context=".SettingsFragment">
 
     <LinearLayout
         android:id="@+id/linearLayout"
@@ -19,6 +20,15 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
+
+        <ImageView
+            android:id="@+id/imageView"
+            android:layout_width="0dp"
+            android:layout_height="50dp"
+            android:layout_weight="0.4"
+            android:contentDescription="Account Settings Icon"
+            android:src="@drawable/user"
+            app:tint="#FFFFFF" />
 
         <TextView
             android:id="@+id/textView3"
@@ -47,6 +57,78 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:text="First Name"
+            android:textColor="#36454F"
+            android:textSize="20dp" />
+
+        <EditText
+            android:id="@+id/firstNameAccountSettings"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="20dp"
+            android:background="@drawable/textbox_shape"
+            android:ems="10"
+            android:hint="Filler"
+            android:inputType="text"
+            android:paddingHorizontal="5dp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Middle Name (Optional)"
+            android:textColor="#36454F"
+            android:textSize="20sp" />
+
+        <EditText
+            android:id="@+id/middleNameAccountSettings"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="20dp"
+            android:background="@drawable/textbox_shape"
+            android:ems="10"
+            android:hint="Filler"
+            android:inputType="text"
+            android:paddingHorizontal="5dp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Last Name"
+            android:textColor="#36454F"
+            android:textSize="20sp" />
+
+        <EditText
+            android:id="@+id/lastNameAccountSettings"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="20dp"
+            android:background="@drawable/textbox_shape"
+            android:ems="10"
+            android:hint="Filler"
+            android:inputType="text"
+            android:paddingHorizontal="5dp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Email"
+            android:textColor="#36454F"
+            android:textSize="20sp" />
+
+        <EditText
+            android:id="@+id/emailAccountSettings"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="20dp"
+            android:background="@drawable/textbox_shape"
+            android:ems="10"
+            android:hint="Filler"
+            android:inputType="textEmailAddress"
+            android:paddingHorizontal="5dp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:text="Phone Number"
             android:textColor="#36454F"
             android:textSize="20sp" />
@@ -56,42 +138,29 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="20dp"
+            android:background="@drawable/textbox_shape"
+            android:ems="10"
             android:hint="Filler"
             android:inputType="phone"
             android:paddingHorizontal="5dp" />
 
-        <TextView
-            android:id="@+id/DOBTextView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Date of Birth"
-            android:textColor="#36454F"
-            android:textSize="20sp" />
-
-        <EditText
-            android:id="@+id/DateOfBirtheditTextDate"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:ems="10"
-            android:hint="Filler"
-            android:inputType="date" />
-
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/save_changes_account_settings"
             android:layout_width="150dp"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
+            android:layout_height="50dp"
             android:layout_marginBottom="64dp"
-            android:background="@color/green"
-            android:text="NEXT"
+            android:background="@drawable/save_changes_button_shape"
+            android:text="Save Changes"
             android:textAllCaps="false"
             android:textColor="@color/white"
             android:textSize="16sp"
+            android:layout_gravity="center"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent" />
 
     </LinearLayout>
+
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

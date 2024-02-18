@@ -10,7 +10,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
-public class MainActivity extends AppCompatActivity {
+public class SignupActivity extends AppCompatActivity {
     private Button datePickerButton;
     private TextView date;
     private DatePickerDialog datePickerDialog;
@@ -24,25 +24,29 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-
-        signUpButton= findViewById(R.id.nextButton);
+        setContentView(R.layout.activity_signup);
+        signUpButton= findViewById(R.id.signUpButton);
         firstName = findViewById(R.id.firstNameEditText);
         lastName = findViewById(R.id.lastNameEditText);
         emaileditText = findViewById(R.id.emailAddressEditText);
         password = findViewById(R.id.passwordeditText);
-        String emailString = emaileditText.getText().toString();
-        String firstname = firstName.getText().toString();
-        String lastname = lastName.getText().toString();
-        String passwordString = password.getText().toString();
-        // ensuring that the fields are not empty for the sign up page
+         //ensuring that the fields are not empty for the sign up page
         signUpButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
+                // Remove bottom two lines to implement actual sign up
+                Intent i = new Intent(SignupActivity.this,HomeActivity.class);
+                startActivity(i);
+
                 boolean incompletedata;
+                String firstname = firstName.getText().toString();
+                String lastname = lastName.getText().toString();
+                String emailString = emaileditText.getText().toString();
+                String passwordString = password.getText().toString();
+                String phoneString = phoneNumber.getText().toString();
 
-
-                 incompletedata = false;
+                incompletedata = false;
 
                 if (firstname.isEmpty()) {
                     firstName.setError("First name is required");
@@ -60,16 +64,16 @@ public class MainActivity extends AppCompatActivity {
                     password.setError("First name is required");
                     incompletedata = true;
                 }
+                if (phoneString.isEmpty()) {
+                    phoneNumber.setError("First name is required");
+                    incompletedata = true;
+                }
 
 
 
 
             }
         });
-
-
-
-        // Create an Intent
         Intent intent = new Intent(this, Medical_info.class);
 
         // Put the data into the Intent
@@ -80,8 +84,10 @@ public class MainActivity extends AppCompatActivity {
 
         // Start the activity
         startActivity(intent);
-
     }
+
+
+
 
 
 }
