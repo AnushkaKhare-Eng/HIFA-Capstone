@@ -50,6 +50,7 @@ public class SignupActivity extends AppCompatActivity {
                 String passwordString = password.getText().toString();
                 String phoneString = phoneNumber.getText().toString();
 
+
                 incompletedata = false;
 
                 if (firstname.isEmpty()) {
