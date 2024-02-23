@@ -10,6 +10,7 @@ project(Sample1)
 
 # NORDIC SDK APP START
 target_sources(app PRIVATE
+  src/ble_manager.c
   src/main.c
   )
 # NORDIC SDK APP END
