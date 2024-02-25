@@ -30,13 +30,6 @@ int main(void)
 		// error msg printed in setup function
 		return 1;
 	}
-
-	dk_set_led_on(LED_INT_RGB_RED);
-
-	
-
-	printk("Connectable advertising started\n");
-	dk_buttons_init(on_press_send);
 	
 	err = buttons_init(handler);
 	if (err) {
@@ -44,9 +37,8 @@ int main(void)
 		return 1;
 	}
 
-	set_led_on(LED_INT_RGB_BLUE);
-
-	set_led_on(LED_INT_GREEN);
+	printk("Setupcomplete\n");
+	set_led_on(LED_INT_RGB_RED);
 	
 	while (1) {
 		k_sleep(K_MSEC(1000));

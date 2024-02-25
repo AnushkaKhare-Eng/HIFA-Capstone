@@ -11,6 +11,9 @@
         "settings.h": "c",
         "gpio.h": "c",
         "my_gpio.h": "c",
-        "kernel.h": "c"
+        "kernel.h": "c",
+        "array": "c",
+        "string": "c",
+        "string_view": "c"
     }
 }

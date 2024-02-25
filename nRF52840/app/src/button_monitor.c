@@ -1,8 +1,12 @@
 #include "button_monitor.h"
+#include "ble_manager.h"
 #include "my_gpio.h"
 
 int press_count = 0;
 int press_start_time = 0;
+
+char tp_msg[] = {'T','\0'};
+char hp_msg[] = {'H','\0'};
 
 void handler (uint32_t button_state, uint32_t has_changed) {
 	int64_t current_time = k_uptime_get();
@@ -34,6 +38,8 @@ void handler (uint32_t button_state, uint32_t has_changed) {
 void hold_press_monitor(void){
 	for (;;) {
 		k_sem_take(&hold_press, K_FOREVER);
+
+		send_msg(hp_msg,sizeof(hp_msg));
 		for(int i = 0; i < 3 ; ++i) {
 			set_led_on(LED_EXT_RED_A);
 			k_sleep(K_MSEC(1000));
@@ -46,6 +52,8 @@ void hold_press_monitor(void){
 void triple_press_monitor(void){
 	for (;;) {
 		k_sem_take(&triple_press, K_FOREVER);
+
+		send_msg(tp_msg, sizeof(tp_msg));
 		for(int i = 0; i < 3 ; ++i) {
 			set_led_on(LED_EXT_RED_B);
 			k_sleep(K_MSEC(1000));

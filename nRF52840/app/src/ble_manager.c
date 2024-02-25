@@ -1,22 +1,15 @@
 #include <zephyr/bluetooth/bluetooth.h>
 #include <zephyr/bluetooth/conn.h>
 #include <zephyr/bluetooth/uuid.h>
-#include <dk_buttons_and_leds.h>
 #include <bluetooth/services/nus.h>
 
 #include "ble_manager.h"
+#include "my_gpio.h"
 
 #define NON_CONNECTABLE_ADV_IDX 0
 #define CONNECTABLE_ADV_IDX     1
 
-#define UART_BUF_SIZE 8
-
-
-#define SINGLE_GREEN  DK_LED1
-
-#define MULTI_RED     DK_LED2
-#define MULTI_GREEN	  DK_LED3
-#define MULTI_BLUE	  DK_LED4
+#define UART_BUF_SIZE 5
 
 static void advertising_work_handle(struct k_work *work);
 
@@ -40,7 +33,7 @@ static void adv_connected_cb(struct bt_le_ext_adv *adv,
 {
 	printk("Advertiser[%d] %p connected conn %p\n", bt_le_ext_adv_get_index(adv),
 		adv, info->conn);
-	dk_set_led_on(MULTI_BLUE);
+	set_led_on(LED_INT_RGB_BLUE);
 }
 
 static const struct bt_le_ext_adv_cb adv_cb = {
@@ -76,15 +69,12 @@ static void connected(struct bt_conn *conn, uint8_t err)
 
 	bt_addr_le_to_str(bt_conn_get_dst(conn), addr, sizeof(addr));
 
-	// dk_set_led_on(CON_STATUS_LED);
-	// dk_set_led_off(SEND_LED);
-
 	printk("Connected %s\n", addr);
 }
 
 static void disconnected(struct bt_conn *conn, uint8_t reason)
 {
-	dk_set_led_off(MULTI_BLUE);
+	set_led_off(LED_INT_RGB_BLUE);
 	char addr[BT_ADDR_LE_STR_LEN];
 
 	bt_addr_le_to_str(bt_conn_get_dst(conn), addr, sizeof(addr));
@@ -153,7 +143,7 @@ static int connectable_adv_create(void)
 static void bt_receive_cb(struct bt_conn *conn, const uint8_t *const data,
 			  uint16_t len)
 {
-	dk_set_led(SINGLE_GREEN, 1);
+	set_led(LED_INT_GREEN, 1);
 }
 
 static struct bt_nus_cb nus_cb = {
@@ -185,19 +175,16 @@ int setup(void){
 		printk("Failed to create connectable advertising (err %d)\n", err);
 		return 1;
 	}
+
+	return 0;
 }
 
-void on_press_send(){
-	dk_set_led_on(SINGLE_GREEN);
-	uint8_t data[UART_BUF_SIZE];
-	data[0] = 'h';
-	data[1] = 'e';
-	data[2] = 'l';
-	data[3] = 'p';
-	data[4] = '!';
-	uint16_t len = UART_BUF_SIZE;
-
+// TODO - check that we are indeed connected to user phone - in future support reaching out to "strangers" 
+void send_msg(uint8_t *data,uint16_t len){
+	set_led_on(LED_INT_GREEN);
+	// TODO - use a timeout to give up after a while
 	while (bt_nus_send(NULL, data, len)){
 	}
-	dk_set_led_off(SINGLE_GREEN);
+
+	set_led_off(LED_INT_GREEN);
 }	
