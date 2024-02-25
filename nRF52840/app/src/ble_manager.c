@@ -143,7 +143,7 @@ static int connectable_adv_create(void)
 static void bt_receive_cb(struct bt_conn *conn, const uint8_t *const data,
 			  uint16_t len)
 {
-	set_led(LED_INT_GREEN, 1);
+	set_led(LED_INT_RGB_GREEN, 1);
 }
 
 static struct bt_nus_cb nus_cb = {
@@ -181,10 +181,8 @@ int setup(void){
 
 // TODO - check that we are indeed connected to user phone - in future support reaching out to "strangers" 
 void send_msg(uint8_t *data,uint16_t len){
-	set_led_on(LED_INT_GREEN);
 	// TODO - use a timeout to give up after a while
 	while (bt_nus_send(NULL, data, len)){
 	}
-
 	set_led_off(LED_INT_GREEN);
 }	

@@ -10,6 +10,7 @@
 #include "my_gpio.h"
 #include "button_monitor.h"
 #include "ble_manager.h"
+#include "battery_monitor.h"
 
 
 
@@ -37,8 +38,13 @@ int main(void)
 		return 1;
 	}
 
+	err = init_saadc();
+	if (err) {
+		printk("SAADC init failed (err %d)\n", err);
+		return 1;
+	}
+
 	printk("Setupcomplete\n");
-	set_led_on(LED_INT_RGB_RED);
 	
 	while (1) {
 		k_sleep(K_MSEC(1000));
