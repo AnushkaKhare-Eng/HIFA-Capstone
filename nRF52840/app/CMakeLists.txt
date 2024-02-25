@@ -12,6 +12,8 @@ project(Sample1)
 target_sources(app PRIVATE
   src/ble_manager.c
   src/main.c
+  src/my_gpio.c
+  src/button_monitor.c
   )
 # NORDIC SDK APP END
 
