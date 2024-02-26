@@ -6,13 +6,14 @@ public class User implements Serializable {
 
     private String email;
     private  String password;
-    private float age;
-    private int driversLicense;
-    private int healthcard;
+    private int age;
+    private String driversLicense;
+    private String healthcard;
     private String firstname;
     private String lastname;
+    private String phonenumber;
 
-    public User (String email, String password, String firstname, String lastname, float age, int healthcard, int driversLicense ){
+    public User (String email, String password, String firstname, String lastname, int age, String healthcard, String driversLicense, String phonenumber ){
         this.email = email;
         this.password = password;
         this.firstname = firstname;
@@ -20,6 +21,7 @@ public class User implements Serializable {
         this.age = age;
         this.healthcard=healthcard;
         this.driversLicense = driversLicense;
+        this.phonenumber = phonenumber;
     }
 
 // adding getters and setters for each of the attribute
@@ -32,25 +34,25 @@ public class User implements Serializable {
         return lastname;
     }
 
-    public int getHealthcard() {
+    public String getHealthcard() {
         return healthcard;
     }
 
-    public float getAge() {
+    public int getAge() {
         return age;
     }
 
-    public int getDriversLicense() {
+    public String getDriversLicense() {
         return driversLicense;
     }
     // setters
 
 
-    public void setAge(float age) {
+    public void setAge(int age) {
         this.age = age;
     }
 
-    public void setDriversLicense(int driversLicense) {
+    public void setDriversLicense(String driversLicense) {
         this.driversLicense = driversLicense;
     }
 
@@ -62,7 +64,7 @@ public class User implements Serializable {
         this.firstname = firstname;
     }
 
-    public void setHealthcard(int healthcard) {
+    public void setHealthcard(String healthcard) {
         this.healthcard = healthcard;
     }
 

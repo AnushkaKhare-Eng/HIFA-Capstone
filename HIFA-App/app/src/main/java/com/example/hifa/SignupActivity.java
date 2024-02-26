@@ -3,11 +3,11 @@ package com.example.hifa;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.DatePickerDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
-import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.TextView;
 
@@ -21,16 +21,19 @@ public class SignupActivity extends AppCompatActivity {
     private EditText emaileditText;
     private EditText password;
     private EditText phoneNumber;
+    boolean incompletedata;
+    Context context;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_signup);
-        signUpButton= findViewById(R.id.signUpButton);
+        signUpButton= findViewById(R.id.nextButton);
         firstName = findViewById(R.id.firstNameEditText);
         lastName = findViewById(R.id.lastNameEditText);
         emaileditText = findViewById(R.id.emailAddressEditText);
         password = findViewById(R.id.passwordeditText);
+        context = this;
          //ensuring that the fields are not empty for the sign up page
         signUpButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -40,12 +43,13 @@ public class SignupActivity extends AppCompatActivity {
                 Intent i = new Intent(SignupActivity.this,HomeActivity.class);
                 startActivity(i);
 
-                boolean incompletedata;
+
                 String firstname = firstName.getText().toString();
                 String lastname = lastName.getText().toString();
                 String emailString = emaileditText.getText().toString();
                 String passwordString = password.getText().toString();
                 String phoneString = phoneNumber.getText().toString();
+
 
                 incompletedata = false;
 
@@ -70,21 +74,28 @@ public class SignupActivity extends AppCompatActivity {
                     incompletedata = true;
                 }
 
-                creatingNewUser(emailString, passwordString,firstname,lastname,0,0,0);
+                if(!incompletedata) {
+                    Intent intent = new Intent(context, MedicalInfoFragment.class);
 
-            }
-        });
-    }
+                    // Put the data into the Intent
+                    intent.putExtra("UserEmail", emailString);
+                    intent.putExtra("FirstName", firstname);
+                    intent.putExtra("LastName", lastname);
+                    intent.putExtra("UserPassword", passwordString);
 
-    private void creatingNewUser(String email, String password, String firstname, String lastname, float age, int healthcard, int driversLicense  ) {
-        DatabaseFirestore.userSignUp(new User(email, password, firstname, lastname, 0, 0, 0), new DatabaseFirestore.CallbackAddNewUser() {
-            @Override
-            public void onCallBack(Boolean userExists) {
-                if(!userExists) finish();
-                else {
-                    emaileditText.setError("User account exists");
+                    // Start the activity
+                    startActivity(intent);
                 }
+
+
             }
+
         });
+
     }
+
+
+
+
+
 }
