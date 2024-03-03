@@ -41,10 +41,8 @@ int main(void)
 	set_led_on(LED_INT_RGB_RED);
 	
 	while (1) {
+		// Sleep is important to allow monitor threads to run
 		k_sleep(K_MSEC(1000));
-		set_led_off(LED_INT_GREEN);
-		k_sleep(K_MSEC(1000));
-		set_led_on(LED_INT_GREEN);
 	}
 }
 

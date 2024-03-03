@@ -148,6 +148,7 @@ static void bt_receive_cb(struct bt_conn *conn, const uint8_t *const data,
 
 static struct bt_nus_cb nus_cb = {
 	.received = bt_receive_cb,
+	.send_enabled = BT_NUS_SEND_STATUS_ENABLED,
 };
 
 

@@ -21,18 +21,16 @@ async def main():
    
     print("Scanning for devices...",end=" ")
     devices = await BleakScanner.discover()
-    print("Found devices:")
-    i = 0
+    dev = None
     for d in devices:
-        print(f"\t{i} - {d}")
-        i += 1
-    user_resp = input("Select device number to connect, or 'q' to quit: ")
-
-    if ('q' in user_resp):
-        return
+        if (d.name) == "WAPA":
+             dev = d
+    if not dev:
+         print("Could not find WAPA device")
+         return
     
-    print(f"Attempting to connect to {devices[int(user_resp)]}... ",end="")
-    async with BleakClient(devices[int(user_resp)].address) as client:
+    print(f"Attempting to connect to {dev}... ",end="")
+    async with BleakClient(dev.address) as client:
         if not client.is_connected():
              print("Failed")
              raise Exception("Could not connect to client")
