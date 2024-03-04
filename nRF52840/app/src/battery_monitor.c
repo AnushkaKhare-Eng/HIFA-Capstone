@@ -3,7 +3,7 @@
 #include "my_gpio.h"
 
 #define VDD_PIN 9
-#define VDD_CHANNEL 0
+#define VDD_CHANNEL 1
 #define LIM_L 3640  // 2.0V (by linear interpolation)
 #define LIM_H INT16_MAX // No uper limit
 
@@ -68,6 +68,11 @@ int init_saadc(void)
     // #endif
 
     // configure channel
+
+    m_single_channel.channel_config.gain = NRF_SAADC_GAIN1_6;
+    status = nrfx_saadc_channel_config(&m_single_channel);
+    NRFX_ASSERT(status == NRFX_SUCCESS);
+
     uint32_t channels_mask = nrfx_saadc_channels_configured_get();
     status = nrfx_saadc_simple_mode_set(channels_mask,
                                         NRF_SAADC_RESOLUTION_8BIT,
@@ -78,9 +83,7 @@ int init_saadc(void)
     nrfx_saadc_limits_set(VDD_CHANNEL, LIM_L, LIM_H);
     NRFX_ASSERT(status == NRFX_SUCCESS);
 
-    m_single_channel.channel_config.gain = NRF_SAADC_GAIN1_6;
-    status = nrfx_saadc_channel_config(&m_single_channel);
-    NRFX_ASSERT(status == NRFX_SUCCESS);
+    
 
     status = nrfx_saadc_buffer_set(m_samples_buffer, 1);
     NRFX_ASSERT(status == NRFX_SUCCESS);

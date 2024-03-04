@@ -4,60 +4,67 @@
  * SPDX-License-Identifier: LicenseRef-Nordic-5-Clause
  */
 
+#include <stdbool.h>
+#include <stdint.h>
+#include <nrfx_saadc.h>
 #include <zephyr/kernel.h>
-#include <zephyr/sys/printk.h>
-#include <zephyr/settings/settings.h>
+
 #include "my_gpio.h"
-// #include "button_monitor.h"
-// #include "ble_manager.h"
-// #include "battery_monitor.h"
+ 
+#define SAADC_CHANNEL_COUNT   1
+#define SAADC_SAMPLE_INTERVAL_MS 250
 
+static volatile bool is_ready = true;
+static nrf_saadc_value_t samples[SAADC_CHANNEL_COUNT];
+static nrfx_saadc_channel_t channels[SAADC_CHANNEL_COUNT] = {NRFX_SAADC_DEFAULT_CHANNEL_SE(NRF_SAADC_INPUT_VDD, 0)};
 
-
-int main(void)
+ 
+static void event_handler(nrfx_saadc_evt_t const * p_event)
 {
-	int err;
-	printk("ND begining initialization procedures...\n");
-	
-	err = leds_init();
-	if (err) {
-		printk("LEDs init failed (err %d)\n", err);
-		return 1;
-	}
-	printk("LEDs initialized\n");
+    if (p_event->type == NRFX_SAADC_EVT_DONE)
+    {
+        for(int i = 0; i < p_event->data.done.size; i++)
+        {
+            p_event->data.done.p_buffer[i];
+        }
 
-	// err = setup();
-	if(err){
-		// error msg printed in setup function
-		return 1;
-	}
-	
-	// err = buttons_init(handler);
-	// if (err) {
-	// 	printk("Buttons init failed (err %d)\n", err);
-	// 	return 1;
-	// }
-
-	// err = init_saadc();
-	// if (err) {
-	// 	printk("SAADC init failed (err %d)\n", err);
-	// 	return 1;
-	// }
-
-	printk("Setupcomplete\n");
-	
-	while (1) {
-		k_sleep(K_MSEC(1000));
-		set_led_off(LED_INT_GREEN);
-		k_sleep(K_MSEC(1000));
-		set_led_on(LED_INT_GREEN);
-	}
+        is_ready = true;
+    }
 }
 
-// K_THREAD_DEFINE(hpm, 1024, hold_press_monitor, NULL, NULL,
-// 		NULL, 7, 0, 0);
+ 
+int main(void)
+{
+    int err_code;
 
-// K_THREAD_DEFINE(tpm, 1024, triple_press_monitor, NULL, NULL,
-// 	NULL, 7, 0, 0);
+    err_code = nrfx_saadc_init(7);
+
+	#if defined(__ZEPHYR__)
+        IRQ_DIRECT_CONNECT(NRFX_IRQ_NUMBER_GET(NRF_SAADC), IRQ_PRIO_LOWEST, nrfx_saadc_irq_handler, 0);
+    #endif
+
+ 
+    err_code = nrfx_saadc_channels_config(channels, SAADC_CHANNEL_COUNT);
+
+	err_code = nrfx_saadc_simple_mode_set((1<<0),
+											NRF_SAADC_RESOLUTION_12BIT,
+											NRF_SAADC_OVERSAMPLE_DISABLED,
+											event_handler);
+
+	
+	err_code = nrfx_saadc_buffer_set(samples, SAADC_CHANNEL_COUNT);
+
+
+	err_code = nrfx_saadc_mode_trigger();
+
+
+	while(1){
+		k_sleep(K_MSEC(100));
+		if(is_ready){
+			is_ready = false;
+		}
+	}
+    
+}
 
 
