@@ -8,9 +8,9 @@
 #include <zephyr/sys/printk.h>
 #include <zephyr/settings/settings.h>
 #include "my_gpio.h"
-#include "button_monitor.h"
-#include "ble_manager.h"
-#include "battery_monitor.h"
+// #include "button_monitor.h"
+// #include "ble_manager.h"
+// #include "battery_monitor.h"
 
 
 
@@ -26,23 +26,23 @@ int main(void)
 	}
 	printk("LEDs initialized\n");
 
-	err = setup();
+	// err = setup();
 	if(err){
 		// error msg printed in setup function
 		return 1;
 	}
 	
-	err = buttons_init(handler);
-	if (err) {
-		printk("Buttons init failed (err %d)\n", err);
-		return 1;
-	}
+	// err = buttons_init(handler);
+	// if (err) {
+	// 	printk("Buttons init failed (err %d)\n", err);
+	// 	return 1;
+	// }
 
-	err = init_saadc();
-	if (err) {
-		printk("SAADC init failed (err %d)\n", err);
-		return 1;
-	}
+	// err = init_saadc();
+	// if (err) {
+	// 	printk("SAADC init failed (err %d)\n", err);
+	// 	return 1;
+	// }
 
 	printk("Setupcomplete\n");
 	
@@ -54,10 +54,10 @@ int main(void)
 	}
 }
 
-K_THREAD_DEFINE(hpm, 1024, hold_press_monitor, NULL, NULL,
-		NULL, 7, 0, 0);
+// K_THREAD_DEFINE(hpm, 1024, hold_press_monitor, NULL, NULL,
+// 		NULL, 7, 0, 0);
 
-K_THREAD_DEFINE(tpm, 1024, triple_press_monitor, NULL, NULL,
-	NULL, 7, 0, 0);
+// K_THREAD_DEFINE(tpm, 1024, triple_press_monitor, NULL, NULL,
+// 	NULL, 7, 0, 0);
 
 
