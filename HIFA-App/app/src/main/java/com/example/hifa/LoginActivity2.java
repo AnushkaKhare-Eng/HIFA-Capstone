@@ -34,7 +34,7 @@ public class LoginActivity2 extends AppCompatActivity {
 
         signUpButton = findViewById(R.id.signupbutton2);
         loginButton = findViewById(R.id.LoginButton);
-        emaileT = findViewById(R.id.editTextemail);
+        emaileT = findViewById(R.id.editTextTextEmailAddress);
         passwordeT = findViewById(R.id.editTextTextPassword);
         emailString = emaileT.getText().toString().trim();
         passwordString = passwordeT.getText().toString().trim();
@@ -42,8 +42,8 @@ public class LoginActivity2 extends AppCompatActivity {
         loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                emailString ="example2@gmail.com";
-                passwordString = "123456";
+//                emailString ="example2@gmail.com";
+//                passwordString = "123456";
 
                 if(emailString.isEmpty()){
                     emaileT.setError("Email is required");
