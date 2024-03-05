@@ -2,8 +2,7 @@ package com.example.hifa;
 
 
 
-import static androidx.constraintlayout.helper.widget.MotionEffect.TAG;
-
+import android.content.Intent;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
@@ -26,7 +25,7 @@ public class DatabaseFirestore {
 
     static private CollectionReference collectionReferencePersonalInfo;
 
-    static public void setDB(FirebaseFirestore instance) {
+    static public void databaseSetUp(FirebaseFirestore instance) {
         database = instance;
         collectionReferenceDevice = database.collection("Device");
         collectionReferenceEmergencyContacts = database.collection("Emergency Contact");
@@ -41,6 +40,7 @@ public class DatabaseFirestore {
             @Override
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                 if(task.isSuccessful()){
+                    Log.i("Registering user","User registration success");
                     //looking a snapshot of the firestore db
                     DocumentSnapshot document = task.getResult();
                     // if the document exists then send a true on the callback function
@@ -65,39 +65,17 @@ public class DatabaseFirestore {
         });
     }
 
-    /**
-     * Function for user verification
-     *
-     * */
-
-    static protected void verifyUser (String email, String password, CallBackverifyUser callbackverifyuser){
-        collectionReferencePersonalInfo.whereEqualTo("email", email)
-                .whereEqualTo("password", password)
-                .get()
-                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                                           @Override
-                                           public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                                               if (task.isSuccessful()) {
-                                                   for (QueryDocumentSnapshot document : task.getResult()) {
-
-                                                       User user = document.toObject(User.class);
-                                                       // Do something with the user object
-                                                   }
-                                               } else {
-                                                   Log.d("Tag","Error getting documents: ", task.getException());
-                                               }
-                                           }
-                                       }
-                );
-    }
-
     static protected void deviceInfo(Devices device, Callback callback) {
         // need to set UUID in for the devices
     }
+
+
     public interface CallbackAddNewUser {
         void onCallBack(Boolean userExists);
     }
+
     public interface CallBackverifyUser {
         void onCallBack(User user);
     }
+
 }

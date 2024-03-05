@@ -6,14 +6,14 @@ public class User implements Serializable {
 
     private String email;
     private  String password;
-    private int age;
+    private float age;
     private String driversLicense;
+    private String phoneNumber;
     private String healthcard;
     private String firstname;
     private String lastname;
-    private String phonenumber;
 
-    public User (String email, String password, String firstname, String lastname, int age, String healthcard, String driversLicense, String phonenumber ){
+    public User (String email, String password, String firstname, String lastname, float age, String healthcard, String driversLicense, String phoneNumber ){
         this.email = email;
         this.password = password;
         this.firstname = firstname;
@@ -21,10 +21,10 @@ public class User implements Serializable {
         this.age = age;
         this.healthcard=healthcard;
         this.driversLicense = driversLicense;
-        this.phonenumber = phonenumber;
+        this.phoneNumber = phoneNumber;
     }
 
-// adding getters and setters for each of the attribute
+    // adding getters and setters for each of the attribute
     public String getEmail(){return email;}
     public String getPassword(){return password;}
 
@@ -38,7 +38,7 @@ public class User implements Serializable {
         return healthcard;
     }
 
-    public int getAge() {
+    public float getAge() {
         return age;
     }
 
@@ -48,7 +48,7 @@ public class User implements Serializable {
     // setters
 
 
-    public void setAge(int age) {
+    public void setAge(float age) {
         this.age = age;
     }
 

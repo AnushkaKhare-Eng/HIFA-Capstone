@@ -1,7 +1,9 @@
 package com.example.hifa;
 
+import android.content.DialogInterface;
 import android.os.Bundle;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 
 import android.view.LayoutInflater;
@@ -58,6 +60,19 @@ public class HomeFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+
+        // Inside your activity or fragment
+        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+        builder.setTitle("Complete Registration ?");  // Set the title of the dialog
+        builder.setMessage("Please complete account registration"); // Set the message of the dialog
+
+// Add buttons
+        builder.setPositiveButton("Continue", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                // Action to perform when OK button is clicked
+            }
+        });
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_home, container, false);
     }
