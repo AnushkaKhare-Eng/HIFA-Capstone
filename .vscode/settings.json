@@ -16,6 +16,7 @@
         "string": "c",
         "string_view": "c",
         "nrfx_saadc.h": "c",
-        "nrfx_pwm.h": "c"
+        "nrfx_pwm.h": "c",
+        "nrfx_timer.h": "c"
     }
 }
