@@ -1,15 +1,14 @@
 package com.example.hifa;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
 import android.os.Bundle;
-import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -34,21 +33,20 @@ public class LoginActivity2 extends AppCompatActivity {
 
         signUpButton = findViewById(R.id.signupbutton2);
         loginButton = findViewById(R.id.LoginButton);
-        emaileT = findViewById(R.id.editTextTextEmailAddress);
-        passwordeT = findViewById(R.id.editTextTextPassword);
-        emailString = emaileT.getText().toString().trim();
-        passwordString = passwordeT.getText().toString().trim();
+        emaileT = findViewById(R.id.editTextText);
+        passwordeT = findViewById(R.id.passwordEditText);
+
 
         loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-//                emailString ="example2@gmail.com";
-//                passwordString = "123456";
 
+                emailString = emaileT.getText().toString().trim();
+                passwordString = passwordeT.getText().toString().trim();
                 if(emailString.isEmpty()){
                     emaileT.setError("Email is required");
                     emaileT.requestFocus();
-                    Toast.makeText(LoginActivity2.this,"email detected",Toast.LENGTH_SHORT).show();
+
 
                 }
                 else if(passwordString.isEmpty()){
@@ -58,6 +56,7 @@ public class LoginActivity2 extends AppCompatActivity {
                 }
 
                 else{
+
                     mAuth.signInWithEmailAndPassword(emailString, passwordString).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                         @Override
                         public void onComplete(@NonNull Task<AuthResult> task) {

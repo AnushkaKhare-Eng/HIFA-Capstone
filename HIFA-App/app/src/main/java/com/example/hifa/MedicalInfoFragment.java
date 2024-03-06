@@ -133,7 +133,7 @@ public class MedicalInfoFragment extends Fragment {
         return view;
     }
     private void creatingNewUser(String email, String password, String firstname, String lastname, int age, String healthcard, String driversLicense,String phoneNumber  ) {
-        Toast.makeText(getContext(),"creating new user", Toast.LENGTH_SHORT).show();
+        Toast.makeText(getContext(),"creating new user"+ "email"+email+"password"+password+"first"+firstname+"last"+lastname+"age"+ (Integer.toString(age))+"HC"+healthcard+"DL"+driversLicense+"pnum"+phoneNumber, Toast.LENGTH_SHORT).show();
         DatabaseFirestore.userSignUp(new User(email, password, firstname, lastname, age, healthcard, driversLicense, phoneNumber), new DatabaseFirestore.CallbackAddNewUser() {
             @Override
             public void onCallBack(Boolean userExists) {
