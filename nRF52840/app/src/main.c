@@ -18,6 +18,7 @@ static volatile bool is_ready = true;
 static nrf_saadc_value_t samples[SAADC_CHANNEL_COUNT];
 static nrfx_saadc_channel_t channels[SAADC_CHANNEL_COUNT] = {NRFX_SAADC_DEFAULT_CHANNEL_SE(NRF_SAADC_INPUT_VDD, 0)};
 
+
  
 static void event_handler(nrfx_saadc_evt_t const * p_event)
 {
@@ -44,7 +45,9 @@ int main(void)
     #endif
 
  
+    channels[0].channel_config.gain = NRF_SAADC_GAIN1_6;
     err_code = nrfx_saadc_channels_config(channels, SAADC_CHANNEL_COUNT);
+
 
 	err_code = nrfx_saadc_simple_mode_set((1<<0),
 											NRF_SAADC_RESOLUTION_12BIT,
