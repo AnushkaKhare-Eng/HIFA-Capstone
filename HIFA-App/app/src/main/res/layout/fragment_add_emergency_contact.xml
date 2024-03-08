@@ -7,21 +7,23 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="#00FFFF"
-        android:orientation="vertical"
-        android:gravity="center">
+        android:background="#84BC86"
+        android:gravity="center"
+        android:orientation="vertical">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
+            android:layout_marginHorizontal="15dp"
             android:layout_marginVertical="15dp"
-            android:layout_marginHorizontal="15dp">
+            android:orientation="vertical">
+
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Name"
-                android:textSize="25dp"/>
+                android:textSize="25dp" />
+
             <EditText
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -31,36 +33,38 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
+            android:layout_marginHorizontal="15dp"
             android:layout_marginVertical="15dp"
-            android:layout_marginHorizontal="15dp">
+            android:orientation="vertical">
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Phone Number"
-                android:textSize="25dp"/>
+                android:textSize="25dp" />
+
             <EditText
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:inputType="phone"
-                android:background="@drawable/textbox_shape" />
+                android:background="@drawable/textbox_shape"
+                android:inputType="phone" />
 
         </LinearLayout>
 
         <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Save Changes"
+            android:layout_marginVertical="10dp"
             android:background="@drawable/save_changes_button_shape"
-            app:backgroundTint="@color/button"
-            android:layout_marginVertical="10dp"/>
+            android:text="Save Changes"
+            app:backgroundTint="@color/button" />
+
         <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Cancel"
             android:background="@drawable/save_changes_button_shape"
-            app:backgroundTint="@color/button"/>
+            android:text="Cancel"
+            app:backgroundTint="@color/button" />
 
     </LinearLayout>
 

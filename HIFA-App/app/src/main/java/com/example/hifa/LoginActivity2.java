@@ -36,6 +36,11 @@ public class LoginActivity2 extends AppCompatActivity {
         emaileT = findViewById(R.id.editTextText);
         passwordeT = findViewById(R.id.passwordEditText);
 
+        Intent intent = getIntent();
+
+        // Retrieve Object from Intent
+        User userObj = (User) intent.getSerializableExtra("User");
+
 
         loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -63,7 +68,10 @@ public class LoginActivity2 extends AppCompatActivity {
 
                             if(task.isSuccessful()){
                                 Toast.makeText(LoginActivity2.this, "Login successful",Toast.LENGTH_SHORT).show();
-                                startActivity(new Intent(LoginActivity2.this, HomeActivity.class));
+                                Intent intent = new Intent(LoginActivity2.this, HomeActivity.class);
+                                intent.putExtra("userEmail",emailString);
+                                startActivity(intent);
+
                             }else{
                                 Toast.makeText(LoginActivity2.this,"Login Error: "+task.getException().getMessage(),Toast.LENGTH_SHORT).show();
                             }

@@ -6,17 +6,24 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.time.LocalDate;
@@ -33,11 +40,13 @@ public class MedicalInfoFragment extends Fragment {
     private EditText dateofbirth;
     private EditText phoneNumber;
     int age;
+    User userObj;
     String userEmailString;
     String firstNameString;
     String lastNameString;
     String userPasswordString;
     private FirebaseAuth mAuth;
+
 
     View view;
     public MedicalInfoFragment() {
@@ -62,15 +71,13 @@ public class MedicalInfoFragment extends Fragment {
                              Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_medical_info, container, false);
         Bundle bundle = getArguments();
-
-
-
         if(bundle!=null){
             userEmailString = bundle.getString("UserEmail");
             firstNameString = bundle.getString("FirstName");
             lastNameString = bundle.getString("LastName");
             userPasswordString = bundle.getString("UserPassword");
         }
+
         mAuth = FirebaseAuth.getInstance();
         saveChangesbutton = view.findViewById(R.id.savechaangesButton);
         driverlicense = view.findViewById(R.id.driverseditText);
@@ -106,7 +113,10 @@ public class MedicalInfoFragment extends Fragment {
                 if(!incompletedata){
                     int age = calculateAge(dateofbirthString);
                     DatabaseFirestore.databaseSetUp(FirebaseFirestore.getInstance());
+                    //firebaseDatabase = FirebaseDatabase.getInstance();
+                    //databaseReference = firebaseDatabase.getReference("Personal Info");
                     creatingNewUser(userEmailString, userPasswordString,firstNameString,lastNameString,age,healthcardnumberString,driverlicenseString,phoneNumberString);
+                    userObj = new User(userEmailString, userPasswordString,firstNameString,lastNameString,age,healthcardnumberString,driverlicenseString,phoneNumberString);
 //                    Intent i = new Intent(getActivity(),HomeActivity.class);
 //
 //                    startActivity(i);
@@ -116,7 +126,9 @@ public class MedicalInfoFragment extends Fragment {
                         public void onComplete(@NonNull Task<AuthResult> task) {
                             if (task.isSuccessful()){
                                 Toast.makeText(getContext(), "User registration successful",Toast.LENGTH_SHORT).show();
-                                startActivity(new Intent(getActivity(), LoginActivity2.class));
+                                Intent intent = new Intent(getActivity(), LoginActivity2.class);
+                                intent.putExtra("user object", userObj);
+                                startActivity(intent);
                             }else{
                                 Toast.makeText(getContext(),"Registration Failed", Toast.LENGTH_SHORT).show();
                             }
@@ -132,19 +144,22 @@ public class MedicalInfoFragment extends Fragment {
 
         return view;
     }
-    private void creatingNewUser(String email, String password, String firstname, String lastname, int age, String healthcard, String driversLicense,String phoneNumber  ) {
+    private void creatingNewUser(String email, String password, String firstname, String lastname, int age, String healthcard, String driversLicense, String phonenumber) {
         Toast.makeText(getContext(),"creating new user"+ "email"+email+"password"+password+"first"+firstname+"last"+lastname+"age"+ (Integer.toString(age))+"HC"+healthcard+"DL"+driversLicense+"pnum"+phoneNumber, Toast.LENGTH_SHORT).show();
-        DatabaseFirestore.userSignUp(new User(email, password, firstname, lastname, age, healthcard, driversLicense, phoneNumber), new DatabaseFirestore.CallbackAddNewUser() {
+        DatabaseFirestore.userSignUp(new User(email, password, firstname, lastname, age, healthcard, driversLicense, phonenumber), new DatabaseFirestore.CallbackAddNewUser() {
             @Override
             public void onCallBack(Boolean userExists) {
-                if(userExists) {
-                    //can change this to a toast if we want
-                    healthcardnumber.setError("User account exists");
+                if(!userExists) getActivity().finish();
+                else{
+                    healthcardnumber.setError("user exists");
                 }
+
             }
         });
-        Toast.makeText(getContext(),"creating new user", Toast.LENGTH_SHORT).show();
     }
+
+
+
 
     public static int calculateAge(String dob) {
         try {

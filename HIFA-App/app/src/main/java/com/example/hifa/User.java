@@ -1,5 +1,7 @@
 package com.example.hifa;
 
+import androidx.annotation.Keep;
+
 import java.io.Serializable;
 
 public class User implements Serializable {
@@ -13,7 +15,11 @@ public class User implements Serializable {
     private String firstname;
     private String lastname;
 
-    public User (String email, String password, String firstname, String lastname, float age, String healthcard, String driversLicense, String phoneNumber ){
+    @Keep
+    public User() {
+        // Default constructor logic, if needed
+    }
+    public User (String email, String password, String firstname, String lastname, int age, String healthcard, String driversLicense, String phoneNumber ){
         this.email = email;
         this.password = password;
         this.firstname = firstname;
@@ -42,13 +48,17 @@ public class User implements Serializable {
         return age;
     }
 
+    public String getPhoneNumber() {
+        return phoneNumber;
+    }
+
     public String getDriversLicense() {
         return driversLicense;
     }
     // setters
 
 
-    public void setAge(float age) {
+    public void setAge(int age) {
         this.age = age;
     }
 
@@ -74,5 +84,9 @@ public class User implements Serializable {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public void setPhoneNumber(String phoneNumber) {
+        this.phoneNumber = phoneNumber;
     }
 }
