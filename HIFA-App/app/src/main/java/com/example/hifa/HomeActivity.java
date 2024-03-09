@@ -111,7 +111,7 @@ public class HomeActivity extends AppCompatActivity {
 
         // Add the fragment to the activity
         getSupportFragmentManager().beginTransaction()
-                .add(R.id.edit_med_frag, editMedicalInfoFragment)
+                .add(R.id.fragment_edit_medical_info, editMedicalInfoFragment)
                 .commit();
     }
 
