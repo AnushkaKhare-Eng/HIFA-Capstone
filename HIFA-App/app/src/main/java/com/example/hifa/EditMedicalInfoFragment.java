@@ -4,6 +4,7 @@ import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,6 +12,8 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.google.firebase.firestore.FirebaseFirestore;
+
+import java.util.Objects;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -78,12 +81,11 @@ public class EditMedicalInfoFragment extends Fragment {
         textviewDriverLicense = view.findViewById(R.id.textViewDL);
         textViewHealthCard = view.findViewById(R.id.textViewHC);
         textviewPhoneNum = view.findViewById(R.id.textViewPhoneNum);
+        savechangesButton = view.findViewById(R.id.savechangesMedicalInfoButton);
 
-        ageInput = textviewAge.getText().toString();
-        int ageInt = Integer.valueOf(ageInput);
-        phoneNumInput = textviewPhoneNum.getText().toString();
-        driversLicenseInput = textviewDriverLicense.getText().toString();
-        healthcardInput = textViewHealthCard.getText().toString();
+        user = ((HomeActivity) requireActivity()).getUser();
+        Log.d("MedicalFrag", user.getFirstname());
+
         Bundle bundle2 = getArguments();
         if (bundle2 != null) {
             user = (User) bundle2.getSerializable("User");
@@ -91,6 +93,11 @@ public class EditMedicalInfoFragment extends Fragment {
         savechangesButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                ageInput = textviewAge.getText().toString();
+                int ageInt = Integer.parseInt(ageInput);
+                phoneNumInput = textviewPhoneNum.getText().toString();
+                driversLicenseInput = textviewDriverLicense.getText().toString();
+                healthcardInput = textViewHealthCard.getText().toString();
                 DatabaseFirestore.databaseSetUp(FirebaseFirestore.getInstance());
                 DatabaseFirestore.editMedicalInfo(user,ageInt,healthcardInput,driversLicenseInput,phoneNumInput, new DatabaseFirestore.CallbackEditMedicalInfo() {
                     @Override

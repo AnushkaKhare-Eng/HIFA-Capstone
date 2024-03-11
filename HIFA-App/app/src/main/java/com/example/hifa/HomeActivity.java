@@ -18,7 +18,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 public class HomeActivity extends AppCompatActivity {
     ActivityHomeBinding binding;
     FirebaseAuth mAuth;
-    User userObj;
+    User userData;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -75,11 +75,11 @@ public class HomeActivity extends AppCompatActivity {
         DatabaseFirestore.getUser(userEmail, new DatabaseFirestore.CallbackGetUser() {
             @Override
             public void onCallBack(User user) {
+                userData = user;
                 String userObjFirstname = user.getFirstname();
                 Log.d("HomeActivity", "Recieved User's first Name"+userObjFirstname);
                 // Create a Bundle and put the object into it
                 sendtoHomeFragment(userObjFirstname);
-                sendtoMedicalFragment(user);
 
             }
         });
@@ -99,21 +99,9 @@ public class HomeActivity extends AppCompatActivity {
                 .add(R.id.home_fragment, homefragment)
                 .commit();
     }
-    protected void sendtoMedicalFragment(User user){
-        Bundle bundle = new Bundle();
-        bundle.putSerializable("User", user);
 
-        // Create a new fragment instance
-        EditMedicalInfoFragment editMedicalInfoFragment = new EditMedicalInfoFragment();
-
-        // Set the arguments containing the object Bundle to the fragment
-        editMedicalInfoFragment.setArguments(bundle);
-
-        // Add the fragment to the activity
-        getSupportFragmentManager().beginTransaction()
-                .add(R.id.fragment_edit_medical_info, editMedicalInfoFragment)
-                .commit();
+    public User getUser(){
+        return userData;
     }
-
 
 }

@@ -64,10 +64,6 @@ public class HomeFragment extends Fragment {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
-
-
-
-
     }
 
     @Override
@@ -75,24 +71,20 @@ public class HomeFragment extends Fragment {
                              Bundle savedInstanceState) {
 
         view = inflater.inflate(R.layout.fragment_home, container, false);
-        userNameText = view.findViewById(R.id.userName);
+        userNameText = (TextView) view.findViewById(R.id.userName);
         // Retrieve the arguments
         Bundle bundle = getArguments();
 
         if (bundle != null) {
 
             // Extract the object from the arguments using the unique key
-            userFirstName = bundle.getString("UserFirstName");
+            userFirstName = ((HomeActivity) requireActivity()).getUser().getFirstname();
             Log.d("HomeFrag", "Recieved User's first Name"+userFirstName);
             //why is this not changing the value??
             userNameText.setText(userFirstName);
-
-
         }
 
-
-
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_home, container, false);
+        return view;
     }
 }
