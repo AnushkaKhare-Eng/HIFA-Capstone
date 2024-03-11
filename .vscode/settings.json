@@ -17,6 +17,8 @@
         "string_view": "c",
         "nrfx_saadc.h": "c",
         "nrfx_pwm.h": "c",
-        "nrfx_timer.h": "c"
+        "nrfx_timer.h": "c",
+        "stdbool.h": "c",
+        "battery_monitor.h": "c"
     }
 }

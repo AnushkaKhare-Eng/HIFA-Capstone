@@ -1,93 +1,65 @@
 #include <nrfx_saadc.h>
-#include <nrfx_log.h>
+#include <zephyr/kernel.h>
 #include "my_gpio.h"
 
-#define VDD_PIN 9
-#define VDD_CHANNEL 1
-#define LIM_L 3640  // 2.0V (by linear interpolation)
-#define LIM_H INT16_MAX // No uper limit
+#define SAADC_CHANNEL_COUNT   1
 
-#define SAMPLING_ITERATIONS 8
+#define VDD_CHANNEL 0
+#define LIM_L  3200 // 2275  // 2.0V TODO define in terms of res,refV, gain
 
-nrfx_saadc_channel_t m_single_channel = NRFX_SAADC_DEFAULT_CHANNEL_SE(VDD_PIN, VDD_CHANNEL);
- 
-static nrf_saadc_value_t m_samples_buffer[1];
+static nrfx_saadc_channel_t channels[SAADC_CHANNEL_COUNT] = {NRFX_SAADC_DEFAULT_CHANNEL_SE(NRF_SAADC_INPUT_VDD, VDD_CHANNEL)};
+static nrf_saadc_value_t samples[SAADC_CHANNEL_COUNT];
 
-static bool m_saadc_ready;
 
 static void saadc_handler(nrfx_saadc_evt_t const * p_event)
 {
-    nrfx_err_t status;
-    (void)status;
-
-    uint16_t samples_number;
-
-    switch (p_event->type)
+    if (p_event->type == NRFX_SAADC_EVT_DONE)
     {
-        case NRFX_SAADC_EVT_DONE:
-            NRFX_LOG_INFO("SAADC event: DONE");
-
-            samples_number = p_event->data.done.size;
-            for (uint16_t i = 0; i < samples_number; i++)
-            {
-                NRFX_LOG_INFO("[Sample %d] value == %d", i, p_event->data.done.p_buffer[i]);
-            }
-
-            m_saadc_ready = true;
-            break;
-
-        case NRFX_SAADC_EVT_CALIBRATEDONE:
-            NRFX_LOG_INFO("SAADC event: CALIBRATEDONE");
-            status = nrfx_saadc_mode_trigger();
-            NRFX_ASSERT(status == NRFX_SUCCESS);
-            break;
-
-        case NRFX_SAADC_EVT_LIMIT:
-            NRFX_LOG_INFO("SAADC event: LIMIT");
+        if (p_event->data.done.p_buffer[0] < LIM_L)
+        {
             set_led_on(LED_INT_RGB_RED);
-            break;
-
-        default:
-            break;
+        }
+        else
+        {
+            set_led_off(LED_INT_RGB_RED);
+        }
     }
 }
 
-
-int init_saadc(void)
+void my_timer_handler(struct k_timer *dummy)
 {
-    // Initialize SAADC driver
-    nrfx_err_t status = nrfx_saadc_init(NRFX_SAADC_DEFAULT_CONFIG_IRQ_PRIORITY);
-    NRFX_ASSERT(status == NRFX_SUCCESS);
+    int err_code = nrfx_saadc_mode_trigger();
+}
 
-    // calibrate
-    status = nrfx_saadc_offset_calibrate(NULL);
-    NRFX_ASSERT(status == NRFX_SUCCESS);
+int init_saadc(struct k_timer *reading_timer)
+{
+    int err_code;
 
-    // #if defined(__ZEPHYR__)
-    //     IRQ_DIRECT_CONNECT(NRFX_IRQ_NUMBER_GET(NRF_SAADC), IRQ_PRIO_LOWEST, nrfx_saadc_irq_handler, 0);
-    // #endif
-
-    // configure channel
-
-    m_single_channel.channel_config.gain = NRF_SAADC_GAIN1_6;
-    status = nrfx_saadc_channel_config(&m_single_channel);
-    NRFX_ASSERT(status == NRFX_SUCCESS);
-
-    uint32_t channels_mask = nrfx_saadc_channels_configured_get();
-    status = nrfx_saadc_simple_mode_set(channels_mask,
-                                        NRF_SAADC_RESOLUTION_8BIT,
-                                        NRF_SAADC_OVERSAMPLE_DISABLED,
-                                        saadc_handler);
-    NRFX_ASSERT(status == NRFX_SUCCESS);
-
-    nrfx_saadc_limits_set(VDD_CHANNEL, LIM_L, LIM_H);
-    NRFX_ASSERT(status == NRFX_SUCCESS);
-
+    err_code = nrfx_saadc_init(7);
     
 
-    status = nrfx_saadc_buffer_set(m_samples_buffer, 1);
-    NRFX_ASSERT(status == NRFX_SUCCESS);
+	#if defined(__ZEPHYR__)
+        IRQ_DIRECT_CONNECT(NRFX_IRQ_NUMBER_GET(NRF_SAADC), IRQ_PRIO_LOWEST, nrfx_saadc_irq_handler, 0);
+    #endif
 
+ 
+    channels[0].channel_config.gain = NRF_SAADC_GAIN1_6;
+    
+    
+    err_code = nrfx_saadc_channels_config(channels, SAADC_CHANNEL_COUNT);
+    
+    err_code = nrfx_saadc_simple_mode_set((1<<0),
+											NRF_SAADC_RESOLUTION_12BIT,
+											NRF_SAADC_OVERSAMPLE_DISABLED,
+											saadc_handler);
+
+	
+	err_code = nrfx_saadc_buffer_set(samples, SAADC_CHANNEL_COUNT);
+
+   
+    k_timer_init (reading_timer,my_timer_handler, NULL);
+	k_timer_start(reading_timer, K_SECONDS(5), K_SECONDS(5));
+    
     return 0;
 }
 

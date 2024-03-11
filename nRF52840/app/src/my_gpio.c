@@ -184,6 +184,28 @@ static void buttons_scan_fn(struct k_work *work)
 	}
 }
 
+void check_error(int err_code)
+{
+    if(!err_code)
+    {
+        return;
+    }
+
+    for(;;){
+        set_led_on(LED_INT_RGB_RED);
+        k_sleep(K_MSEC(1000));
+        set_led_off(LED_INT_RGB_RED);\
+        k_sleep(K_MSEC(1000));
+
+        for (int i = 0; i < 4 ; i++){
+            set_led_on(LED_INT_RGB_RED);
+            k_sleep(K_MSEC(250));
+            set_led_off(LED_INT_RGB_RED);
+            k_sleep(K_MSEC(250));
+        }
+    }
+}
+
 int leds_init(void)
 {
 	int err;
