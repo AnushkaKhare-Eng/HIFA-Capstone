@@ -9,6 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
 
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -31,10 +32,10 @@ public class EditMedicalInfoFragment extends Fragment {
     private String mParam1;
     private String mParam2;
     User user;
-    TextView textviewAge;
-    TextView textviewPhoneNum;
-    TextView textviewDriverLicense;
-    TextView textViewHealthCard;
+    EditText editTextAge;
+    EditText editTextPhoneNum;
+    EditText editTextDriverLicense;
+    EditText editTextHealthCard;
     View view;
     String ageInput;
     String phoneNumInput;
@@ -77,10 +78,10 @@ public class EditMedicalInfoFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_edit_medical_info, container, false);
-        textviewAge = view.findViewById(R.id.TextViewAge);
-        textviewDriverLicense = view.findViewById(R.id.textViewDL);
-        textViewHealthCard = view.findViewById(R.id.textViewHC);
-        textviewPhoneNum = view.findViewById(R.id.textViewPhoneNum);
+        editTextAge = view.findViewById(R.id.editTextage);
+        editTextDriverLicense = view.findViewById(R.id.editTextDL);
+        editTextHealthCard = view.findViewById(R.id.editTextHC);
+        editTextPhoneNum = view.findViewById(R.id.editTextpn);
         savechangesButton = view.findViewById(R.id.savechangesMedicalInfoButton);
 
         user = ((HomeActivity) requireActivity()).getUser();
@@ -93,11 +94,11 @@ public class EditMedicalInfoFragment extends Fragment {
         savechangesButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ageInput = textviewAge.getText().toString();
+                ageInput = editTextAge.getText().toString();
                 int ageInt = Integer.parseInt(ageInput);
-                phoneNumInput = textviewPhoneNum.getText().toString();
-                driversLicenseInput = textviewDriverLicense.getText().toString();
-                healthcardInput = textViewHealthCard.getText().toString();
+                phoneNumInput = editTextPhoneNum.getText().toString();
+                driversLicenseInput = editTextDriverLicense.getText().toString();
+                healthcardInput = editTextHealthCard.getText().toString();
                 DatabaseFirestore.databaseSetUp(FirebaseFirestore.getInstance());
                 DatabaseFirestore.editMedicalInfo(user,ageInt,healthcardInput,driversLicenseInput,phoneNumInput, new DatabaseFirestore.CallbackEditMedicalInfo() {
                     @Override

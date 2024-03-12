@@ -2,6 +2,7 @@ package com.example.hifa;
 
 
 
+import android.health.connect.datatypes.Device;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
@@ -105,6 +106,60 @@ public class DatabaseFirestore {
                 });
 
     }
+
+    static protected void saveDeviceInfo(User user, Device device, CallbackDevice callbackDevice){
+        DocumentReference documentReference = collectionReferenceDevice.document(user.getEmail());
+        documentReference.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                if (task.getResult().exists()){
+                    Log.d("DevicesPg", "saving devices info" + user.getEmail() + "already exists");
+                    callbackDevice.onCallBack(device);
+                } else {
+                    documentReference
+                            .set(device)
+                            .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                @Override
+                                public void onComplete(@NonNull Task<Void> task) {
+                                    Log.d("DevicesPg", "Devices Info" + user.getEmail() + "added");
+                                    callbackDevice.onCallBack(device);
+                                }
+                            });
+                }
+            }
+        });
+    }
+    static protected void saveEmergencyContact(User user,String ecName, String ecPhoneNum, EmergencyContacts emergencyContacts, CallbackEC callbackEC){
+        DocumentReference documentReference = collectionReferenceEmergencyContacts.document(user.getEmail());
+        documentReference.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                if (task.getResult().exists()){
+
+                    documentReference
+                            .set(emergencyContacts)
+                            .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                @Override
+                                public void onComplete(@NonNull Task<Void> task) {
+                                    Log.d("ECPg", "EC Info" + user.getEmail() + "added");
+                                    callbackEC.onCallBack(emergencyContacts);
+                                }
+                            });
+                } else {
+                    documentReference
+                            .set(emergencyContacts)
+                            .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                @Override
+                                public void onComplete(@NonNull Task<Void> task) {
+                                    Log.d("ECPg", "EC Info" + user.getEmail() + "added");
+                                    callbackEC.onCallBack(emergencyContacts);
+                                }
+                            });
+                }
+            }
+        });
+    }
+
     public interface CallbackAddNewUser {
         void onCallBack(Boolean userExists);
     }
@@ -114,6 +169,14 @@ public class DatabaseFirestore {
 
     public interface CallbackGetUser {
         void onCallBack(User user);
+    }
+
+    public interface CallbackDevice {
+        void onCallBack(Device device);
+    }
+
+    public interface CallbackEC {
+        void onCallBack(EmergencyContacts emergencyContacts);
     }
 
 }

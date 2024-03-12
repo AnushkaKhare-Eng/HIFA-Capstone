@@ -51,7 +51,11 @@ public class EmergencyContactFragment extends Fragment {
         RecyclerView recyclerView = view.findViewById(R.id.emergency_contacts_recyclerview);
 
         List<EmergencyContacts> items = new ArrayList<EmergencyContacts>();
-        items.add(new EmergencyContacts("Karan", "5875963855"));
+        List<String> names = new ArrayList<>();
+        List<String> phonenums = new ArrayList<>();
+        names.add("Karan");
+        phonenums.add("5875963855");
+        items.add(new EmergencyContacts(names, phonenums));
 
         recyclerView.setLayoutManager(new LinearLayoutManager(this.getContext()));
         recyclerView.setAdapter(new EmergencyContactsAdapter(this.getContext(), items));

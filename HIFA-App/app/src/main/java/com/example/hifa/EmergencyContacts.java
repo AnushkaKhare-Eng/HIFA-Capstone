@@ -1,27 +1,37 @@
 package com.example.hifa;
 
-public class EmergencyContacts {
-    private String name;
-    private String phoneNumber;
+import java.util.List;
 
-    public EmergencyContacts(String name, String phoneNumber){
-        this.name = name;
-        this.phoneNumber = phoneNumber;
+public class EmergencyContacts {
+    private List<String> nameList;
+    private  List<String> phoneList;
+
+    public EmergencyContacts(List<String> nameList, List<String> phoneList){
+        this.nameList = nameList;
+        this.phoneList = phoneList;
     }
 
-    public String getPhoneNumber() {
-        return phoneNumber;
+    public List<String> getPhoneNumber() {
+        return phoneList;
+    }
+
+    public List<String> getNames() {
+        return nameList;
     }
 
     public String getName() {
-        return name;
+        return nameList.get(0);
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void updateName(String name) {
+
+        nameList.add(name);
+        this.nameList = nameList;
     }
 
-    public void setPhoneNumber(String phoneNumber) {
-        this.phoneNumber = phoneNumber;
+    public void updatePhoneNumber(String phoneNumber) {
+        phoneList.add(phoneNumber);
+
+        this.phoneList = phoneList;
     }
 }
