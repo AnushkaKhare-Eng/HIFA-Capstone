@@ -21,6 +21,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 //Imports for emergency signal sending and location gathering
+import com.example.hifa.twilioapi.SendMessageRequest;
+import com.example.hifa.twilioapi.TwilioAPIService;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationCallback;
 import com.google.android.gms.location.LocationRequest;
@@ -28,19 +30,16 @@ import com.google.android.gms.location.LocationResult;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.location.Priority;
 import com.google.android.gms.tasks.OnSuccessListener;
-import android.telephony.SmsManager;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
 
 
 public class HomeFragment extends Fragment {
 
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
-
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
     View view;
     TextView userNameText;
     String userFirstName;
@@ -51,6 +50,9 @@ public class HomeFragment extends Fragment {
     private double longitude = 0.0;
     private double latitude = 0.0;
 
+    private static final String ACCOUNT_SID = "ACa0242545d0781b9583c4ebcb52e9fa15";
+    private static final String AUTH_TOKEN = "3c0ecbb617e740ef1fd83ad6bfbc676d";
+
 
     public HomeFragment() {
         // Required empty public constructor
@@ -59,8 +61,6 @@ public class HomeFragment extends Fragment {
     public static HomeFragment newInstance(String param1, String param2) {
         HomeFragment fragment = new HomeFragment();
         Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
         fragment.setArguments(args);
         return fragment;
     }
@@ -69,8 +69,6 @@ public class HomeFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
         }
     }
 
@@ -123,7 +121,7 @@ public class HomeFragment extends Fragment {
                 for (Location location : locationResult.getLocations()) {
                     // Update UI with location data
                     // For example, show a toast with the location:
-                    Log.d("Location:", location.getLatitude() + ", " + location.getLongitude());
+//                    Log.d("Location:", location.getLatitude() + ", " + location.getLongitude());
                 }
             }
         };
@@ -139,6 +137,7 @@ public class HomeFragment extends Fragment {
                 {
                     // TODO: Consider calling
                     //    ActivityCompat#requestPermissions
+                    ActivityCompat.requestPermissions(requireActivity(), permissions, 99);
                     return;
                 }
                 fusedLocationClient.getLastLocation()
@@ -150,7 +149,7 @@ public class HomeFragment extends Fragment {
                                     latitude = location.getLatitude();
                                     longitude = location.getLongitude();
                                     Log.d("Location", latitude + " " + longitude);
-                                    sendSMSMessage("5875963855");
+                                    sendSMSMessage("+15875963855");
                                 } else {
                                     Log.d("Location", "Location is null");
                                 }
@@ -163,14 +162,43 @@ public class HomeFragment extends Fragment {
         return view;
     }
 
+//    protected void sendSMSMessage(String phoneNo) {
+//        Log.d("SMS", "In function: ");
+//        String message = "GRANDSON, I NEED YOU, Love Grandma XOXO <3 <3 https://www.google.com/maps?q=" + latitude + "," + longitude;
+//        if (!phoneNo.isEmpty()){
+//            SmsManager smsManager = SmsManager.getDefault();
+//            smsManager.sendTextMessage(phoneNo, null, message, null, null);
+//            Toast.makeText(requireContext(), "SMS sent", Toast.LENGTH_SHORT).show();
+//        }
+//    }
+
     protected void sendSMSMessage(String phoneNo) {
-        String message = "GRANDSON, I NEED YOU, Love Grandma XOXO <3 <3 https://www.google.com/maps?q=" + latitude + "," + longitude;
-        if (!phoneNo.isEmpty()){
-            SmsManager smsManager = SmsManager.getDefault();
-            smsManager.sendTextMessage(phoneNo, null, message, null, null);
-            Toast.makeText(requireContext(), "SMS sent", Toast.LENGTH_SHORT).show();
-        } else {
-            Toast.makeText(requireContext(), "Please enter phone", Toast.LENGTH_SHORT).show();
-        }
+        Log.d("SMS", "sendSMSMessage: ");
+
+        String messageString = "https://www.google.com/maps?q=" + latitude + "," + longitude;
+
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl("https://zq9aaxp7gg.execute-api.us-east-2.amazonaws.com/")
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+
+        TwilioAPIService twilioAPIService = retrofit.create(TwilioAPIService.class);
+
+        SendMessageRequest sendMessageRequest = new SendMessageRequest(phoneNo, messageString);
+
+        Call<Void> call = twilioAPIService.createPost("FvGS1Bl4cQ5IfexdTDOO7QDdAzTrMt55NnwcJMyj",sendMessageRequest);
+
+        call.enqueue(new Callback<Void>() {
+            @Override
+            public void onResponse(@NonNull Call<Void> call, @NonNull Response<Void> response) {
+                Log.d("POST", "Post successful");
+                Toast.makeText(requireContext(), "SMS sent", Toast.LENGTH_SHORT).show();
+            }
+            @Override
+            public void onFailure(@NonNull Call<Void> call, @NonNull Throwable t) {
+                Log.d("POST", "Post unsuccessful");
+                Toast.makeText(requireContext(), "SMS not sent", Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 }
