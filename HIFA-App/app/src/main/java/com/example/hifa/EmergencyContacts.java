@@ -1,12 +1,13 @@
 package com.example.hifa;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
-public class EmergencyContacts {
+public class EmergencyContacts implements Serializable {
     private String name;
     private  String phone;
     private Map<String, String> emergencyContactmap;

@@ -49,6 +49,12 @@ public class EmergencyContactFragment extends Fragment {
         });
 
         RecyclerView recyclerView = view.findViewById(R.id.emergency_contacts_recyclerview);
+        Bundle bundle = getArguments();
+        EmergencyContacts emergencyContactsObj = null;
+        if (bundle != null) {
+            emergencyContactsObj = (EmergencyContacts) bundle.getSerializable("emergencyContact");
+            // Now you have your object, you can use it as needed.
+        }
 
         List<EmergencyContacts> items = new ArrayList<EmergencyContacts>();
         List<String> names = new ArrayList<>();
@@ -56,6 +62,7 @@ public class EmergencyContactFragment extends Fragment {
         names.add("Karan");
         phonenums.add("5875963855");
         items.add(new EmergencyContacts("Karan", "5875963855"));
+        items.add(emergencyContactsObj);
 
         recyclerView.setLayoutManager(new LinearLayoutManager(this.getContext()));
         recyclerView.setAdapter(new EmergencyContactsAdapter(this.getContext(), items));

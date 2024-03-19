@@ -1,5 +1,6 @@
 package com.example.hifa;
 
+import android.content.Intent;
 import android.graphics.Point;
 import android.os.Bundle;
 import android.util.Log;
@@ -49,6 +50,13 @@ public class AddEmergencyContactFragment extends DialogFragment {
                 DatabaseFirestore.saveEmergencyContact(user, nameString, phoneNumberString, new DatabaseFirestore.CallbackEC() {
                     @Override
                     public void onCallBack(EmergencyContacts emergencyContacts) {
+                        Intent intent = new Intent(getActivity(), EmergencyContactFragment.class);
+
+// Put the data you want to pass as extras
+                        intent.putExtra("emergencyContact", emergencyContacts); // Replace "key" with a unique identifier and value with the data you want to pass
+
+// Start the second activity
+                        startActivity(intent);
 
                     }
                 });
