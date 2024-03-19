@@ -129,8 +129,9 @@ public class DatabaseFirestore {
             }
         });
     }
-    static protected void saveEmergencyContact(User user,String ecName, String ecPhoneNum, EmergencyContacts emergencyContacts, CallbackEC callbackEC){
+    static protected void saveEmergencyContact(User user,String ecName, String ecPhoneNum, CallbackEC callbackEC){
         DocumentReference documentReference = collectionReferenceEmergencyContacts.document(user.getEmail());
+        EmergencyContacts emergencyContacts = new EmergencyContacts(ecName,ecPhoneNum);
         documentReference.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {

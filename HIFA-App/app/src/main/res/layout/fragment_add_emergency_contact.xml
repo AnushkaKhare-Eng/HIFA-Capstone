@@ -5,6 +5,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <LinearLayout
+        android:id="@+id/fragment_add_emergency_contact"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="#84BC86"
@@ -25,6 +26,7 @@
                 android:textSize="25dp" />
 
             <EditText
+                android:id="@+id/etName"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@drawable/textbox_shape" />
@@ -44,6 +46,7 @@
                 android:textSize="25dp" />
 
             <EditText
+                android:id="@+id/etPhoneNum"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@drawable/textbox_shape"
