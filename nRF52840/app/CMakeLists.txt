@@ -10,6 +10,7 @@ project(Sample1)
 
 # NORDIC SDK APP START
 target_sources(app PRIVATE
+  src/battery_monitor.c
   src/ble_manager.c
   src/button_monitor.c
   src/main.c

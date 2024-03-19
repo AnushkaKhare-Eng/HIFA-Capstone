@@ -16,6 +16,8 @@ async def list_client_services(client):
             print(s.description)
             for c in s.characteristics:
                 print(f"\tDescription: {c.description}, UUID: {c.uuid}")
+                if (c.description ==  "PnP ID"):
+                    print(f"\t\tValue: {bytes(c.v)}")
 
 async def main():
    
@@ -39,6 +41,8 @@ async def main():
         print("Getting services...",end="")
         await list_client_services(client)
         print("Got services")
+
+
         
         # Receiving from ND
         await client.start_notify(PERI_TX_UUID,notification_handler)

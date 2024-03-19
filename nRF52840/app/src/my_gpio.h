@@ -73,6 +73,8 @@ int leds_init(void);
  */
 int buttons_init(button_handler_t button_handler);
 
+void check_error(int err_code);
+
 /** @brief Add a dynamic button handler callback.
  *
  * In addition to the button handler function passed to

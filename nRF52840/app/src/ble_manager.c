@@ -28,6 +28,16 @@ static const struct bt_data connectable_data[] = {
 	BT_DATA_BYTES(BT_DATA_UUID16_ALL, BT_UUID_16_ENCODE(BT_UUID_DIS_VAL))
 };
 
+#define BT_UUID_MYID_SERV_VAL \
+BT_UUID_128_ENCODE(0x6e4073a1, 0xb5a3, 0xf393, 0xe0a9, 0xe50e24dcca9e)
+#define BT_UUID_MYID_SERV BT_UUID_DECLARE_128(BT_UUID_MYID_SERV_VAL)
+
+#define BT_UUID_MYID_CHAR_VAL \
+BT_UUID_128_ENCODE(0x6e4003a1, 0xb5a3, 0xf393, 0xe0a9, 0xe50e24dcca9e)
+#define BT_UUID_MYID_CHAR BT_UUID_DECLARE_128(BT_UUID_MYID_CHAR_VAL)
+
+uint64_t myid = 0x0000000000000000;
+
 static void adv_connected_cb(struct bt_le_ext_adv *adv,
 			     struct bt_le_ext_adv_connected_info *info)
 {
@@ -54,9 +64,6 @@ static void advertising_work_handle(struct k_work *work)
 {
 	connectable_adv_start();
 }
-
-
-
 
 static void connected(struct bt_conn *conn, uint8_t err)
 {
@@ -143,7 +150,7 @@ static int connectable_adv_create(void)
 static void bt_receive_cb(struct bt_conn *conn, const uint8_t *const data,
 			  uint16_t len)
 {
-	set_led(LED_INT_GREEN, 1);
+	set_led(LED_INT_RGB_GREEN, 1);
 }
 
 static struct bt_nus_cb nus_cb = {
@@ -152,12 +159,25 @@ static struct bt_nus_cb nus_cb = {
 };
 
 
+static bt_gatt_attr_read_func_t read_vnd(struct bt_conn *conn, const struct bt_gatt_attr *attr,
+   void *buf, uint16_t len, uint16_t offset){
+	 const char *value = myid;
+
+ return bt_gatt_attr_read(conn, attr, buf, len, offset, &myid,
+     8);
+}
+
+BT_GATT_SERVICE_DEFINE(myid_svc,
+  BT_GATT_PRIMARY_SERVICE(BT_UUID_MYID_SERV),
+  BT_GATT_CHARACTERISTIC(BT_UUID_MYID_CHAR,
+			       BT_GATT_CHRC_BROADCAST | BT_GATT_CHRC_READ,
+			       BT_GATT_PERM_READ,
+				   read_vnd, NULL, NULL),
+);
 
 
-
-
-int setup(void){
-	int err = bt_enable(NULL); // NULL -> no callback to notify completion -> enabling BT done synchronously
+int setup_ble(void){
+	int err = bt_enable(NULL); // enabling BT done synchronously
 	if (err) {
 		printk("Bluetooth init failed (err %d)\n", err);
 		return 1;
@@ -171,6 +191,11 @@ int setup(void){
 	}
 	printk("UART service initialized\n");
 
+	// get device's unique id
+	uint32_t a = NRF_FICR->DEVICEID[0];
+	uint32_t b = NRF_FICR->DEVICEID[1] & 0x0000FFFF;
+	myid = (((uint64_t) b) << 32) | a;
+
 	err = connectable_adv_create();
 	if (err) {
 		printk("Failed to create connectable advertising (err %d)\n", err);
@@ -182,10 +207,8 @@ int setup(void){
 
 // TODO - check that we are indeed connected to user phone - in future support reaching out to "strangers" 
 void send_msg(uint8_t *data,uint16_t len){
-	set_led_on(LED_INT_GREEN);
 	// TODO - use a timeout to give up after a while
 	while (bt_nus_send(NULL, data, len)){
 	}
-
 	set_led_off(LED_INT_GREEN);
 }	
