@@ -161,7 +161,6 @@ static struct bt_nus_cb nus_cb = {
 
 static bt_gatt_attr_read_func_t read_vnd(struct bt_conn *conn, const struct bt_gatt_attr *attr,
    void *buf, uint16_t len, uint16_t offset){
-	 const char *value = myid;
 
  return bt_gatt_attr_read(conn, attr, buf, len, offset, &myid,
      8);
