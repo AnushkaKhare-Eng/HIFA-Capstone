@@ -28,7 +28,7 @@ static void saadc_handler(nrfx_saadc_evt_t const * p_event)
 
 void my_timer_handler(struct k_timer *dummy)
 {
-    int err_code = nrfx_saadc_mode_trigger();
+    nrfx_saadc_mode_trigger();
 }
 
 int init_saadc(struct k_timer *reading_timer, int period_sec)
