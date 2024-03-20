@@ -18,7 +18,7 @@ static K_WORK_DEFINE(advertising_work, advertising_work_handle);
 static struct bt_le_ext_adv *ext_adv[CONFIG_BT_EXT_ADV_MAX_ADV_SET];
 
 static const struct bt_le_adv_param *connectable_adv_param =
-	BT_LE_ADV_PARAM(BT_LE_ADV_OPT_CONNECTABLE | BT_LE_ADV_OPT_USE_NAME,
+	BT_LE_ADV_PARAM(BT_LE_ADV_OPT_CONNECTABLE | BT_LE_ADV_OPT_USE_NAME | BT_LE_ADV_OPT_EXT_ADV | BT_LE_ADV_OPT_CODED,
 			BT_GAP_ADV_FAST_INT_MIN_2, /* 100 ms */
 			BT_GAP_ADV_FAST_INT_MAX_2, /* 150 ms */
 			NULL);
@@ -43,7 +43,6 @@ static void adv_connected_cb(struct bt_le_ext_adv *adv,
 {
 	printk("Advertiser[%d] %p connected conn %p\n", bt_le_ext_adv_get_index(adv),
 		adv, info->conn);
-	set_led_on(LED_INT_RGB_BLUE);
 }
 
 static const struct bt_le_ext_adv_cb adv_cb = {
@@ -77,11 +76,23 @@ static void connected(struct bt_conn *conn, uint8_t err)
 	bt_addr_le_to_str(bt_conn_get_dst(conn), addr, sizeof(addr));
 
 	printk("Connected %s\n", addr);
+
+	set_led_on(LED_INT_RGB_BLUE);
+
+	err = bt_conn_le_phy_update(conn, BT_CONN_LE_PHY_PARAM_CODED);
+	if (err) {
+		printk("Phy update request failed: %d",  err);
+	}
+	else {
+		printk("Phy update request succeeded");
+		set_led_on(LED_INT_RGB_GREEN);
+	}
 }
 
 static void disconnected(struct bt_conn *conn, uint8_t reason)
 {
 	set_led_off(LED_INT_RGB_BLUE);
+	set_led_off(LED_INT_RGB_GREEN);
 	char addr[BT_ADDR_LE_STR_LEN];
 
 	bt_addr_le_to_str(bt_conn_get_dst(conn), addr, sizeof(addr));
@@ -159,7 +170,7 @@ static struct bt_nus_cb nus_cb = {
 };
 
 
-static bt_gatt_attr_read_func_t read_vnd(struct bt_conn *conn, const struct bt_gatt_attr *attr,
+static ssize_t read_vnd(struct bt_conn *conn, const struct bt_gatt_attr *attr,
    void *buf, uint16_t len, uint16_t offset){
 
  return bt_gatt_attr_read(conn, attr, buf, len, offset, &myid,
