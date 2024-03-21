@@ -51,10 +51,6 @@ public class HomeFragment extends Fragment {
     private double longitude = 0.0;
     private double latitude = 0.0;
 
-    private static final String ACCOUNT_SID = "ACa0242545d0781b9583c4ebcb52e9fa15";
-    private static final String AUTH_TOKEN = "3c0ecbb617e740ef1fd83ad6bfbc676d";
-
-
     public HomeFragment() {
         // Required empty public constructor
     }
