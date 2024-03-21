@@ -37,6 +37,7 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
+import com.example.hifa.BuildConfig;
 
 public class HomeFragment extends Fragment {
 
@@ -186,7 +187,7 @@ public class HomeFragment extends Fragment {
 
         SendMessageRequest sendMessageRequest = new SendMessageRequest(phoneNo, messageString);
 
-        Call<Void> call = twilioAPIService.createPost("FvGS1Bl4cQ5IfexdTDOO7QDdAzTrMt55NnwcJMyj",sendMessageRequest);
+        Call<Void> call = twilioAPIService.createPost(BuildConfig.TWILIO_API_KEY,sendMessageRequest);
 
         call.enqueue(new Callback<Void>() {
             @Override

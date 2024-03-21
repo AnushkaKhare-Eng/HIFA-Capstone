@@ -40,6 +40,10 @@ android {
         versionName "1.0"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+
+        android.buildFeatures.buildConfig true
+
+        buildConfigField "String", "TWILIO_API_KEY", "\"${TWILIO_API_KEY}\""
     }
 
     buildTypes {
