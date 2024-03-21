@@ -6,6 +6,7 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -49,9 +50,22 @@ public class EmergencyContactFragment extends Fragment {
         });
 
         RecyclerView recyclerView = view.findViewById(R.id.emergency_contacts_recyclerview);
-
+        Bundle bundle = getArguments();
+        EmergencyContacts emergencyContactsObj = null;
+        //getting arguments from Add Emergency contacts
+        if (bundle != null) {
+            emergencyContactsObj = (EmergencyContacts) bundle.getSerializable("emergencyContact");
+            // Now you have your object, you can use it as needed.
+            Log.d("ECFrag",emergencyContactsObj.getTestName());
+        }
+        // passing information to the adapter
         List<EmergencyContacts> items = new ArrayList<EmergencyContacts>();
-        items.add(new EmergencyContacts("Karan", "5875963855"));
+        List<String> names = new ArrayList<>();
+        List<String> phonenums = new ArrayList<>();
+        names.add("Karan");
+        phonenums.add("5875963855");
+        items.add(new EmergencyContacts("Karan", "5875963855", "test@gmail.com"));
+        //items.add(emergencyContactsObj);
 
         recyclerView.setLayoutManager(new LinearLayoutManager(this.getContext()));
         recyclerView.setAdapter(new EmergencyContactsAdapter(this.getContext(), items));

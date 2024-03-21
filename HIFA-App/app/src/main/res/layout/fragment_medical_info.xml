@@ -6,7 +6,7 @@
     android:layout_width="wrap_content"
     android:layout_height="match_parent"
     android:background="#3DA35D"
-    tools:context=".MedicalInfoFragment">
+    tools:context=".HomeActivity">
 
     <ImageView
         android:id="@+id/imageView2"
@@ -28,25 +28,26 @@
         android:layout_height="wrap_content"
         android:layout_marginEnd="108dp"
         android:fontFamily="sans-serif-medium"
-        android:text="Medical Profile"
+        android:text="Please Enter Your Personal Info"
         android:textAllCaps="false"
-        android:textColor="@color/black"
-        android:textSize="30sp"
+        android:textColor="@color/white"
+        android:textSize="20sp"
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toEndOf="@+id/imageButton3"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.12" />
+        app:layout_constraintVertical_bias="0.129" />
 
     <EditText
         android:id="@+id/healtheditText"
-        android:layout_width="274dp"
-        android:layout_height="37dp"
+        android:layout_width="278dp"
+        android:layout_height="43dp"
         android:layout_marginStart="79dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="82dp"
+        android:autofillHints="Health Card Number"
         android:background="@color/white"
         android:ems="10"
         android:inputType="text"
@@ -55,8 +56,7 @@
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/DriversLicensetext"
-        app:layout_constraintVertical_bias="0.212"
-        android:autofillHints="Health Card Number"
+        app:layout_constraintVertical_bias="0.25"
         tools:ignore="LabelFor" />
 
     <TextView
@@ -70,10 +70,10 @@
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.294"
+        app:layout_constraintHorizontal_bias="0.298"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.202" />
+        app:layout_constraintVertical_bias="0.435" />
 
     <TextView
         android:id="@+id/HealthcardText"
@@ -85,24 +85,24 @@
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.349"
+        app:layout_constraintHorizontal_bias="0.353"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.372" />
+        app:layout_constraintVertical_bias="0.583" />
 
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/savechaangesButton"
         android:layout_width="250dp"
         android:layout_height="wrap_content"
         android:background="@color/green"
-        android:text="COMPLETE REGISTRATION"
+        android:text="Save Changes"
         android:textColor="@color/white"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.484"
+        app:layout_constraintHorizontal_bias="0.565"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.645" />
+        app:layout_constraintVertical_bias="0.777" />
 
     <ImageButton
         android:id="@+id/imageButton3"
@@ -114,7 +114,7 @@
         android:src="?attr/actionModePasteDrawable"
         app:layout_constraintBottom_toTopOf="@+id/DriversLicensetext"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.19"
+        app:layout_constraintHorizontal_bias="0.134"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/imageView2"
         app:layout_constraintVertical_bias="0.0"
@@ -124,34 +124,76 @@
         android:id="@+id/driverseditText"
         android:layout_width="275dp"
         android:layout_height="39dp"
+        android:autofillHints="Driver's license Number"
         android:background="@color/white"
         android:backgroundTint="@color/white"
         android:ems="10"
         android:inputType="text"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.573"
+        app:layout_constraintHorizontal_bias="0.588"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.283"
-        android:autofillHints="Driver's license Number"
         tools:ignore="LabelFor" />
 
     <TextView
-        android:id="@+id/errorTextView"
+        android:id="@+id/DOBTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:cursorVisible="false"
-        android:text="User Profile Already Exists! Log In Instead?"
-        android:textColor="#FB0303"
-        android:textSize="17sp"
+        android:text="Date of Birth"
+        android:textColor="@color/white"
+        android:textSize="20sp"
         android:textStyle="bold"
-        android:visibility="invisible"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.638"
+        app:layout_constraintHorizontal_bias="0.27"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.521" />
+        app:layout_constraintVertical_bias="0.224" />
+
+    <TextView
+        android:id="@+id/textViewPhoneNumber"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Phone Number"
+        android:textColor="@color/white"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.287"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.342" />
+
+    <EditText
+        android:id="@+id/editTextDOB"
+        android:layout_width="276dp"
+        android:layout_height="41dp"
+        android:background="@color/white"
+        android:backgroundTint="@color/white"
+        android:ems="10"
+        android:inputType="text"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.585"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.268"
+        tools:text="yyyy-MM-dd" />
+
+    <EditText
+        android:id="@+id/editTextPhoneNumber"
+        android:layout_width="275dp"
+        android:layout_height="36dp"
+        android:background="@color/white"
+        android:ems="10"
+        android:inputType="text"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.588"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.385" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
