@@ -122,6 +122,6 @@ public class EditMedicalInfoFragment extends Fragment {
 
 
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_edit_medical_info, container, false);
+        return view;
     }
 }

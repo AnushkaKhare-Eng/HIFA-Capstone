@@ -27,6 +27,8 @@ public class AddEmergencyContactFragment extends DialogFragment {
     private Button cancelButton;
     private EditText etName;
     private EditText etPhoneNum;
+    EmergencyContacts emergencyContacts = new EmergencyContacts("nameString", "phoneNumberString","example@gmail.com");
+    Map<String,String> tempMap = new HashMap<>();
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -47,29 +49,12 @@ public class AddEmergencyContactFragment extends DialogFragment {
         user = ((HomeActivity) requireActivity()).getUser();
         Log.d("EmergencyContact", user.getFirstname());
 
-//        Bundle bundle2 = getArguments();
-//        if (bundle2 != null) {
-//            user = (User) bundle2.getSerializable("User");
-        //}
-        //getting the text entered by the user
         etName = view.findViewById(R.id.etName);
         etPhoneNum = view.findViewById(R.id.etPhoneNum);
         String phoneNumberString = etPhoneNum.getText().toString();
         String nameString = etName.getText().toString();
 
-        EmergencyContacts emergencyContacts = new EmergencyContacts("nameString", "phoneNumberString","example@gmail.com");
-        Map<String,String> tempMap = new HashMap<>();
-        tempMap.put("nameString","phoneString");
-        tempMap.put("poo","pee");
-        tempMap.put("monkey","pee");
-        DatabaseFirestore.databaseSetUp(FirebaseFirestore.getInstance());
-        // Method for saving EC - Tested
-//        DatabaseFirestore.saveEmergencyContact(user, tempMap, new DatabaseFirestore.CallbackEC() {
-//            @Override
-//            public void onCallBack(Boolean emergencyContactsExists) {
-//
-//            }
-//        });
+
         // Method for adding / editting EC -- tested
 //        String keyToUpdate = "nameString2";
 //        if (tempMap.containsKey(nameString)) {
@@ -89,58 +74,55 @@ public class AddEmergencyContactFragment extends DialogFragment {
 //
 //            }
 //        });
-        if(tempMap.size()>1) {
-            tempMap.remove("nameString", "phoneString");
-            emergencyContacts.deleteContactInfo("nameString", "phoneString");
-        }
-        if(tempMap.size()==1){tempMap=tempMap;}
-        DatabaseFirestore.deleteEmergencyContact(user, tempMap, "nameString", new DatabaseFirestore.CallbackEditEmergencyContact() {
-            @Override
-            public void onCallBack(EmergencyContacts emergencyContacts) {
+//        if(tempMap.size()>1) {
+//            tempMap.remove("nameString", "phoneString");
+//            emergencyContacts.deleteContactInfo("nameString", "phoneString");
+//        }
+//        if(tempMap.size()==1){tempMap=tempMap;}
+//        DatabaseFirestore.deleteEmergencyContact(user, tempMap, "nameString", new DatabaseFirestore.CallbackEditEmergencyContact() {
+//            @Override
+//            public void onCallBack(EmergencyContacts emergencyContacts) {
+//
+//            }
+//        });
 
-            }
-        });
+//        cancelButton.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                // going back to the Emergency Contact
+//                Intent intent2 = new Intent(getActivity(), EmergencyContactFragment.class);
+//                startActivity(intent2);
+//
+//            }
+//        });
 
-
-        cancelButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // going back to the Emergency Contact
-                Intent intent2 = new Intent(getActivity(), EmergencyContactFragment.class);
-                startActivity(intent2);
-
-            }
-        });
         saveChanges.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Log.d("AddEC","databaseEC");
-                Map<String, String> emergencyContactsmap = new HashMap<>();
-                emergencyContactsmap.put(nameString,phoneNumberString);
-                EmergencyContacts emergencyContacts = new EmergencyContacts(nameString, phoneNumberString,user.getEmail());
+
+                Map<String,String> tempMap2 = new HashMap<>();
+                tempMap2.put("Karan","4039030919");
                 DatabaseFirestore.databaseSetUp(FirebaseFirestore.getInstance());
-                DatabaseFirestore.saveEmergencyContact(user, emergencyContactsmap, new DatabaseFirestore.CallbackEC() {
+                // Method for saving EC - Tested
+                Log.d("AddECDBini","databaseEC"+user.getEmail());
+                DatabaseFirestore.saveEmergencyContact(user, tempMap2, new DatabaseFirestore.CallbackEC() {
+
                     @Override
                     public void onCallBack(Boolean emergencyContactsExists) {
-
+                        Log.d("AddECDBsave","databaseEC");
                     }
-
-                    //@Override
-
-
-
-
                 });
-                 Intent intent = new Intent(getActivity(), EmergencyContactFragment.class);
-                        Log.d("DatabaseEC",emergencyContacts.getTestName());
-// Put the data you want to pass as extras
-                        intent.putExtra("emergencyContact", emergencyContacts); // Replace "key" with a unique identifier and value with the data you want to pass
-// Start the second activity
-                        startActivity(intent);
+//                 Intent intent = new Intent(getActivity(), EmergencyContactFragment.class);
+//                        Log.d("DatabaseEC",emergencyContacts.getTestName());
+//// Put the data you want to pass as extras
+//                        intent.putExtra("emergencyContact", emergencyContacts); // Replace "key" with a unique identifier and value with the data you want to pass
+//// Start the second activity
+//                        startActivity(intent);
             }
         });
 
-        return inflater.inflate(R.layout.fragment_add_emergency_contact, container, false);
+        return view;
 
 
     }
