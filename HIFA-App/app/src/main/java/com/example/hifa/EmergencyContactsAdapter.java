@@ -33,6 +33,7 @@ public class EmergencyContactsAdapter extends RecyclerView.Adapter<MyViewHolderE
 
     @Override
     public void onBindViewHolder(@NonNull MyViewHolderEmergencyContacts holder, int position) {
+        //getting the names from the EC frag
         List<String> names = items.get(holder.getAbsoluteAdapterPosition()).getNames();
         holder.emergencyContactName.setVisibility(View.VISIBLE);
         // Iterate through the list using an iterator
@@ -43,6 +44,7 @@ public class EmergencyContactsAdapter extends RecyclerView.Adapter<MyViewHolderE
 //        }
 
         String name = names.get(0);
+        //setting the text
         holder.emergencyContactName.setText(name);
         System.out.println("Name: " + name);
         holder.itemView.setOnClickListener(new View.OnClickListener() {

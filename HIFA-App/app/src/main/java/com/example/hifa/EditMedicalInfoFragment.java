@@ -91,6 +91,14 @@ public class EditMedicalInfoFragment extends Fragment {
         if (bundle2 != null) {
             user = (User) bundle2.getSerializable("User");
         }
+
+        DatabaseFirestore.databaseSetUp(FirebaseFirestore.getInstance());
+        DatabaseFirestore.editMedicalInfo(user,12,"12334","239829328","239729372", new DatabaseFirestore.CallbackEditMedicalInfo() {
+            @Override
+            public void onCallBack(User user) {
+
+            }
+        });
         savechangesButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

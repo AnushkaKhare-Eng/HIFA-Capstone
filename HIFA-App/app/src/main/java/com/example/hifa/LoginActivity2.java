@@ -42,6 +42,8 @@ public class LoginActivity2 extends AppCompatActivity {
         User userObj = (User) intent.getSerializableExtra("User");
 
 
+
+
         loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -62,21 +64,22 @@ public class LoginActivity2 extends AppCompatActivity {
 
                 else{
 
-                    mAuth.signInWithEmailAndPassword(emailString, passwordString).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-                        @Override
-                        public void onComplete(@NonNull Task<AuthResult> task) {
 
-                            if(task.isSuccessful()){
-                                Toast.makeText(LoginActivity2.this, "Login successful",Toast.LENGTH_SHORT).show();
-                                Intent intent = new Intent(LoginActivity2.this, HomeActivity.class);
-                                intent.putExtra("userEmail",emailString);
-                                startActivity(intent);
+                        mAuth.signInWithEmailAndPassword(emailString, passwordString).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                            @Override
+                            public void onComplete(@NonNull Task<AuthResult> task) {
 
-                            }else{
-                                Toast.makeText(LoginActivity2.this,"Login Error: "+task.getException().getMessage(),Toast.LENGTH_SHORT).show();
+                                if (task.isSuccessful()) {
+                                    Toast.makeText(LoginActivity2.this, "Login successful", Toast.LENGTH_SHORT).show();
+                                    Intent intent = new Intent(LoginActivity2.this, HomeActivity.class);
+                                    intent.putExtra("userEmail", emailString);
+                                    startActivity(intent);
+
+                                } else {
+                                    Toast.makeText(LoginActivity2.this, "Login Error: " + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
+                                }
                             }
-                        }
-                    });
+                        });
 
                 }
 
@@ -92,5 +95,10 @@ public class LoginActivity2 extends AppCompatActivity {
 
             }
         });
+
+        if(mAuth.getCurrentUser()!=null && emailString!=null){                                    Toast.makeText(LoginActivity2.this, "Login successful", Toast.LENGTH_SHORT).show();
+            Intent intent2 = new Intent(LoginActivity2.this, HomeActivity.class);
+            intent2.putExtra("userEmail", emailString);
+            startActivity(intent2);}
     }
 }

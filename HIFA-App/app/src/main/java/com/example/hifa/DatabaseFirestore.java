@@ -17,6 +17,8 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QuerySnapshot;
 
+import java.util.Map;
+
 public class DatabaseFirestore {
     static private FirebaseFirestore database;
     static private CollectionReference collectionReferenceDevice;
@@ -69,7 +71,40 @@ public class DatabaseFirestore {
         }
     }
 
+    static protected void saveEmergencyContact(User user, Map<String, String> emergencyContactsmap, CallbackEC callbackEC) {
 
+        if(user.getEmail()!=null) {
+            DocumentReference documentReference = collectionReferenceEmergencyContacts.document(user.getEmail());
+            //EmergencyContacts emergencyContacts = new EmergencyContacts(ecName, ecPhoneNum,user.getEmail());
+            documentReference.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                @Override
+                public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                    if (task.isSuccessful()) {
+                        Log.i("Registering EC","Added Ec successfully");
+                        DocumentSnapshot document = task.getResult();
+                        if(document.exists()){
+                            Log.d("EC exists for user","true");
+                            callbackEC.onCallBack(true);
+                        }
+                        else {
+                            Log.d("Adding user to the database", "");
+                            documentReference
+                                    .set(emergencyContactsmap)
+                                    .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                        @Override
+                                        public void onComplete(@NonNull Task<Void> task) {
+                                            Log.d("ECPg", "EC Info" + user.getEmail() + "added");
+                                            callbackEC.onCallBack(false);
+                                        }
+                                    });
+                        }
+
+
+                    }
+                }
+            });
+        }
+    }
     static protected void getUser(String email, CallbackGetUser callbackGetUser){
         collectionReferencePersonalInfo.whereEqualTo("email", email)
                 .get()
@@ -90,21 +125,93 @@ public class DatabaseFirestore {
 
     static protected void editMedicalInfo(User user,int age, String healthcard, String driversLicense, String phonenumber, CallbackEditMedicalInfo callbackEditMedicalInfo){
         collectionReferencePersonalInfo.document(user.getEmail())
-                .update("age", FieldValue.arrayUnion(user.getAge()));
+                .update("age", age);
         collectionReferencePersonalInfo.document(user.getEmail())
-                .update("healthcard", FieldValue.arrayUnion(user.getHealthcard()));
+                .update("healthcard",healthcard);
         collectionReferencePersonalInfo.document(user.getEmail())
-                .update("phonenumber", FieldValue.arrayUnion(user.getPhoneNumber()));
+                .update("phonenumber", phonenumber);
         collectionReferencePersonalInfo.document(user.getEmail())
-                .update("driversLicense", FieldValue.arrayUnion(user.getDriversLicense()))
+                .update("driversLicense", (String)driversLicense)
                 .addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
+                        user.setAge(age);
+                        user.setHealthcard(healthcard);
+                        user.setDriversLicense(driversLicense);
+                        user.setPhoneNumber(phonenumber);
                         Log.d("Saving medical info fields ", "Age:"+ user.getAge()+ "healthcard"+ user.getHealthcard()+"phonenumber"+ user.getPhoneNumber()+"driversLicense" + user.getDriversLicense());
                         callbackEditMedicalInfo.onCallBack(user);
                     }
                 });
 
+    }
+    static protected void editEmergencyContact(User user,Map<String,String> emergencyContactsmap, CallbackEditEmergencyContact callbackEditEmergencyContact){
+        if(user.getEmail()!=null) {
+            DocumentReference documentReference = collectionReferenceEmergencyContacts.document(user.getEmail());
+            //EmergencyContacts emergencyContacts = new EmergencyContacts(ecName, ecPhoneNum,user.getEmail());
+            documentReference.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                @Override
+                public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                    if (task.isSuccessful()) {
+                        Log.i("Registering EC","Added Ec successfully");
+                        DocumentSnapshot document = task.getResult();
+                        if(document.exists()){
+                            Log.d("Adding user to the database", "");
+                            documentReference
+                                    .set(emergencyContactsmap)
+                                    .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                        @Override
+                                        public void onComplete(@NonNull Task<Void> task) {
+                                            Log.d("ECPg", "EC Info" + user.getEmail() + "added");
+
+                                        }
+                                    });
+
+                        }
+                        else {
+                            Log.d("EC exists for user","true");
+
+
+                        }
+
+
+                    }
+                }
+            });
+        }
+    }
+    static protected void deleteEmergencyContact(User user,Map<String,String> emergencyContactsmap, String ecName, CallbackEditEmergencyContact callbackEditEmergencyContact){
+        if(user.getEmail()!=null) {
+            DocumentReference documentReference = collectionReferenceEmergencyContacts.document(user.getEmail());
+            //EmergencyContacts emergencyContacts = new EmergencyContacts(ecName, ecPhoneNum,user.getEmail());
+            documentReference.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                @Override
+                public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                    DocumentSnapshot documentSnapshot = task.getResult();
+                    //Map<String,String> ecmap = (Map<String,String>) documentSnapshot.get("nameString");
+                    if (task != null) {
+
+                            Log.d("Deleting scannerInfo", "the whole code got deleted");
+                            documentSnapshot.getReference().delete();
+
+                            if(documentSnapshot.exists()){
+                                Log.d("Adding user to the database", "");
+                                documentReference
+                                        .set(emergencyContactsmap)
+                                        .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                            @Override
+                                            public void onComplete(@NonNull Task<Void> task) {
+                                                Log.d("ECPg", "EC Info" + user.getEmail() + "added");
+
+                                            }
+                                        });
+
+                            }
+
+                    }
+                    }
+            });
+        }
     }
 
     static protected void saveDeviceInfo(User user, Device device, CallbackDevice callbackDevice){
@@ -129,43 +236,16 @@ public class DatabaseFirestore {
             }
         });
     }
-    static protected void saveEmergencyContact(User user,String ecName, String ecPhoneNum, CallbackEC callbackEC){
-        DocumentReference documentReference = collectionReferenceEmergencyContacts.document(user.getEmail());
-        EmergencyContacts emergencyContacts = new EmergencyContacts(ecName,ecPhoneNum);
-        documentReference.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                if (task.getResult().exists()){
 
-                    documentReference
-                            .set(emergencyContacts)
-                            .addOnCompleteListener(new OnCompleteListener<Void>() {
-                                @Override
-                                public void onComplete(@NonNull Task<Void> task) {
-                                    Log.d("ECPg", "EC Info" + user.getEmail() + "added");
-                                    callbackEC.onCallBack(emergencyContacts);
-                                }
-                            });
-                } else {
-                    documentReference
-                            .set(emergencyContacts)
-                            .addOnCompleteListener(new OnCompleteListener<Void>() {
-                                @Override
-                                public void onComplete(@NonNull Task<Void> task) {
-                                    Log.d("ECPg", "EC Info" + user.getEmail() + "added");
-                                    callbackEC.onCallBack(emergencyContacts);
-                                }
-                            });
-                }
-            }
-        });
-    }
 
     public interface CallbackAddNewUser {
         void onCallBack(Boolean userExists);
     }
     public interface CallbackEditMedicalInfo {
         void onCallBack(User user);
+    }
+    public interface CallbackEditEmergencyContact {
+        void onCallBack(EmergencyContacts emergencyContacts);
     }
 
     public interface CallbackGetUser {
@@ -177,7 +257,7 @@ public class DatabaseFirestore {
     }
 
     public interface CallbackEC {
-        void onCallBack(EmergencyContacts emergencyContacts);
+        void onCallBack(Boolean emergencyContactsExists);
     }
 
 }

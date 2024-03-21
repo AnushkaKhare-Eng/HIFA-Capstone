@@ -55,6 +55,12 @@ public class SignupActivity extends AppCompatActivity {
 
 
          mAuth = FirebaseAuth.getInstance();
+//
+//        if(mAuth.getCurrentUser()!=null){Intent intenthome = new Intent(SignupActivity.this, HomeActivity.class);
+//            startActivity(intenthome);}
+//        else{Intent intentlogin = new Intent(SignupActivity.this, LoginActivity2.class);
+//            startActivity(intentlogin);}
+
         //ensuring that the fields are not empty for the sign up page
         signUpButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -103,6 +109,8 @@ public class SignupActivity extends AppCompatActivity {
 
             }
         });
+
+
 
         loginButton.setOnClickListener(new View.OnClickListener() {
             @Override

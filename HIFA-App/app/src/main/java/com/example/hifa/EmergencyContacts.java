@@ -12,10 +12,18 @@ public class EmergencyContacts implements Serializable {
     private  String phone;
     private Map<String, String> emergencyContactmap;
 
-    public EmergencyContacts(String name, String phone){
+    public EmergencyContacts(String name, String phone, String userEmail){
+
 
         emergencyContactmap = new HashMap<>();
         emergencyContactmap.put(name,phone);
+
+    }
+    public String getTestName(){
+        return "monkey";
+    }
+
+    public void setEmergencyContactmap(Map<String, String> emergencyContactmap) {
         this.emergencyContactmap = emergencyContactmap;
     }
 
@@ -46,10 +54,13 @@ public class EmergencyContacts implements Serializable {
     }
 
     public void deleteContactInfo(String name, String phoneNum) {
-        if (emergencyContactmap.containsKey(name)) {
-            emergencyContactmap.remove(name, phoneNum);
-            this.emergencyContactmap = emergencyContactmap;
+        if (emergencyContactmap.size()>1){
+            if (emergencyContactmap.containsKey(name)) {
+                emergencyContactmap.remove(name, phoneNum);
+                this.emergencyContactmap = emergencyContactmap;
+            }
         }
+        if(emergencyContactmap.size()==1){ this.emergencyContactmap = emergencyContactmap;}
     }
 
 }
