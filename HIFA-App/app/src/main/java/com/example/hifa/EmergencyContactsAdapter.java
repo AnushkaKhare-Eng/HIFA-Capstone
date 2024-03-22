@@ -5,6 +5,7 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -16,6 +17,7 @@ public class EmergencyContactsAdapter extends RecyclerView.Adapter<MyViewHolderE
 
     Context context;
     List<EmergencyContacts> items;
+    private Button saveChangesAdapterButton;
 
     public EmergencyContactsAdapter(Context context, List<EmergencyContacts> items) {
         this.context = context;
@@ -31,15 +33,24 @@ public class EmergencyContactsAdapter extends RecyclerView.Adapter<MyViewHolderE
 
     @Override
     public void onBindViewHolder(@NonNull MyViewHolderEmergencyContacts holder, int position) {
-        String name = items.get(holder.getAbsoluteAdapterPosition()).getName();
+        //getting the names from the EC frag
+        List<String> names = items.get(holder.getAbsoluteAdapterPosition()).getNames();
         holder.emergencyContactName.setVisibility(View.VISIBLE);
+        // Iterate through the list using an iterator
+//        Iterator<String> iterator = names.iterator();
+//        while (iterator.hasNext()) {
+//            String name = iterator.next();
+//            holder.emergencyContactName.setText(name);
+//        }
+
+        String name = names.get(0);
+        //setting the text
         holder.emergencyContactName.setText(name);
         System.out.println("Name: " + name);
-
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String name = items.get(holder.getAbsoluteAdapterPosition()).getName();
+                List<String> names = items.get(holder.getAbsoluteAdapterPosition()).getNames();
                 Toast toast = Toast.makeText(view.getContext(), "name = " + name, Toast.LENGTH_SHORT);
                 toast.show();
                 }
