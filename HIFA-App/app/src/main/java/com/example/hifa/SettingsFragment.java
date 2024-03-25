@@ -23,8 +23,14 @@ public class SettingsFragment extends Fragment {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
 
+    EmergencyContactFragment emergencyContactFragment;
+
     public SettingsFragment() {
         // Required empty public constructor
+    }
+
+    public SettingsFragment(EmergencyContactFragment emergencyContactFragment){
+        this.emergencyContactFragment = emergencyContactFragment;
     }
 
     /**
@@ -64,7 +70,7 @@ public class SettingsFragment extends Fragment {
         items.add(new SubSettingItem("About", R.drawable.information));
 
         recyclerView.setLayoutManager(new LinearLayoutManager(this.getContext()));
-        recyclerView.setAdapter(new SubSettingAdapter(this.getContext(), items));
+        recyclerView.setAdapter(new SubSettingAdapter(this.getContext(), items, emergencyContactFragment));
 
         return view;
     }

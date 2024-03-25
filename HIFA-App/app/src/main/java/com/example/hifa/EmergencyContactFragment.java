@@ -12,12 +12,16 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 
+import com.google.firebase.firestore.FirebaseFirestore;
+
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 public class EmergencyContactFragment extends Fragment {
 
     View view;
+    RecyclerView recyclerView;
     public EmergencyContactFragment() {
         // Required empty public constructor
     }
@@ -28,16 +32,26 @@ public class EmergencyContactFragment extends Fragment {
         fragment.setArguments(args);
         return fragment;
     }
+    Map<String, String> eCMap;
+    String userEmail;
+    List<EmergencyContact> items;
+
+    EmergencyContacts emergencyContacts;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_emergency_contact, container, false);
+
+        items = new ArrayList<EmergencyContact>();
+
+        emergencyContacts = new EmergencyContacts();
 
         Button addContactButton = (Button) view.findViewById(R.id.add_contact_button);
 
@@ -49,22 +63,58 @@ public class EmergencyContactFragment extends Fragment {
             }
         });
 
-        RecyclerView recyclerView = view.findViewById(R.id.emergency_contacts_recyclerview);
-        Bundle bundle = getArguments();
-        EmergencyContacts emergencyContactsObj = null;
-        //getting arguments from Add Emergency contacts
-        if (bundle != null) {
-            emergencyContactsObj = (EmergencyContacts) bundle.getSerializable("emergencyContact");
-            // Now you have your object, you can use it as needed.
-            Log.d("ECFrag",emergencyContactsObj.getTestName());
-        }
+        recyclerView = view.findViewById(R.id.emergency_contacts_recyclerview);
+
+//        getParentFragmentManager().setFragmentResultListener("key", this, new FragmentResultListener() {
+//            @Override
+//            public void onFragmentResult(@NonNull String requestKey, @NonNull Bundle result) {
+//                // Retrieve the data map from the result bundle
+//                eCMap = (Map<String, String>) result.getSerializable("requestKey");
+//                userEmail = result.getString("userEmail");
+//                Log.d("ECFrag","StatementReached");
+//                // Handle the received data map here
+//            }
+//        });
         // passing information to the adapter
-        List<EmergencyContacts> items = new ArrayList<EmergencyContacts>();
+        Bundle bundle = getArguments();
+        if (bundle != null) {
+
+            // Extract the object from the arguments using the unique key
+            userEmail = ((HomeActivity) requireActivity()).getUser().getEmail();
+            Log.d("ECFrag", "Recieved User's email"+userEmail);
+        }
+
+        DatabaseFirestore.databaseSetUp(FirebaseFirestore.getInstance());
+            DatabaseFirestore.getEC(userEmail, new DatabaseFirestore.CallbackGetEC() {
+
+                @Override
+                public void onCallBack(Map<String,Object> ecMap1) {
+                    Log.d("Database", "working1" );
+
+                    //eCMap = ecMap1;
+
+                    for (String key : ecMap1.keySet()) {
+                        String value = (String) ecMap1.get(key);
+                        emergencyContacts.addContactInfo(key, value);
+                        // Process the key-value pair
+                    }
+
+                    items = emergencyContacts.getEmergencyContactsList();
+
+                    recyclerView.setAdapter(new EmergencyContactsAdapter(requireContext(), items));
+
+                    // Create a Bundle and put the object into it
+                    //sendtoHomeFragment(userObjFirstname);
+
+                }
+            });
+
+
         List<String> names = new ArrayList<>();
         List<String> phonenums = new ArrayList<>();
-        names.add("Karan");
-        phonenums.add("5875963855");
-        items.add(new EmergencyContacts("Karan", "5875963855", "test@gmail.com"));
+
+// Populate the map with key-value pairs
+
         //items.add(emergencyContactsObj);
 
         recyclerView.setLayoutManager(new LinearLayoutManager(this.getContext()));
@@ -72,4 +122,14 @@ public class EmergencyContactFragment extends Fragment {
 
         return view;
     }
+
+//    @Override
+//    public void onDataPass(Map<String, String> tempMap) {
+//        for (String key : eCMap.keySet()) {
+//            String value = eCMap.get(key);
+//            items.add(new EmergencyContacts(key, value));
+//            // Process the key-value pair
+//        }
+//        recyclerView.setAdapter(new EmergencyContactsAdapter(this.getContext(), items));
+//    }
 }

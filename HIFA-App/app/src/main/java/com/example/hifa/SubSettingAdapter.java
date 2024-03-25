@@ -20,10 +20,18 @@ public class SubSettingAdapter extends RecyclerView.Adapter<MyViewHolderSubSetti
     Context context;
     List<SubSettingItem> items;
 
+    EmergencyContactFragment emergencyContactFragment;
+
 
     public SubSettingAdapter(Context context, List<SubSettingItem> items) {
         this.context = context;
         this.items = items;
+    }
+
+    public SubSettingAdapter(Context context, List<SubSettingItem> items, EmergencyContactFragment emergencyContactFragment) {
+        this.context = context;
+        this.items = items;
+        this.emergencyContactFragment = emergencyContactFragment;
     }
 
     @NonNull
@@ -53,7 +61,7 @@ public class SubSettingAdapter extends RecyclerView.Adapter<MyViewHolderSubSetti
                         replaceFragment(new Notification_page(), view);
                         break;
                     case 3:
-                        replaceFragment(new EmergencyContactFragment(), view);
+                        replaceFragment(emergencyContactFragment, view);
                         break;
                 }
             }
