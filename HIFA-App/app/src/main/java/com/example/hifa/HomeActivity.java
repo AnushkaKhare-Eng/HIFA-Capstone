@@ -32,6 +32,8 @@ public class HomeActivity extends AppCompatActivity {
     FirebaseAuth mAuth;
     User userData;
 
+    EmergencyContactFragment emergencyContactFragment;
+
     BluetoothLeService mainBLEService;
 
     private double longitude = 0.0;
