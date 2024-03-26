@@ -15,6 +15,9 @@ import android.view.View.OnClickListener;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 
 import com.google.firebase.firestore.FirebaseFirestore;
 
@@ -76,9 +79,6 @@ public class AddEmergencyContactFragment extends DialogFragment {
         user = ((HomeActivity) requireActivity()).getUser();
         Log.d("EmergencyContact", user.getFirstname());
 
-
-
-
         // Method for adding / editting EC -- tested
 //        String keyToUpdate = "nameString2";
 //        if (tempMap.containsKey(nameString)) {
@@ -120,9 +120,6 @@ public class AddEmergencyContactFragment extends DialogFragment {
 
                 String nameString = etName.getText().toString();
                 String phoneNumberString = etPhoneNum.getText().toString();
-
-
-
 
                 tempMap.put(nameString,phoneNumberString);
                 Log.d("nameString",nameString);

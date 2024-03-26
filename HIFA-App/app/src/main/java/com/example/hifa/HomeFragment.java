@@ -39,6 +39,11 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 import com.example.hifa.BuildConfig;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 public class HomeFragment extends Fragment {
 
     View view;
@@ -146,7 +151,7 @@ public class HomeFragment extends Fragment {
                                     latitude = location.getLatitude();
                                     longitude = location.getLongitude();
                                     Log.d("Location", latitude + " " + longitude);
-                                    sendSMSMessage("+15875963855");
+                                    sendSMSMessage();
                                 } else {
                                     Log.d("Location", "Location is null");
                                 }
@@ -159,20 +164,8 @@ public class HomeFragment extends Fragment {
         return view;
     }
 
-//    protected void sendSMSMessage(String phoneNo) {
-//        Log.d("SMS", "In function: ");
-//        String message = "GRANDSON, I NEED YOU, Love Grandma XOXO <3 <3 https://www.google.com/maps?q=" + latitude + "," + longitude;
-//        if (!phoneNo.isEmpty()){
-//            SmsManager smsManager = SmsManager.getDefault();
-//            smsManager.sendTextMessage(phoneNo, null, message, null, null);
-//            Toast.makeText(requireContext(), "SMS sent", Toast.LENGTH_SHORT).show();
-//        }
-//    }
-
-    protected void sendSMSMessage(String phoneNo) {
+    protected void sendSMSMessage() {
         Log.d("SMS", "sendSMSMessage: ");
-
-        String messageString = "https://www.google.com/maps?q=" + latitude + "," + longitude;
 
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl("https://zq9aaxp7gg.execute-api.us-east-2.amazonaws.com/")
@@ -181,21 +174,37 @@ public class HomeFragment extends Fragment {
 
         TwilioAPIService twilioAPIService = retrofit.create(TwilioAPIService.class);
 
-        SendMessageRequest sendMessageRequest = new SendMessageRequest(phoneNo, messageString);
+        Map<String, String> emergencyContacts = new HashMap<String, String>();
 
-        Call<Void> call = twilioAPIService.createPost(BuildConfig.TWILIO_API_KEY,sendMessageRequest);
+        emergencyContacts.put("Karan", "5875963855");
+        emergencyContacts.put("Karan1", "5875963855");
+        emergencyContacts.put("Karan2", "5875963855");
 
-        call.enqueue(new Callback<Void>() {
-            @Override
-            public void onResponse(@NonNull Call<Void> call, @NonNull Response<Void> response) {
-                Log.d("POST", "Post successful");
-                Toast.makeText(requireContext(), "SMS sent", Toast.LENGTH_SHORT).show();
-            }
-            @Override
-            public void onFailure(@NonNull Call<Void> call, @NonNull Throwable t) {
-                Log.d("POST", "Post unsuccessful");
-                Toast.makeText(requireContext(), "SMS not sent", Toast.LENGTH_SHORT).show();
-            }
-        });
+        SendMessageRequest sendMessageRequest = null;
+        Call<Void> call = null;
+
+        for(Map.Entry<String, String> entry:emergencyContacts.entrySet()){
+            String name = entry.getKey();
+            String phoneNo = entry.getValue();
+            String messageString = name + " https://www.google.com/maps?q=" + latitude + "," + longitude;
+            sendMessageRequest = new SendMessageRequest(phoneNo, messageString);
+            call = twilioAPIService.createPost(BuildConfig.TWILIO_API_KEY,sendMessageRequest);
+            call.enqueue(new Callback<Void>() {
+                @Override
+                public void onResponse(@NonNull Call<Void> call, @NonNull Response<Void> response) {
+                    Log.d("POST", "Post successful");
+                    Toast.makeText(requireContext(), "SMS sent", Toast.LENGTH_SHORT).show();
+                }
+                @Override
+                public void onFailure(@NonNull Call<Void> call, @NonNull Throwable t) {
+                    Log.d("POST", "Post unsuccessful");
+                    Toast.makeText(requireContext(), "SMS not sent", Toast.LENGTH_SHORT).show();
+                }
+            });
+        }
+
+        if (sendMessageRequest == null){
+            Toast.makeText(requireContext(), "Please add an emergency contact", Toast.LENGTH_SHORT).show();
+        }
     }
 }
