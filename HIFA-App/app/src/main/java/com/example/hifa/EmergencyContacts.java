@@ -1,6 +1,9 @@
 package com.example.hifa;
 
+import org.checkerframework.checker.units.qual.A;
+
 import java.io.Serializable;
+import java.sql.Array;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -11,14 +14,28 @@ public class EmergencyContacts implements Serializable {
     private String name;
     private  String phone;
     private Map<String, String> emergencyContactmap;
+    private List<EmergencyContact> emergencyContactsList;
 
-    public EmergencyContacts(String name, String phone, String userEmail){
-
-
+    public EmergencyContacts() {
         emergencyContactmap = new HashMap<>();
-        emergencyContactmap.put(name,phone);
-
+        emergencyContactsList = new ArrayList<EmergencyContact>();
     }
+
+    public EmergencyContacts(String name, String phone) {
+        this.name = name;
+        this.phone = phone;
+        emergencyContactmap = new HashMap<>();
+        emergencyContactsList = new ArrayList<EmergencyContact>();
+    }
+
+    public Map<String, String> getEmergencyContactmap() {
+        return emergencyContactmap;
+    }
+
+    public List<EmergencyContact> getEmergencyContactsList() {
+        return emergencyContactsList;
+    }
+
     public String getTestName(){
         return "monkey";
     }
@@ -41,7 +58,8 @@ public class EmergencyContacts implements Serializable {
     public void addContactInfo(String nameNew, String phoneNumNew) {
 
         emergencyContactmap.put(nameNew,phoneNumNew);
-        this.emergencyContactmap = emergencyContactmap;
+
+        emergencyContactsList.add(new EmergencyContact(nameNew, phoneNumNew));
     }
     // need to update the information
 
@@ -49,7 +67,6 @@ public class EmergencyContacts implements Serializable {
 
         if (emergencyContactmap.containsKey(nameNew)) {
             emergencyContactmap.put(nameNew, phoneNumNew);
-            this.emergencyContactmap = emergencyContactmap;
         }
     }
 
@@ -57,10 +74,8 @@ public class EmergencyContacts implements Serializable {
         if (emergencyContactmap.size()>1){
             if (emergencyContactmap.containsKey(name)) {
                 emergencyContactmap.remove(name, phoneNum);
-                this.emergencyContactmap = emergencyContactmap;
             }
         }
-        if(emergencyContactmap.size()==1){ this.emergencyContactmap = emergencyContactmap;}
     }
 
 }

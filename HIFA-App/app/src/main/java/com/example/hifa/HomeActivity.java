@@ -18,6 +18,8 @@ public class HomeActivity extends AppCompatActivity {
     ActivityHomeBinding binding;
     FirebaseAuth mAuth;
     User userData;
+
+    EmergencyContactFragment emergencyContactFragment;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -35,7 +37,7 @@ public class HomeActivity extends AppCompatActivity {
             } else if (item.getItemId() == R.id.action_profile){
                 replaceFragment(new ProfileFragment());
             } else if (item.getItemId() == R.id.action_settings){
-                replaceFragment(new SettingsFragment());
+                replaceFragment(new SettingsFragment(emergencyContactFragment));
             }
             return true;
         });
@@ -79,6 +81,7 @@ public class HomeActivity extends AppCompatActivity {
                 Log.d("HomeActivity", "Recieved User's first Name"+userObjFirstname);
                 // Create a Bundle and put the object into it
                 sendtoHomeFragment(userObjFirstname);
+                sendtoECFragment(userEmail);
 
             }
         });
@@ -98,7 +101,18 @@ public class HomeActivity extends AppCompatActivity {
                 .add(R.id.home_fragment, homefragment)
                 .commit();
     }
+    protected void sendtoECFragment(String userEmail){
+        Bundle bundle = new Bundle();
+        bundle.putString("userEmail", userEmail);
 
+        // Create a new fragment instance
+        emergencyContactFragment = new EmergencyContactFragment();
+
+        // Set the arguments containing the object Bundle to the fragment
+        emergencyContactFragment.setArguments(bundle);
+
+
+    }
     public User getUser(){
         return userData;
     }

@@ -16,10 +16,10 @@ import java.util.List;
 public class EmergencyContactsAdapter extends RecyclerView.Adapter<MyViewHolderEmergencyContacts> {
 
     Context context;
-    List<EmergencyContacts> items;
+    List<EmergencyContact> items;
     private Button saveChangesAdapterButton;
 
-    public EmergencyContactsAdapter(Context context, List<EmergencyContacts> items) {
+    public EmergencyContactsAdapter(Context context, List<EmergencyContact> items) {
         this.context = context;
         this.items = items;
     }
@@ -34,7 +34,7 @@ public class EmergencyContactsAdapter extends RecyclerView.Adapter<MyViewHolderE
     @Override
     public void onBindViewHolder(@NonNull MyViewHolderEmergencyContacts holder, int position) {
         //getting the names from the EC frag
-        List<String> names = items.get(holder.getAbsoluteAdapterPosition()).getNames();
+        EmergencyContact emergencyContacts = items.get(holder.getAbsoluteAdapterPosition());
         holder.emergencyContactName.setVisibility(View.VISIBLE);
         // Iterate through the list using an iterator
 //        Iterator<String> iterator = names.iterator();
@@ -43,15 +43,16 @@ public class EmergencyContactsAdapter extends RecyclerView.Adapter<MyViewHolderE
 //            holder.emergencyContactName.setText(name);
 //        }
 
-        String name = names.get(0);
+        String name = emergencyContacts.getName();
         //setting the text
         holder.emergencyContactName.setText(name);
         System.out.println("Name: " + name);
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                List<String> names = items.get(holder.getAbsoluteAdapterPosition()).getNames();
-                Toast toast = Toast.makeText(view.getContext(), "name = " + name, Toast.LENGTH_SHORT);
+                String names = items.get(holder.getAbsoluteAdapterPosition()).getName();
+                String phone = items.get(holder.getAbsoluteAdapterPosition()).getPhoneNo();
+                Toast toast = Toast.makeText(view.getContext(), "name = " + name + " phone = " + phone, Toast.LENGTH_SHORT);
                 toast.show();
                 }
         });

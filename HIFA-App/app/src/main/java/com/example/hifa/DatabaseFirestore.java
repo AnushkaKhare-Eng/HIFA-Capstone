@@ -17,6 +17,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QuerySnapshot;
 
+import java.util.HashMap;
 import java.util.Map;
 
 public class DatabaseFirestore {
@@ -26,12 +27,13 @@ public class DatabaseFirestore {
 
     static private CollectionReference collectionReferencePersonalInfo;
 
+    User accountUser;
+
     static public void databaseSetUp(FirebaseFirestore instance) {
         database = instance;
         collectionReferenceDevice = database.collection("Device");
         collectionReferenceEmergencyContacts = database.collection("Emergency Contact");
         collectionReferencePersonalInfo = database.collection("Personal Info");
-
     }
 
 
@@ -76,6 +78,8 @@ public class DatabaseFirestore {
         if(user.getEmail()!=null) {
             DocumentReference documentReference = collectionReferenceEmergencyContacts.document(user.getEmail());
             //EmergencyContacts emergencyContacts = new EmergencyContacts(ecName, ecPhoneNum,user.getEmail());
+            //Map<String,Map<String,String>> contactinfo = new HashMap<>();
+            //contactinfo.put(user.getEmail(),emergencyContactsmap);
             documentReference.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
                 @Override
                 public void onComplete(@NonNull Task<DocumentSnapshot> task) {
@@ -97,6 +101,7 @@ public class DatabaseFirestore {
                                             callbackEC.onCallBack(false);
                                         }
                                     });
+                            documentReference.set(user.getEmail());
                         }
 
 
@@ -121,6 +126,57 @@ public class DatabaseFirestore {
                         }
                     }
                 });
+    }
+
+    static protected void getEC(String email, CallbackGetEC callbackGetEC){
+
+        collectionReferenceEmergencyContacts.document(email).get()
+                .addOnSuccessListener(documentSnapshot -> {
+                    if (documentSnapshot.exists()){
+                        Map<String, Object> documentData = documentSnapshot.getData();
+                        Log.d("Database", "working2");
+                        callbackGetEC.onCallBack(documentData);
+                    } else {
+                        Log.d("Database", "does not exist");
+                    }
+                })
+                .addOnFailureListener(e -> {
+                    Log.d("Database", String.valueOf(e));
+                });
+
+
+//        Log.d("Database", "getEC: " + document.getData());
+//        collectionReferenceEmergencyContacts.document("Email09@gmail.com")
+//                .get()
+//                .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+//                    @Override
+//                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+//                        if (task.isSuccessful()) {
+//                            DocumentSnapshot document = task.getResult();
+//                            if (document.exists()) {
+//                                Log.d("Database", "Working");
+//                            }
+//                        }
+//                    }
+//                })
+//                .addOnFailureListener(e -> {
+//                    // Handle any errors
+//                    Log.d("Database", "This shit not working");
+//                    System.out.println("Error getting document: " + e.getMessage());
+//                });
+//                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+//                    @Override
+//                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+//                        if (task.getResult().isEmpty()){
+//                            Log.d(" Database Getting user with email", "email " + email + " does not exists");
+//                            callbackGetEC.onCallBack(null);
+//                        } else {
+//                            EmergencyContacts emergencyContacts = task.getResult().getDocuments().get(0).toObject(EmergencyContacts.class);
+//                            Log.d(" SuccessDB Getting user with email", "email: " + email );
+//                            callbackGetEC.onCallBack(emergencyContacts);
+//                        }
+//                    }
+//                });
     }
 
     static protected void editMedicalInfo(User user,int age, String healthcard, String driversLicense, String phonenumber, CallbackEditMedicalInfo callbackEditMedicalInfo){
@@ -250,6 +306,9 @@ public class DatabaseFirestore {
 
     public interface CallbackGetUser {
         void onCallBack(User user);
+    }
+    public interface CallbackGetEC {
+        void onCallBack( Map<String,Object> ecMap);
     }
 
     public interface CallbackDevice {
