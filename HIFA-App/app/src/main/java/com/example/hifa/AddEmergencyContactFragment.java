@@ -139,11 +139,8 @@ public class AddEmergencyContactFragment extends DialogFragment {
 //                bundle.putSerializable("emergencyContact", (Serializable) tempMap);
 //                bundle.putString("userEmail", user.getEmail());
 //                getParentFragmentManager().setFragmentResult("key", bundle);
-
                 Log.d("InfoSent",nameString);
                 dismiss();
-
-
             }
         });
 

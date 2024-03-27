@@ -2,27 +2,39 @@ package com.example.hifa;
 
 import android.os.Bundle;
 
+import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
+
+import com.google.firebase.firestore.FirebaseFirestore;
+
+import java.util.Map;
 
 /**
  * A simple {@link Fragment} subclass.
  * Use the {@link EditEmergenyContactFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class EditEmergenyContactFragment extends Fragment {
+public class EditEmergenyContactFragment extends DialogFragment {
 
     Button saveChanges;
+    Button delete;
     Button cancel;
     EditText editTextName;
     EditText editTextPhoneNo;
     String Name;
     String PhoneNo;
+
+    EmergencyContacts emergencyContacts;
+
+    RefreshListener listener;
 
     public EditEmergenyContactFragment() {
         // Required empty public constructor
@@ -33,20 +45,11 @@ public class EditEmergenyContactFragment extends Fragment {
         PhoneNo = phoneNo;
     }
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment EditEmergenyContactFragment.
-     */
-    // TODO: Rename and change types and number of parameters
-    public static EditEmergenyContactFragment newInstance(String param1, String param2) {
+    public static EditEmergenyContactFragment newInstance(EmergencyContact emergencyContact, EmergencyContacts emergencyContacts) {
         EditEmergenyContactFragment fragment = new EditEmergenyContactFragment();
         Bundle args = new Bundle();
-//        args.putString(ARG_PARAM1, param1);
-//        args.putString(ARG_PARAM2, param2);
+        args.putSerializable("emergencyContact", emergencyContact);
+        args.putSerializable("emergencyContacts", emergencyContacts);
         fragment.setArguments(args);
         return fragment;
     }
@@ -61,15 +64,98 @@ public class EditEmergenyContactFragment extends Fragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_edit_emergeny_contact, container, false);
 
+        assert getArguments() != null;
+        EmergencyContact contact = (EmergencyContact) getArguments().getSerializable("emergencyContact");
+
         saveChanges = (Button) view.findViewById(R.id.saveChangesButtonEEC);
+        delete = (Button) view.findViewById(R.id.deleteButtonEEC);
         cancel = (Button) view.findViewById(R.id.cancelButtonEEC);
         editTextName = (EditText) view.findViewById(R.id.etNameEEC);
         editTextPhoneNo = (EditText) view.findViewById(R.id.etPhoneNumEEC);
 
-        editTextName.setText(Name);
-        editTextPhoneNo.setText(PhoneNo);
+        assert contact != null;
+        editTextName.setText(contact.getName());
+        editTextPhoneNo.setText(contact.getPhoneNo());
+
+        saveChanges.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String name = editTextName.getText().toString();
+                String phoneNo = editTextPhoneNo.getText().toString();
+                editEmergencyContact(name, phoneNo);
+            }
+        });
+
+        delete.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                deleteEmergenyContact();
+            }
+        });
+
+        cancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dismiss();
+            }
+        });
 
         return view;
     }
 
+    private void deleteEmergenyContact(){
+        assert getArguments() != null;
+        User user = ((HomeActivity)requireActivity()).getUser();
+        EmergencyContact contact = (EmergencyContact) getArguments().getSerializable("emergencyContact");
+        EmergencyContacts contacts = (EmergencyContacts) getArguments().getSerializable("emergencyContacts");
+
+        assert contact != null;
+        assert contacts != null;
+
+        if (contacts.canDelete()){
+            contacts.deleteContactInfo(contact.getName(), contact.getPhoneNo());
+            DatabaseFirestore.databaseSetUp(FirebaseFirestore.getInstance());
+
+            DatabaseFirestore.editEmergencyContact(user, contacts.getEmergencyContactmap(), new DatabaseFirestore.CallbackEditEmergencyContact() {
+                @Override
+                public void onCallBack(EmergencyContacts emergencyContacts) {
+                    Log.d("EditEC", "Successful: " + emergencyContacts);
+                    listener.onRefresh(contacts);
+                    dismiss();
+                }
+            });
+        } else {
+            Toast.makeText(getContext(), "Need to have atleast one emergency contact", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    private void editEmergencyContact(String name, String phoneNo){
+
+        assert getArguments() != null;
+        User user = ((HomeActivity)requireActivity()).getUser();
+        EmergencyContact contact = (EmergencyContact) getArguments().getSerializable("emergencyContact");
+        EmergencyContacts contacts = (EmergencyContacts) getArguments().getSerializable("emergencyContacts");
+
+        assert contact != null;
+        assert contacts != null;
+        contacts.editExistingContact(contact.getName(), name, phoneNo);
+
+        DatabaseFirestore.databaseSetUp(FirebaseFirestore.getInstance());
+
+        DatabaseFirestore.editEmergencyContact(user, contacts.getEmergencyContactmap(), new DatabaseFirestore.CallbackEditEmergencyContact() {
+            @Override
+            public void onCallBack(EmergencyContacts emergencyContacts) {
+                Log.d("EditEC", "Successful: " + emergencyContacts);
+                listener.onRefresh(contacts);
+                dismiss();
+            }
+        });
+    }
+
+    public void setOnListener(RefreshListener listener){
+        this.listener = listener;
+    }
+    public interface RefreshListener {
+        void onRefresh(EmergencyContacts emergencyContacts);
+    }
 }
