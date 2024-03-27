@@ -86,11 +86,7 @@ public class DatabaseFirestore {
                     if (task.isSuccessful()) {
                         Log.i("Registering EC","Added Ec successfully");
                         DocumentSnapshot document = task.getResult();
-                        if(document.exists()){
-                            Log.d("EC exists for user","true");
-                            callbackEC.onCallBack(true);
-                        }
-                        else {
+
                             Log.d("Adding user to the database", "");
                             documentReference
                                     .set(emergencyContactsmap)
@@ -102,7 +98,7 @@ public class DatabaseFirestore {
                                         }
                                     });
                             documentReference.set(user.getEmail());
-                        }
+
 
 
                     }
