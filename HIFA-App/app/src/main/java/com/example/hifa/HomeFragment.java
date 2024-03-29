@@ -102,14 +102,14 @@ public class HomeFragment extends Fragment {
 
         // Retrieve the arguments
         Bundle bundle = getArguments();
+        userFirstName = ((HomeActivity) requireActivity()).getUser().getFirstname();
+        userNameText.setText(userFirstName);
 
         if (bundle != null) {
 
             // Extract the object from the arguments using the unique key
-            userFirstName = ((HomeActivity) requireActivity()).getUser().getFirstname();
             Log.d("HomeFrag", "Recieved User's first Name"+userFirstName);
             //why is this not changing the value??
-            userNameText.setText(userFirstName);
         }
 
         LocationRequest locationRequest = new LocationRequest.Builder(Priority.PRIORITY_HIGH_ACCURACY, 10000)
