@@ -53,7 +53,9 @@ public class HomeActivity extends AppCompatActivity {
         if (userEmail != null) {
             DatabaseFirestore.databaseSetUp(FirebaseFirestore.getInstance());
             gettingUser(userEmail);
+            setDevices(userEmail);
         }
+
     }
 
     protected void onStart() {
@@ -112,6 +114,16 @@ public class HomeActivity extends AppCompatActivity {
         emergencyContactFragment.setArguments(bundle);
 
 
+    }
+    protected void setDevices(String userEmail){
+        long UUID = 20932039;
+        Devices userDevice = new Devices(userEmail,UUID);
+        DatabaseFirestore.saveDeviceInfo(userEmail, userDevice, new DatabaseFirestore.CallbackDevice() {
+            @Override
+            public void onCallBack(Devices device) {
+
+            }
+        });
     }
     public User getUser(){
         return userData;
