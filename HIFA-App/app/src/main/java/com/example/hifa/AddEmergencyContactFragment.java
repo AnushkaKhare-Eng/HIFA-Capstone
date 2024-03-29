@@ -111,7 +111,7 @@ public class AddEmergencyContactFragment extends DialogFragment {
 //        });
         //creating a interface
 
-        Map<String,String> tempMap2 = new HashMap<>();
+
 
         saveChanges.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -127,6 +127,8 @@ public class AddEmergencyContactFragment extends DialogFragment {
                 tempMap.put(nameString,phoneNumberString);
                 Log.d("nameString",nameString);
                 Log.i("phoneString",phoneNumberString);
+                // create a method to check the most recent entry
+
                 DatabaseFirestore.databaseSetUp(FirebaseFirestore.getInstance());
                 // Method for saving EC - Tested
                 Log.d("AddECDBini","databaseEC"+user.getEmail());
@@ -138,10 +140,7 @@ public class AddEmergencyContactFragment extends DialogFragment {
                     }
                 });
                 emergencyContacts.setEmergencyContactmap(tempMap);
-//                Bundle bundle = new Bundle();
-//                bundle.putSerializable("emergencyContact", (Serializable) tempMap);
-//                bundle.putString("userEmail", user.getEmail());
-//                getParentFragmentManager().setFragmentResult("key", bundle);
+
 
                 Log.d("InfoSent",nameString);
                 dismiss();

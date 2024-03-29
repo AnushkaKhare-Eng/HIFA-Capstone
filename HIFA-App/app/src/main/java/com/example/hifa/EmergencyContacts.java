@@ -36,9 +36,19 @@ public class EmergencyContacts implements Serializable {
         return emergencyContactsList;
     }
 
-    public String getTestName(){
-        return "monkey";
-    }
+//    public Map<String, String> checkInputMap(String phoneNumberString, String nameString){
+//        if (emergencyContactmap.containsKey(nameString)) {
+//            // Update the value associated with the key
+//            emergencyContactmap.put(keyToUpdate, "newValue");
+//            emergencyContacts.updateContactInfo(keyToUpdate,"newValue");
+//
+//
+//        } else {
+//            tempMap.put(keyToUpdate, "newValue");
+//            emergencyContacts.addContactInfo(keyToUpdate,"newValue");
+//
+//        }
+//    }
 
     public void setEmergencyContactmap(Map<String, String> emergencyContactmap) {
         this.emergencyContactmap = emergencyContactmap;

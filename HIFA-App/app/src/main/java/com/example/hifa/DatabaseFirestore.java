@@ -8,6 +8,8 @@ import android.util.Log;
 import androidx.annotation.NonNull;
 
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
@@ -16,9 +18,11 @@ import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.google.firestore.v1.WriteResult;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.ExecutionException;
 
 public class DatabaseFirestore {
     static private FirebaseFirestore database;
@@ -86,7 +90,28 @@ public class DatabaseFirestore {
                     if (task.isSuccessful()) {
                         Log.i("Registering EC","Added Ec successfully");
                         DocumentSnapshot document = task.getResult();
+                        if(document.exists()){
+                            Map<String, Object> objectMap = new HashMap<>();
+                            for (Map.Entry<String, String> entry : emergencyContactsmap.entrySet()) {
+                                objectMap.put(entry.getKey(), (Object) entry.getValue());
+                            }
+                            documentReference
+                                    .update(objectMap)
+                                    .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                        @Override
+                                        public void onSuccess(Void aVoid) {
+                                            Log.d("UpdatedDB", "DocumentSnapshot successfully updated!");
+                                        }
+                                    })
+                                    .addOnFailureListener(new OnFailureListener() {
+                                        @Override
+                                        public void onFailure(@NonNull Exception e) {
+                                            Log.w("UpdatedDB", "Error updating document", e);
+                                        }
+                                    });
+                        }
 
+                        else{
                             Log.d("Adding user to the database", "");
                             documentReference
                                     .set(emergencyContactsmap)
@@ -98,7 +123,7 @@ public class DatabaseFirestore {
                                         }
                                     });
                             documentReference.set(user.getEmail());
-
+                        }
 
 
                     }
