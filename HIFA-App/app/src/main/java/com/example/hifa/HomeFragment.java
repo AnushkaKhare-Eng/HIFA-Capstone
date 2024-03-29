@@ -106,10 +106,7 @@ public class HomeFragment extends Fragment {
         userNameText.setText(userFirstName);
 
         if (bundle != null) {
-
-            // Extract the object from the arguments using the unique key
             Log.d("HomeFrag", "Recieved User's first Name"+userFirstName);
-            //why is this not changing the value??
         }
 
         LocationRequest locationRequest = new LocationRequest.Builder(Priority.PRIORITY_HIGH_ACCURACY, 10000)
@@ -137,8 +134,6 @@ public class HomeFragment extends Fragment {
                         && ActivityCompat.checkSelfPermission(requireContext(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED
                         && ActivityCompat.checkSelfPermission(requireContext(), Manifest.permission.ACCESS_BACKGROUND_LOCATION) != PackageManager.PERMISSION_GRANTED)
                 {
-                    // TODO: Consider calling
-                    //    ActivityCompat#requestPermissions
                     ActivityCompat.requestPermissions(requireActivity(), permissions, 99);
                     return;
                 }
