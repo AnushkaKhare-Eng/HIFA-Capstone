@@ -19,7 +19,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-public class EmergencyContactFragment extends Fragment implements EditEmergenyContactFragment.RefreshListener {
+public class EmergencyContactFragment extends Fragment implements EditEmergenyContactFragment.EditRefreshListener, AddEmergencyContactFragment.AddRefreshListener {
 
     View view;
     RecyclerView recyclerView;
@@ -61,23 +61,12 @@ public class EmergencyContactFragment extends Fragment implements EditEmergenyCo
         addContactButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                AddEmergencyContactFragment AddEmergencyContactFragment = new AddEmergencyContactFragment();
-                AddEmergencyContactFragment.show(getChildFragmentManager(), "AddEmergencyContact");
+                showAddContactDialog();
             }
         });
 
         recyclerView = view.findViewById(R.id.emergency_contacts_recyclerview);
 
-//        getParentFragmentManager().setFragmentResultListener("key", this, new FragmentResultListener() {
-//            @Override
-//            public void onFragmentResult(@NonNull String requestKey, @NonNull Bundle result) {
-//                // Retrieve the data map from the result bundle
-//                eCMap = (Map<String, String>) result.getSerializable("requestKey");
-//                userEmail = result.getString("userEmail");
-//                Log.d("ECFrag","StatementReached");
-//                // Handle the received data map here
-//            }
-//        });
         // passing information to the adapter
         Bundle bundle = getArguments();
         if (bundle != null) {
@@ -131,6 +120,12 @@ public class EmergencyContactFragment extends Fragment implements EditEmergenyCo
         EditEmergenyContactFragment editEmergenyContactFragment = EditEmergenyContactFragment.newInstance(contact, emergencyContacts);
         editEmergenyContactFragment.setOnListener(this);
         editEmergenyContactFragment.show(getChildFragmentManager(), "EditEmergencyContact");
+    }
+
+    public void showAddContactDialog() {
+        AddEmergencyContactFragment addEmergencyContactFragment = AddEmergencyContactFragment.newInstance(emergencyContacts);
+        addEmergencyContactFragment.setOnListener(this);
+        addEmergencyContactFragment.show(getChildFragmentManager(), "AddEmergencyContact");
     }
 
     @SuppressLint("NotifyDataSetChanged")

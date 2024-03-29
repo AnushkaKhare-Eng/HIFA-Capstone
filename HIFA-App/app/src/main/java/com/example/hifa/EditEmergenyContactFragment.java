@@ -34,7 +34,7 @@ public class EditEmergenyContactFragment extends DialogFragment {
 
     EmergencyContacts emergencyContacts;
 
-    RefreshListener listener;
+    EditRefreshListener listener;
 
     public EditEmergenyContactFragment() {
         // Required empty public constructor
@@ -140,6 +140,11 @@ public class EditEmergenyContactFragment extends DialogFragment {
         assert contacts != null;
         contacts.editExistingContact(contact.getName(), name, phoneNo);
 
+        if(contacts.checkName(name)){
+            Toast.makeText(getContext(), "Emergency contact already exists", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
         DatabaseFirestore.databaseSetUp(FirebaseFirestore.getInstance());
 
         DatabaseFirestore.editEmergencyContact(user, contacts.getEmergencyContactmap(), new DatabaseFirestore.CallbackEditEmergencyContact() {
@@ -152,10 +157,10 @@ public class EditEmergenyContactFragment extends DialogFragment {
         });
     }
 
-    public void setOnListener(RefreshListener listener){
+    public void setOnListener(EditRefreshListener listener){
         this.listener = listener;
     }
-    public interface RefreshListener {
+    public interface EditRefreshListener {
         void onRefresh(EmergencyContacts emergencyContacts);
     }
 }

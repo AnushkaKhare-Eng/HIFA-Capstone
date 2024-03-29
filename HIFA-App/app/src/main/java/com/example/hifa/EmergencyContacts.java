@@ -75,6 +75,15 @@ public class EmergencyContacts implements Serializable {
         }
     }
 
+    public boolean checkName(String newName) {
+        for (EmergencyContact x : emergencyContactsList){
+            if (Objects.equals(x.getName(), newName)){
+                return true;
+            }
+        }
+        return false;
+    }
+
     public void editExistingContact(String oldName, String newName, String newPhone){
 
         if (emergencyContactmap.containsKey(oldName)){
@@ -83,8 +92,9 @@ public class EmergencyContacts implements Serializable {
         }
         for (EmergencyContact x : emergencyContactsList){
             if (Objects.equals(oldName, x.getName())){
-                emergencyContactsList.remove(x);
-                emergencyContactsList.add(new EmergencyContact(newName, newPhone));
+                x.setName(newName);
+                x.setPhoneNo(newPhone);
+                break;
             }
         }
 

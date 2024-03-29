@@ -11,6 +11,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.view.View.OnClickListener;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -36,35 +37,24 @@ public class AddEmergencyContactFragment extends DialogFragment {
     EmergencyContacts emergencyContacts = new EmergencyContacts("nameString", "phoneNumberString");
     Map<String,String> tempMap = new HashMap<>();
 
-//    public interface OnDataPassListener {
-//        void onDataPass(Map<String,String> tempMap);
-//    }
-//
-//    private OnDataPassListener dataPassListener;
-//
-//    // Attach the parent fragment as the listener
-//    @Override
-//    public void onAttach(@NonNull Context context) {
-//        super.onAttach(context);
-//        if (context instanceof OnDataPassListener) {
-//            dataPassListener = (OnDataPassListener) context;
-//        } else {
-//            throw new ClassCastException(context.toString()
-//                    + " must implement ChildFragment.OnDataPassListener");
-//        }
-//    }
-
-    // Method to pass data to the parent fragment
+    AddRefreshListener listener;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-
         }
-
-
     }
+
+    public static AddEmergencyContactFragment newInstance(EmergencyContacts emergencyContacts) {
+        AddEmergencyContactFragment fragment = new AddEmergencyContactFragment();
+        Bundle args = new Bundle();
+//        args.putSerializable("emergencyContact", emergencyContact);
+        args.putSerializable("emergencyContacts", emergencyContacts);
+        fragment.setArguments(args);
+        return fragment;
+    }
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -79,38 +69,6 @@ public class AddEmergencyContactFragment extends DialogFragment {
         user = ((HomeActivity) requireActivity()).getUser();
         Log.d("EmergencyContact", user.getFirstname());
 
-        // Method for adding / editting EC -- tested
-//        String keyToUpdate = "nameString2";
-//        if (tempMap.containsKey(nameString)) {
-//            // Update the value associated with the key
-//            tempMap.put(keyToUpdate, "newValue");
-//            emergencyContacts.updateContactInfo(keyToUpdate,"newValue");
-//
-//
-//        } else {
-//            tempMap.put(keyToUpdate, "newValue");
-//            emergencyContacts.addContactInfo(keyToUpdate,"newValue");
-//
-//        }
-//        DatabaseFirestore.editEmergencyContact(user, tempMap, new DatabaseFirestore.CallbackEditEmergencyContact() {
-//            @Override
-//            public void onCallBack(EmergencyContacts emergencyContacts) {
-//
-//            }
-//        });
-//        if(tempMap.size()>1) {
-//            tempMap.remove("nameString", "phoneString");
-//            emergencyContacts.deleteContactInfo("nameString", "phoneString");
-//        }
-//        if(tempMap.size()==1){tempMap=tempMap;}
-//        DatabaseFirestore.deleteEmergencyContact(user, tempMap, "nameString", new DatabaseFirestore.CallbackEditEmergencyContact() {
-//            @Override
-//            public void onCallBack(EmergencyContacts emergencyContacts) {
-//
-//            }
-//        });
-        //creating a interface
-
         Map<String,String> tempMap2 = new HashMap<>();
 
         saveChanges.setOnClickListener(new View.OnClickListener() {
@@ -122,25 +80,28 @@ public class AddEmergencyContactFragment extends DialogFragment {
                 String phoneNumberString = etPhoneNum.getText().toString();
 
                 tempMap.put(nameString,phoneNumberString);
+                assert getArguments() != null;
+                emergencyContacts = (EmergencyContacts) getArguments().getSerializable("emergencyContacts");
                 Log.d("nameString",nameString);
                 Log.i("phoneString",phoneNumberString);
-                DatabaseFirestore.databaseSetUp(FirebaseFirestore.getInstance());
-                // Method for saving EC - Tested
-                Log.d("AddECDBini","databaseEC"+user.getEmail());
-                DatabaseFirestore.saveEmergencyContact(user, tempMap, new DatabaseFirestore.CallbackEC() {
+                if (!emergencyContacts.checkName(nameString)){
+                    DatabaseFirestore.databaseSetUp(FirebaseFirestore.getInstance());
+                    // Method for saving EC - Tested
+                    Log.d("AddECDBini","databaseEC"+user.getEmail());
+                    DatabaseFirestore.saveEmergencyContact(user, tempMap, new DatabaseFirestore.CallbackEC() {
 
-                    @Override
-                    public void onCallBack(Boolean emergencyContactsExists) {
-                        Log.d("AddECDBsave","databaseEC");
-                    }
-                });
-                emergencyContacts.setEmergencyContactmap(tempMap);
-//                Bundle bundle = new Bundle();
-//                bundle.putSerializable("emergencyContact", (Serializable) tempMap);
-//                bundle.putString("userEmail", user.getEmail());
-//                getParentFragmentManager().setFragmentResult("key", bundle);
-                Log.d("InfoSent",nameString);
-                dismiss();
+                        @Override
+                        public void onCallBack(Boolean emergencyContactsExists) {
+                            Log.d("AddECDBsave","databaseEC");
+                        }
+                    });
+                    emergencyContacts.addContactInfo(nameString, phoneNumberString);
+                    Log.d("InfoSent",nameString);
+                    listener.onRefresh(emergencyContacts);
+                    dismiss();
+                } else {
+                    Toast.makeText(getContext(), "Emergency contact already exists", Toast.LENGTH_SHORT).show();
+                }
             }
         });
 
@@ -160,14 +121,12 @@ public class AddEmergencyContactFragment extends DialogFragment {
 
 
     }
-//    private void sendDataToParent() {
-//        //String data = "Hello from child fragment!";
-//        passDataToParent(tempMap);
-//    }
-//
-//    private void passDataToParent(Map<String, String> tempMap) {
-//        if (dataPassListener != null) {
-//            dataPassListener.onDataPass(tempMap);
-//        }
-//    }
+
+    public void setOnListener(AddRefreshListener listener){
+        this.listener = listener;
+    }
+    public interface AddRefreshListener {
+        void onRefresh(EmergencyContacts emergencyContacts);
+    }
+
 }

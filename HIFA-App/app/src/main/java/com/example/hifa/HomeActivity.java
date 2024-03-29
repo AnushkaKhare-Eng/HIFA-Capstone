@@ -39,12 +39,6 @@ public class HomeActivity extends AppCompatActivity {
 
     EmergencyContactFragment emergencyContactFragment;
 
-    BluetoothLeService mainBLEService;
-
-    private double longitude = 0.0;
-    private double latitude = 0.0;
-
-    EmergencyContactFragment emergencyContactFragment;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

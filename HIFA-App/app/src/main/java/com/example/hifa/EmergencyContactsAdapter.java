@@ -63,8 +63,8 @@ public class EmergencyContactsAdapter extends RecyclerView.Adapter<MyViewHolderE
                 EmergencyContact item = items.get(holder.getAbsoluteAdapterPosition());
                 String names = item.getName();
                 String phone = item.getPhoneNo();
-                Toast toast = Toast.makeText(view.getContext(), "name = " + name + " phone = " + phone, Toast.LENGTH_SHORT);
-                toast.show();
+//                Toast toast = Toast.makeText(view.getContext(), "name = " + name + " phone = " + phone, Toast.LENGTH_SHORT);
+//                toast.show();
                 listener.onItemClick(item);
                 }
         });
