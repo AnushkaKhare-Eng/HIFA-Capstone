@@ -9,6 +9,7 @@ import android.bluetooth.BluetoothManager;
 import android.bluetooth.le.BluetoothLeScanner;
 import android.bluetooth.le.ScanCallback;
 import android.bluetooth.le.ScanResult;
+import android.bluetooth.le.ScanSettings;
 import android.content.BroadcastReceiver;
 import android.content.ComponentName;
 import android.content.Context;
@@ -76,6 +77,7 @@ public class BLEScanFragment extends Fragment {
     private BluetoothDevice bluetoothDeviceToConnect;
     private boolean connected;
 
+    private ScanSettings scanSettings;
 
     private final BroadcastReceiver gattUpdateReceiver = new BroadcastReceiver() {
         @Override
@@ -107,8 +109,9 @@ public class BLEScanFragment extends Fragment {
                 }
                 // perform device connection
                 BLEScanFragment.this.bluetoothLeService.connect(bluetoothDeviceToConnect.getAddress());
-                BLEScanFragment.this.bluetoothLeService.setHandleSmsActivity((HomeActivity) getActivity());
                 BLEScanFragment.this.bluetoothLeService.startForeground();
+
+                ((HomeActivity)getActivity()).bindBLEServiceRoutine(BLEScanFragment.this.bluetoothLeService);
             }
         }
 
@@ -159,6 +162,11 @@ public class BLEScanFragment extends Fragment {
 
         //BLE Set UP:
         bluetoothLeScanner = bluetoothAdapter.getBluetoothLeScanner();
+        scanSettings = new ScanSettings.Builder()
+                .setScanMode(ScanSettings.SCAN_MODE_BALANCED)
+                .setPhy(ScanSettings.PHY_LE_ALL_SUPPORTED)
+                .setLegacy(false)
+                .build();
         handler = new Handler(Objects.requireNonNull(Looper.myLooper()));
 
         ble_recycler_view.setAdapter(ble_recycler_view_adapter);
@@ -204,7 +212,7 @@ public class BLEScanFragment extends Fragment {
             }, SCAN_PERIOD);
 
             scanning = true;
-            bluetoothLeScanner.startScan(leScanCallback);
+            bluetoothLeScanner.startScan(null, scanSettings, leScanCallback);
         } else {
             scanning = false;
             bluetoothLeScanner.stopScan(leScanCallback);
