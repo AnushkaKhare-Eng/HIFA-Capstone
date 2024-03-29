@@ -1,7 +1,5 @@
 package com.example.hifa;
 
-import static androidx.core.content.ContentProviderCompat.requireContext;
-
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
@@ -42,13 +40,31 @@ public class HomeActivity extends AppCompatActivity {
     FirebaseAuth mAuth;
     User userData;
 
-    BluetoothLeService mainBLEService;
     EmergencyContactFragment emergencyContactFragment;
+    BLEScanFragment bleScanFragment;
+    BluetoothLeService mainBLEService;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mAuth = FirebaseAuth.getInstance();
+
+        binding = ActivityHomeBinding.inflate(getLayoutInflater());
+        setContentView(binding.getRoot());
+        replaceFragment(new HomeFragment());
+
+        binding.bottomNavigationView.setOnItemSelectedListener(item -> {
+            if (item.getItemId() == R.id.action_home){
+                replaceFragment(new HomeFragment());
+            } else if (item.getItemId() == R.id.action_devices){
+                replaceFragment(new Devices_page());
+            } else if (item.getItemId() == R.id.action_profile){
+                replaceFragment(new ProfileFragment());
+            } else if (item.getItemId() == R.id.action_settings){
+                replaceFragment(new SettingsFragment(emergencyContactFragment));
+            }
+            return true;
+        });
 
         Intent intent = getIntent();
         Bundle extras = intent.getExtras();
@@ -141,48 +157,25 @@ public class HomeActivity extends AppCompatActivity {
 
 
     }
+
+    public void sendToBLEScanFragment() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+            if (bleScanFragment == null) {
+                bleScanFragment = new BLEScanFragment();
+            }
+        }
+
+        replaceFragment(bleScanFragment);
+    }
     public User getUser(){
         return userData;
     }
 
-//    private FusedLocationProviderClient fusedLocationClient;
-
-//    public void setUpLocation() {
-//        fusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
-//
-//        LocationRequest locationRequest = new LocationRequest.Builder(Priority.PRIORITY_HIGH_ACCURACY, 10000)
-//                .setMaxUpdateDelayMillis(10000)
-//                .setWaitForAccurateLocation(false)
-//                .build();
-//
-//        LocationCallback locationCallback = new LocationCallback() {
-//            @Override
-//            public void onLocationResult(@NonNull LocationResult locationResult) {
-//                for (Location location : locationResult.getLocations()) {
-//                    // Update UI with location data
-//                    // For example, show a toast with the location:
-//                    Log.d("Location:", location.getLatitude() + ", " + location.getLongitude());
-//                }
-//            }
-//        };
-//        fusedLocationClient.requestLocationUpdates(locationRequest, locationCallback, Looper.getMainLooper());
-//    }
-
-//    public void getLastLocation(){
-//        fusedLocationClient.getLastLocation()
-//                .addOnSuccessListener(this, new OnSuccessListener<Location>() {
-//                    @Override
-//                    public void onSuccess(Location location) {
-//                        // Got last known location. In some rare situations this can be null.
-//                        if (location != null) {
-//                            latitude = location.getLatitude();
-//                            longitude = location.getLongitude();
-//                            Log.d("Location", latitude + " " + longitude);
-//                            sendSMSMessage();
-//                        } else {
-//                            Log.d("Location", "Location is null");
-//                        }
-//                    }
-//                });
-//    }
+    public void bindBLEServiceRoutine(BluetoothLeService bluetoothLeService) {
+        this.mainBLEService = bluetoothLeService;
+        this.mainBLEService.setEmergencyContactPhone("7806047635"); //TODO: Change this to a generic function call.
+        this.mainBLEService.setupLocationFirstTime();
+        this.mainBLEService.setUpLocation();
+        this.mainBLEService.setUser(userData);
+    }
 }

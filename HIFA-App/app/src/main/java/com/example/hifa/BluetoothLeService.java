@@ -1,6 +1,6 @@
 package com.example.hifa;
 
-import static java.lang.Thread.yield;
+import static androidx.core.content.ContentProviderCompat.requireContext;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
@@ -20,18 +20,42 @@ import android.bluetooth.BluetoothProfile;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.pm.ServiceInfo;
+import android.location.Location;
 import android.os.Binder;
 import android.os.Build;
 import android.os.IBinder;
+import android.os.Looper;
 import android.util.Log;
+import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.app.ActivityCompat;
 import androidx.core.app.NotificationCompat;
 import androidx.core.content.ContextCompat;
 
+import com.example.hifa.twilioapi.SendMessageRequest;
+import com.example.hifa.twilioapi.TwilioAPIService;
+import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationCallback;
+import com.google.android.gms.location.LocationRequest;
+import com.google.android.gms.location.LocationResult;
+import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.location.Priority;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.firestore.FirebaseFirestore;
+
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.concurrent.Executor;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
 
 public class BluetoothLeService extends Service {
     public final static String BLE_SERVICE = "BLE_SERVICE";
@@ -66,9 +90,13 @@ public class BluetoothLeService extends Service {
     private Binder binder = new BluetoothLeService.LocalBinder();
     private int connectionState;
     private long deviceID = 0;
+    private String emergencyContactPhone;
     private HomeActivity handleSmsActivity;
-
     private boolean waitOnReadCharacteristic = true;
+    private double longitude = 0.0;
+    private double latitude = 0.0;
+    private User user;
+    private FusedLocationProviderClient fusedLocationClient;
 
     private final BluetoothGattCallback bluetoothGattCallback = new BluetoothGattCallback() {
         @SuppressLint("MissingPermission")
@@ -215,7 +243,6 @@ public class BluetoothLeService extends Service {
         return bluetoothGatt.getServices();
     }
 
-    //TODO: To optimize the speed of this method, can purely scan for the wanted services and characteristics.
     @SuppressLint("MissingPermission")
     private void setGattCharacteristicListeners(List<BluetoothGattService> gattServices) throws InterruptedException {
         if (gattServices == null) {
@@ -227,7 +254,6 @@ public class BluetoothLeService extends Service {
                 List<BluetoothGattCharacteristic> nordicCharacteristics = gattService.getCharacteristics();
                 for (BluetoothGattCharacteristic nordicCharacteristic : nordicCharacteristics) {
                     if (nordicCharacteristic.getUuid().toString().equals(GATT_TX_CHARACTERISTIC)) {
-//                        setCharacteristicNotification(nordicCharacteristic, true);
                         EmergencySignalCharacteristic = nordicCharacteristic;
                     }
                 }
@@ -242,33 +268,6 @@ public class BluetoothLeService extends Service {
                 }
             }
         }
-
-        //After reading characteristic, subscribe:
-//        setCharacteristicNotification(EmergencySignalCharacteristic, true);
-    }
-
-    private void setGattCharacteristicListenersTEST(List<BluetoothGattService> gattServices) {
-        if (gattServices == null) {
-            return;
-        }
-        // Loops through available GATT Services.
-        BluetoothGattCharacteristic nordicTXCharacteristic;
-        for (BluetoothGattService gattService : gattServices) {
-            if (gattService.getUuid().toString().equals(GATT_NORDIC_DATA_SERVICE) || gattService.getUuid().toString().equals(GATT_NORDIC_UUID_SERVICE)) {
-                List<BluetoothGattCharacteristic> nordicCharacteristics = gattService.getCharacteristics();
-                String service_name = String.valueOf(gattService.getUuid());
-                for (BluetoothGattCharacteristic nordicCharacteristic : nordicCharacteristics) {
-                    if (nordicCharacteristic.getUuid().toString().equals(GATT_TX_CHARACTERISTIC) || nordicCharacteristic.getUuid().toString().equals(GATT_DEVICE_UUID_CHARACTERISTIC)) {
-                        byte[] data = nordicCharacteristic.getValue();
-                        for (BluetoothGattDescriptor bluetoothGattDescriptor : nordicCharacteristic.getDescriptors()) {
-                            byte[] desc_data = bluetoothGattDescriptor.getValue();
-                        }
-                        setCharacteristicNotification(nordicCharacteristic, true);
-                    }
-                }
-            }
-        }
-
     }
 
     private void setCharacteristicNotification(BluetoothGattCharacteristic characteristic, boolean enabled) {
@@ -308,23 +307,6 @@ public class BluetoothLeService extends Service {
         }
     }
 
-//    private void extractDeviceUUID(BluetoothGattCharacteristic bluetoothGattCharacteristic) {
-//        byte[] data = bluetoothGattCharacteristic.getValue();
-//
-////        //Using String Builder to interpret byte data:
-////        StringBuilder stringBuilder = new StringBuilder(data.length);
-////        for (byte byteChar : data) {
-////            if (byteChar == 0) {
-////                break;
-////            }
-////            stringBuilder.append((char) (byteChar));
-////        }
-////
-////        String deviceID = stringBuilder.toString();
-//
-//        this.deviceID = deviceID;
-//    }
-
     private void extractDeviceUUID(byte[] byteUUID) {
         Log.d(TAG, "extractDeviceUUID: EXTRACTED UUID");
         long value = 0;
@@ -352,7 +334,10 @@ public class BluetoothLeService extends Service {
         String signalMessage = stringBuilder.toString();
 
         //TODO: Insert logic to make the call based on the signal received.
-        handleSmsActivity.sendSMSMessage();
+        if (this.emergencyContactPhone != null) {
+//            setUpLocation();
+            sendSMSMessage();
+        }
     }
 
     //Interprocess communication:
@@ -377,15 +362,168 @@ public class BluetoothLeService extends Service {
         sendBroadcast(intent);
     }
 
-    public void setHandleSmsActivity(HomeActivity homeActivity) {
-        this.handleSmsActivity = homeActivity;
-    }
     public Long getDeviceID() {
         return deviceID;
     }
 
     public BluetoothGatt getBluetoothGatt() {
         return bluetoothGatt;
+    }
+
+    public void setEmergencyContactPhone(String phoneNumber) {
+        this.emergencyContactPhone = phoneNumber;
+    }
+    public void setUser(User user) {
+        this.user = user;
+    }
+
+//    protected void sendSMSMessage() {
+//        Log.d("SMS", "sendSMSMessage: ");
+//
+//        Retrofit retrofit = new Retrofit.Builder()
+//                .baseUrl("https://zq9aaxp7gg.execute-api.us-east-2.amazonaws.com/")
+//                .addConverterFactory(GsonConverterFactory.create())
+//                .build();
+//
+//        TwilioAPIService twilioAPIService = retrofit.create(TwilioAPIService.class);
+//
+//        Map <String, String> emergencyContacts = new HashMap<String, String>();
+//
+//        DatabaseFirestore.databaseSetUp(FirebaseFirestore.getInstance());
+//        DatabaseFirestore.getEC(user.getEmail(), new DatabaseFirestore.CallbackGetEC() {
+//            @Override
+//            public void onCallBack(Map<String, Object> ecMap) {
+//                for (Map.Entry<String, Object> entry : ecMap.entrySet()) {
+//                    String key = entry.getKey();
+//                    Object value = entry.getValue();
+//                    emergencyContacts.put(key, (String) value);
+//                    Log.d("EmergencyContactsAdded", (String) value);
+//                }
+//            }
+//        });
+//
+//        SendMessageRequest sendMessageRequest = null;
+//        Call<Void> call = null;
+//
+//        for (Map.Entry<String, String> entry : emergencyContacts.entrySet()) {
+//            String name = entry.getKey();
+//            String phoneNo = entry.getValue();
+//            String messageString = name + " https://www.google.com/maps?q=" + latitude + "," + longitude;
+//            sendMessageRequest = new SendMessageRequest(phoneNo, messageString);
+//            call = twilioAPIService.createPost(BuildConfig.TWILIO_API_KEY, sendMessageRequest);
+//            call.enqueue(new Callback<Void>() {
+//                @Override
+//                public void onResponse(@NonNull Call<Void> call, @NonNull Response<Void> response) {
+//                    Log.d("POST", "Post successful");
+//                }
+//
+//                @Override
+//                public void onFailure(@NonNull Call<Void> call, @NonNull Throwable t) {
+//                    Log.d("POST", "Post unsuccessful");
+//                }
+//            });
+//        }
+//    }
+
+    protected void sendSMSMessage() {
+        Log.d("SMS", "sendSMSMessage: ");
+
+        Map<String, String> emergencyContacts = new HashMap<String, String>();
+
+        DatabaseFirestore.databaseSetUp(FirebaseFirestore.getInstance());
+        DatabaseFirestore.getEC(user.getEmail(), new DatabaseFirestore.CallbackGetEC() {
+            @Override
+            public void onCallBack(Map<String, Object> ecMap) {
+                for (Map.Entry<String, Object> entry : ecMap.entrySet()) {
+                    String key = entry.getKey();
+                    Object value = entry.getValue();
+                    emergencyContacts.put(key, (String) value);
+                    Log.d("EmergencyContactsAdded", key);
+                    sendMessage(emergencyContacts);
+                }
+            }
+        });
+    }
+    private void sendMessage(Map<String, String> emergencyContacts){
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl("https://zq9aaxp7gg.execute-api.us-east-2.amazonaws.com/")
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+
+        TwilioAPIService twilioAPIService = retrofit.create(TwilioAPIService.class);
+        SendMessageRequest sendMessageRequest = null;
+
+        Call<Void> call = null;
+
+        for(Map.Entry<String, String> entry:emergencyContacts.entrySet()){
+            String name = entry.getKey();
+            String phoneNo = entry.getValue();
+            String messageString = name + " https://www.google.com/maps?q=" + latitude + "," + longitude;
+            sendMessageRequest = new SendMessageRequest(phoneNo, messageString);
+            call = twilioAPIService.createPost(BuildConfig.TWILIO_API_KEY,sendMessageRequest);
+            call.enqueue(new Callback<Void>() {
+                @Override
+                public void onResponse(@NonNull Call<Void> call, @NonNull Response<Void> response) {
+                    Log.d("POST", "Post successful");
+                }
+                @Override
+                public void onFailure(@NonNull Call<Void> call, @NonNull Throwable t) {
+                    Log.d("POST", "Post unsuccessful");
+                }
+            });
+        }
+    }
+
+    public void setupLocationFirstTime() {
+        LocationRequest locationRequest = new LocationRequest.Builder(Priority.PRIORITY_HIGH_ACCURACY)
+                .setWaitForAccurateLocation(false)
+                .build();
+
+        LocationCallback locationCallback = new LocationCallback() {
+            @Override
+            public void onLocationResult(@NonNull LocationResult locationResult) {
+                for (Location location : locationResult.getLocations()) {
+                    // Update UI with location data
+                    // For example, show a toast with the location:
+                    Log.d("Location:", location.getLatitude() + ", " + location.getLongitude());
+                    latitude = location.getLatitude();
+                    longitude = location.getLongitude();
+                }
+            }
+        };
+    }
+
+    public void setUpLocation() {
+        fusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
+
+        LocationRequest locationRequest = new LocationRequest.Builder(Priority.PRIORITY_HIGH_ACCURACY, 10000)
+                .setMaxUpdateDelayMillis(10000)
+                .setWaitForAccurateLocation(false)
+                .build();
+
+        LocationCallback locationCallback = new LocationCallback() {
+            @Override
+            public void onLocationResult(@NonNull LocationResult locationResult) {
+                for (Location location : locationResult.getLocations()) {
+                    // Update UI with location data
+                    // For example, show a toast with the location:
+                    Log.d("Location:", location.getLatitude() + ", " + location.getLongitude());
+                    latitude = location.getLatitude();
+                    longitude = location.getLongitude();
+                }
+            }
+        };
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            // TODO: Consider calling
+            //    ActivityCompat#requestPermissions
+            // here to request the missing permissions, and then overriding
+            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+            //                                          int[] grantResults)
+            // to handle the case where the user grants the permission. See the documentation
+            // for ActivityCompat#requestPermissions for more details.
+            return;
+        }
+        fusedLocationClient.requestLocationUpdates(locationRequest, locationCallback, Looper.getMainLooper());
     }
 
     @Nullable

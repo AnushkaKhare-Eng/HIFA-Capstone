@@ -31,6 +31,8 @@ import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.location.Priority;
 import com.google.android.gms.tasks.OnSuccessListener;
 
+import java.util.Objects;
+
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -51,6 +53,7 @@ public class HomeFragment extends Fragment {
     String userFirstName;
 
     Button emergencyButton;
+    Button addDeviceButton;
     String[] permissions = new String[3];
     private FusedLocationProviderClient fusedLocationClient;
     private double longitude = 0.0;
@@ -82,6 +85,7 @@ public class HomeFragment extends Fragment {
         view = inflater.inflate(R.layout.fragment_home, container, false);
         userNameText = (TextView) view.findViewById(R.id.userName);
         emergencyButton = (Button) view.findViewById(R.id.emergency_button);
+        addDeviceButton = (Button) view.findViewById(R.id.add_device_button);
 
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(requireActivity());
 
@@ -102,8 +106,8 @@ public class HomeFragment extends Fragment {
 
         // Retrieve the arguments
         Bundle bundle = getArguments();
-        userFirstName = ((HomeActivity) requireActivity()).getUser().getFirstname();
-        userNameText.setText(userFirstName);
+//        userFirstName = ((HomeActivity) requireActivity()).getUser().getFirstname();
+//        userNameText.setText(userFirstName);
 
         if (bundle != null) {
             Log.d("HomeFrag", "Recieved User's first Name"+userFirstName);
@@ -153,6 +157,13 @@ public class HomeFragment extends Fragment {
                             }
                         });
 
+            }
+        });
+
+        addDeviceButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ((HomeActivity) requireActivity()).sendToBLEScanFragment();
             }
         });
         // Inflate the layout for this fragment
