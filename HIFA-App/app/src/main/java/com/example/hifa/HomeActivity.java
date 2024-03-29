@@ -39,36 +39,10 @@ public class HomeActivity extends AppCompatActivity {
 
     EmergencyContactFragment emergencyContactFragment;
 
-    BluetoothLeService mainBLEService;
-
-    private double longitude = 0.0;
-    private double latitude = 0.0;
-
-    EmergencyContactFragment emergencyContactFragment;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mAuth = FirebaseAuth.getInstance();
-
-        binding = ActivityHomeBinding.inflate(getLayoutInflater());
-        setContentView(binding.getRoot());
-        replaceFragment(new HomeFragment());
-
-        binding.bottomNavigationView.setOnItemSelectedListener(item -> {
-            if (item.getItemId() == R.id.action_home){
-                replaceFragment(new HomeFragment());
-            } else if (item.getItemId() == R.id.action_devices){
-//                replaceFragment(new Devices_page());
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
-                    replaceFragment(new BLEScanFragment());
-                }
-            } else if (item.getItemId() == R.id.action_profile){
-                replaceFragment(new ProfileFragment());
-            } else if (item.getItemId() == R.id.action_settings){
-                replaceFragment(new SettingsFragment(emergencyContactFragment));
-            }
-            return true;
-        });
 
         Intent intent = getIntent();
         Bundle extras = intent.getExtras();
@@ -98,12 +72,32 @@ public class HomeActivity extends AppCompatActivity {
         fragmentTransaction.commit();
     }
 
+    private void goToHome(){
+        binding = ActivityHomeBinding.inflate(getLayoutInflater());
+        setContentView(binding.getRoot());
+        replaceFragment(new HomeFragment());
+
+        binding.bottomNavigationView.setOnItemSelectedListener(item -> {
+            if (item.getItemId() == R.id.action_home){
+                replaceFragment(new HomeFragment());
+            } else if (item.getItemId() == R.id.action_devices){
+                replaceFragment(new Devices_page());
+            } else if (item.getItemId() == R.id.action_profile){
+                replaceFragment(new ProfileFragment());
+            } else if (item.getItemId() == R.id.action_settings){
+                replaceFragment(new SettingsFragment(emergencyContactFragment));
+            }
+            return true;
+        });
+    }
+
 
     protected void gettingUser(String userEmail){
 
         DatabaseFirestore.getUser(userEmail, new DatabaseFirestore.CallbackGetUser() {
             @Override
             public void onCallBack(User user) {
+                goToHome();
                 userData = user;
                 String userObjFirstname = user.getFirstname();
                 Log.d("HomeActivity", "Recieved User's first Name"+userObjFirstname);

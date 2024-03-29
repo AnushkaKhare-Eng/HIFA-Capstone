@@ -36,6 +36,8 @@ public class LoginActivity2 extends AppCompatActivity {
         emaileT = findViewById(R.id.editTextText);
         passwordeT = findViewById(R.id.passwordEditText);
 
+        loginButton.setEnabled(true);
+
         Intent intent = getIntent();
 
         // Retrieve Object from Intent
@@ -53,18 +55,15 @@ public class LoginActivity2 extends AppCompatActivity {
                 if(emailString.isEmpty()){
                     emaileT.setError("Email is required");
                     emaileT.requestFocus();
-
-
+                    loginButton.setEnabled(true);
                 }
                 else if(passwordString.isEmpty()){
                     passwordeT.setError("Password is required");
                     passwordeT.requestFocus();
-
+                    loginButton.setEnabled(true);
                 }
-
                 else{
-
-
+                        loginButton.setEnabled(false);
                         mAuth.signInWithEmailAndPassword(emailString, passwordString).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                             @Override
                             public void onComplete(@NonNull Task<AuthResult> task) {

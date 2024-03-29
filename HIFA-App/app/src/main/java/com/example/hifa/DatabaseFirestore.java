@@ -238,7 +238,7 @@ public class DatabaseFirestore {
                                         @Override
                                         public void onComplete(@NonNull Task<Void> task) {
                                             Log.d("ECPg", "EC Info" + user.getEmail() + "added");
-
+                                            callbackEditEmergencyContact.onCallBack(new EmergencyContacts(emergencyContactsmap));
                                         }
                                     });
 

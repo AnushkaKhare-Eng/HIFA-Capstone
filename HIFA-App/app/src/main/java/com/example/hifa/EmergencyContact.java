@@ -1,6 +1,8 @@
 package com.example.hifa;
 
-public class EmergencyContact {
+import java.io.Serializable;
+
+public class EmergencyContact implements Serializable {
 
     private String name;
     private String phoneNo;

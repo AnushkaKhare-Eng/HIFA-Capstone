@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Optional;
 
 public class EmergencyContacts implements Serializable {
@@ -19,6 +20,10 @@ public class EmergencyContacts implements Serializable {
     public EmergencyContacts() {
         emergencyContactmap = new HashMap<>();
         emergencyContactsList = new ArrayList<EmergencyContact>();
+    }
+
+    public EmergencyContacts(Map<String, String> emergencyContactmap) {
+        this.emergencyContactmap = emergencyContactmap;
     }
 
     public EmergencyContacts(String name, String phone) {
@@ -70,12 +75,42 @@ public class EmergencyContacts implements Serializable {
         }
     }
 
+    public boolean checkName(String newName) {
+        for (EmergencyContact x : emergencyContactsList){
+            if (Objects.equals(x.getName(), newName)){
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public void editExistingContact(String oldName, String newName, String newPhone){
+
+        if (emergencyContactmap.containsKey(oldName)){
+            emergencyContactmap.remove(oldName);
+            emergencyContactmap.put(newName, newPhone);
+        }
+        for (EmergencyContact x : emergencyContactsList){
+            if (Objects.equals(oldName, x.getName())){
+                x.setName(newName);
+                x.setPhoneNo(newPhone);
+                break;
+            }
+        }
+
+    }
+
     public void deleteContactInfo(String name, String phoneNum) {
-        if (emergencyContactmap.size()>1){
+        if (canDelete()){
             if (emergencyContactmap.containsKey(name)) {
                 emergencyContactmap.remove(name, phoneNum);
             }
+            emergencyContactsList.removeIf(x -> Objects.equals(name, x.getName()));
         }
+    }
+
+    public boolean canDelete(){
+        return emergencyContactmap.size() > 1;
     }
 
 }
