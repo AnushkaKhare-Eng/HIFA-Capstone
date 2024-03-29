@@ -8,15 +8,25 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.location.Location;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Looper;
 import android.util.Log;
 import android.widget.Toast;
 
 import com.example.hifa.databinding.ActivityHomeBinding;
 import com.example.hifa.twilioapi.SendMessageRequest;
 import com.example.hifa.twilioapi.TwilioAPIService;
+import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationCallback;
+import com.google.android.gms.location.LocationRequest;
+import com.google.android.gms.location.LocationResult;
+import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.location.Priority;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -33,10 +43,6 @@ public class HomeActivity extends AppCompatActivity {
     User userData;
 
     BluetoothLeService mainBLEService;
-
-    private double longitude = 0.0;
-    private double latitude = 0.0;
-
     EmergencyContactFragment emergencyContactFragment;
 
     @Override
@@ -139,35 +145,44 @@ public class HomeActivity extends AppCompatActivity {
         return userData;
     }
 
-    protected void sendSMSMessage() {
-        Log.d("SMS", "sendSMSMessage: ");
+//    private FusedLocationProviderClient fusedLocationClient;
 
-        String messageString = "https://www.google.com/maps?q=" + latitude + "," + longitude;
+//    public void setUpLocation() {
+//        fusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
+//
+//        LocationRequest locationRequest = new LocationRequest.Builder(Priority.PRIORITY_HIGH_ACCURACY, 10000)
+//                .setMaxUpdateDelayMillis(10000)
+//                .setWaitForAccurateLocation(false)
+//                .build();
+//
+//        LocationCallback locationCallback = new LocationCallback() {
+//            @Override
+//            public void onLocationResult(@NonNull LocationResult locationResult) {
+//                for (Location location : locationResult.getLocations()) {
+//                    // Update UI with location data
+//                    // For example, show a toast with the location:
+//                    Log.d("Location:", location.getLatitude() + ", " + location.getLongitude());
+//                }
+//            }
+//        };
+//        fusedLocationClient.requestLocationUpdates(locationRequest, locationCallback, Looper.getMainLooper());
+//    }
 
-        Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("https://zq9aaxp7gg.execute-api.us-east-2.amazonaws.com/")
-                .addConverterFactory(GsonConverterFactory.create())
-                .build();
-
-        TwilioAPIService twilioAPIService = retrofit.create(TwilioAPIService.class);
-
-        SendMessageRequest sendMessageRequest = new SendMessageRequest("5875963855", messageString);
-
-        Call<Void> call = twilioAPIService.createPost(BuildConfig.TWILIO_API_KEY,sendMessageRequest);
-
-        call.enqueue(new Callback<Void>() {
-            @Override
-            public void onResponse(@NonNull Call<Void> call, @NonNull Response<Void> response) {
-                Log.d("POST", "Post successful");
-                Toast.makeText(getApplicationContext(), "SMS sent", Toast.LENGTH_SHORT).show();
-            }
-            @Override
-            public void onFailure(@NonNull Call<Void> call, @NonNull Throwable t) {
-                Log.d("POST", "Post unsuccessful");
-                Toast.makeText(getApplicationContext(), "SMS not sent", Toast.LENGTH_SHORT).show();
-            }
-        });
-    }
-
-
+//    public void getLastLocation(){
+//        fusedLocationClient.getLastLocation()
+//                .addOnSuccessListener(this, new OnSuccessListener<Location>() {
+//                    @Override
+//                    public void onSuccess(Location location) {
+//                        // Got last known location. In some rare situations this can be null.
+//                        if (location != null) {
+//                            latitude = location.getLatitude();
+//                            longitude = location.getLongitude();
+//                            Log.d("Location", latitude + " " + longitude);
+//                            sendSMSMessage();
+//                        } else {
+//                            Log.d("Location", "Location is null");
+//                        }
+//                    }
+//                });
+//    }
 }
