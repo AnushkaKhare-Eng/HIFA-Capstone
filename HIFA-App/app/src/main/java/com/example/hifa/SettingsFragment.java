@@ -1,7 +1,9 @@
 package com.example.hifa;
 
+import android.content.Intent;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -9,6 +11,11 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.RelativeLayout;
+
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -68,7 +75,18 @@ public class SettingsFragment extends Fragment {
         items.add(new SubSettingItem("Notifications", R.drawable.notification));
         items.add(new SubSettingItem("Emergency Contacts", R.drawable.emergencycontact));
         items.add(new SubSettingItem("About", R.drawable.information));
+        RelativeLayout relativeLayout = view.findViewById(R.id.logout);
 
+        // Set OnClickListener on the RelativeLayout
+        relativeLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Define behavior when RelativeLayout is clicked
+                FirebaseAuth.getInstance().signOut();
+                Intent intent = new Intent(getActivity(), LoginActivity2.class);
+                startActivity(intent);
+            }
+        });
         recyclerView.setLayoutManager(new LinearLayoutManager(this.getContext()));
         recyclerView.setAdapter(new SubSettingAdapter(this.getContext(), items, emergencyContactFragment));
 
