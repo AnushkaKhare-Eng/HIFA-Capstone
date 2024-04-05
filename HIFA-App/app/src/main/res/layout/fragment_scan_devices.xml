@@ -4,18 +4,21 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/green"
     tools:context=".BLEScanFragment">
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/ble_scan_list"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
-    </androidx.recyclerview.widget.RecyclerView>
+        android:layout_height="match_parent"
+        android:background="@color/background"></androidx.recyclerview.widget.RecyclerView>
 
     <Button
         android:id="@+id/button_scan_bles"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:background="@drawable/add_device_button_shape"
+        android:textColor="@color/white"
         android:text="Scan BLE's"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

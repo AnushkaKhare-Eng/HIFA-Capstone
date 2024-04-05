@@ -1,12 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="20dp"
+    android:layout_height="60dp"
     android:gravity="center_vertical">
-
-    <TextView
-        android:id="@+id/ble_scan_list_row_item"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="Testing View" />
+        android:layout_height="60dp">
+        <TextView
+            android:id="@+id/ble_scan_list_row_item"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:text="Testing View"
+            android:textSize="30dp"/>
+    </LinearLayout>
+
 </FrameLayout>

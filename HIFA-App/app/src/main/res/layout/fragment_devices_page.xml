@@ -65,14 +65,53 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
-
-            <EditText
-                android:id="@+id/editTextTextMultiLine2"
-                android:layout_width="match_parent"
+            <TextView
+                android:id="@+id/titleTextView"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:ems="10"
-                android:gravity="start|top"
-                android:inputType="textMultiLine" />
+                android:text="Steps:"
+                android:textSize="20sp"
+                android:layout_marginTop="16dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginEnd="16dp"
+                android:textStyle="bold" />
+            <TextView
+                android:id="@+id/errand1TextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="• Select Add-Device button from home screen."
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="8dp" />
+
+            <TextView
+                android:id="@+id/errand2TextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="• Give the app permission to location and bluetooth services."
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="8dp" />
+
+            <TextView
+                android:id="@+id/errand3TextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="• Press the Scan-Device button at the bottom of the page."
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="8dp" />
+            <TextView
+                android:id="@+id/errand4TextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="• Tap on the device name of the device you want to pair to."
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="8dp" />
+            <TextView
+                android:id="@+id/errand5TextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="• Congratulations! You have paired your first device!"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="8dp" />
         </LinearLayout>
     </ScrollView>
 
