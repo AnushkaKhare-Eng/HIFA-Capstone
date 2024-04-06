@@ -1,10 +1,10 @@
 package com.example.hifa;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
+import androidx.recyclerview.widget.LinearLayoutManager;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
@@ -29,6 +29,9 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;
 
+import java.util.List;
+import java.util.Map;
+
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -42,6 +45,7 @@ public class HomeActivity extends AppCompatActivity {
     EmergencyContactFragment emergencyContactFragment;
     BLEScanFragment bleScanFragment;
     BluetoothLeService mainBLEService;
+    EmergencyContacts emergencyContacts;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,6 +67,8 @@ public class HomeActivity extends AppCompatActivity {
 
         binding = ActivityHomeBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
+
+        getContactsFromDatabase();
 
         replaceFragment(new HomeFragment());
 
@@ -132,5 +138,34 @@ public class HomeActivity extends AppCompatActivity {
         this.mainBLEService.setupLocationFirstTime();
         this.mainBLEService.setUpLocation();
         this.mainBLEService.setUser(userData);
+    }
+
+    public EmergencyContacts getEmergencyContacts(){
+        return emergencyContacts;
+    }
+
+    public void setEmergencyContact(EmergencyContacts emergencyContacts){
+        this.emergencyContacts = emergencyContacts;
+    }
+
+    public void getContactsFromDatabase(){
+        DatabaseFirestore.getEC(userData.getEmail(), new DatabaseFirestore.CallbackGetEC() {
+
+            @Override
+            public void onCallBack(Map<String,Object> ecMap1) {
+                Log.d("Database", "working1" );
+
+                EmergencyContacts emergencyContacts1 = new EmergencyContacts();
+                //eCMap = ecMap1;
+
+                for (String key : ecMap1.keySet()) {
+                    String value = (String) ecMap1.get(key);
+                    emergencyContacts1.addContactInfo(key, value);
+                    // Process the key-value pair
+                }
+                setEmergencyContact(emergencyContacts1);
+
+            }
+        });
     }
 }

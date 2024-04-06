@@ -145,6 +145,7 @@ public class EmergencyContactFragment extends Fragment implements EditEmergenyCo
     @Override
     public void onRefresh(EmergencyContacts emergencyContacts) {
         items = emergencyContacts.getEmergencyContactsList();
+        ((HomeActivity)requireActivity()).setEmergencyContact(emergencyContacts);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         recyclerView.setAdapter(emergencyContactsAdapter);
     }
