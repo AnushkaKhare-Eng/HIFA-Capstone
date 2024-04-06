@@ -10,7 +10,7 @@ public class User implements Serializable {
 
     private String email;
     private  String password;
-    private float age;
+    private String age;
     private String driversLicense;
     private String phoneNumber;
     private String healthcard;
@@ -21,7 +21,7 @@ public class User implements Serializable {
     public User() {
         // Default constructor logic, if needed
     }
-    public User (String email, String password, String firstname, String lastname, int age, String healthcard, String driversLicense, String phoneNumber ){
+    public User (String email, String password, String firstname, String lastname, String age, String healthcard, String driversLicense, String phoneNumber ){
         this.email = email;
         this.password = password;
         this.firstname = firstname;
@@ -46,7 +46,7 @@ public class User implements Serializable {
         return healthcard;
     }
 
-    public float getAge() {
+    public String getAge() {
         return age;
     }
 
@@ -60,7 +60,7 @@ public class User implements Serializable {
     // setters
 
 
-    public void setAge(int age) {
+    public void setAge(String age) {
         this.age = age;
     }
 

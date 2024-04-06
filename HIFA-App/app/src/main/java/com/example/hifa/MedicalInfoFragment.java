@@ -134,12 +134,11 @@ public class MedicalInfoFragment extends Fragment {
                     incompletedata = true;
                 }
                 if(!incompletedata){
-                    int age = calculateAge(dateofbirthString);
+//                    int age = calculateAge(dateofbirthString);
                     DatabaseFirestore.databaseSetUp(FirebaseFirestore.getInstance());
                     //firebaseDatabase = FirebaseDatabase.getInstance();
                     //databaseReference = firebaseDatabase.getReference("Personal Info");
-                    creatingNewUser(userEmailString, userPasswordString,firstNameString,lastNameString,age,healthcardnumberString,driverlicenseString,phoneNumberString);
-                    userObj = new User(userEmailString, userPasswordString,firstNameString,lastNameString,age,healthcardnumberString,driverlicenseString,phoneNumberString);
+                    userObj = new User(userEmailString, userPasswordString,firstNameString,lastNameString,dateofbirthString,healthcardnumberString,driverlicenseString,phoneNumberString);
 //                    Intent i = new Intent(getActivity(),HomeActivity.class);
 //
 //                    startActivity(i);
@@ -148,6 +147,7 @@ public class MedicalInfoFragment extends Fragment {
                         @Override
                         public void onComplete(@NonNull Task<AuthResult> task) {
                             if (task.isSuccessful()){
+                                creatingNewUser(userEmailString, userPasswordString,firstNameString,lastNameString,dateofbirthString,healthcardnumberString,driverlicenseString,phoneNumberString);
                                 Toast.makeText(getContext(), "User registration successful",Toast.LENGTH_SHORT).show();
                                 Intent intent = new Intent(getActivity(), LoginActivity2.class);
                                 intent.putExtra("user object", userObj);
@@ -167,9 +167,9 @@ public class MedicalInfoFragment extends Fragment {
 
         return view;
     }
-    private void creatingNewUser(String email, String password, String firstname, String lastname, int age, String healthcard, String driversLicense, String phonenumber) {
-        Toast.makeText(getContext(),"creating new user"+ "email"+email+"password"+password+"first"+firstname+"last"+lastname+"age"+ (Integer.toString(age))+"HC"+healthcard+"DL"+driversLicense+"pnum"+phoneNumber, Toast.LENGTH_SHORT).show();
-        DatabaseFirestore.userSignUp(new User(email, password, firstname, lastname, age, healthcard, driversLicense, phonenumber), new DatabaseFirestore.CallbackAddNewUser() {
+    private void creatingNewUser(String email, String password, String firstname, String lastname, String dateofbirthString, String healthcard, String driversLicense, String phonenumber) {
+        Toast.makeText(getContext(),"creating new user"+ "email"+email+"password"+password+"first"+firstname+"last"+lastname+"Date of Birth"+ dateofbirthString+"HC"+healthcard+"DL"+driversLicense+"pnum"+phoneNumber, Toast.LENGTH_SHORT).show();
+        DatabaseFirestore.userSignUp(new User(email, password, firstname, lastname, dateofbirthString, healthcard, driversLicense, phonenumber), new DatabaseFirestore.CallbackAddNewUser() {
             @Override
             public void onCallBack(Boolean userExists) {
                 if(!userExists) getActivity().finish();
@@ -184,16 +184,16 @@ public class MedicalInfoFragment extends Fragment {
 
 
 
-    public static int calculateAge(String dob) {
-        try {
-            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd"); // Adjust the pattern based on your date format
-            LocalDate birthDate = LocalDate.parse(dob, formatter);
-            LocalDate currentDate = LocalDate.now();
-            return Period.between(birthDate, currentDate).getYears();
-        } catch (DateTimeParseException e) {
-            // Handle parsing errors
-            System.out.println("Error parsing date: " + e.getMessage());
-            return -1; // Or handle the error in another way
-        }
-    }
+//    public static int calculateAge(String dob) {
+//        try {
+//            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd"); // Adjust the pattern based on your date format
+//            LocalDate birthDate = LocalDate.parse(dob, formatter);
+//            LocalDate currentDate = LocalDate.now();
+//            return Period.between(birthDate, currentDate).getYears();
+//        } catch (DateTimeParseException e) {
+//            // Handle parsing errors
+//            System.out.println("Error parsing date: " + e.getMessage());
+//            return -1; // Or handle the error in another way
+//        }
+//    }
 }
