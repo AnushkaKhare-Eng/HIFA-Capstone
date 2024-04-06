@@ -86,7 +86,11 @@ public class SignupActivity extends AppCompatActivity {
                     emaileT.requestFocus();
                 }
                 if (passwordString.isEmpty()) {
-                    passwordeT.setError("First name is required");
+                    passwordeT.setError("Password is required");
+                    passwordeT.requestFocus();
+                }
+                if (passwordString.length() < 6) {
+                    passwordeT.setError("Password must be greater than 6 characters");
                     passwordeT.requestFocus();
                 }
 
@@ -103,12 +107,7 @@ public class SignupActivity extends AppCompatActivity {
                     fragment.setArguments(bundle);
 
                     getSupportFragmentManager().beginTransaction().replace(R.id.signup, fragment).commit();
-
                 }
-
-
-
-
             }
         });
 

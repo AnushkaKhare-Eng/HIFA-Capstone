@@ -198,7 +198,7 @@ public class DatabaseFirestore {
 //                });
     }
 
-    static protected void editMedicalInfo(User user,int age, String healthcard, String driversLicense, String phonenumber, CallbackEditMedicalInfo callbackEditMedicalInfo){
+    static protected void editMedicalInfo(User user,String age, String healthcard, String driversLicense, String phonenumber, CallbackEditMedicalInfo callbackEditMedicalInfo){
         collectionReferencePersonalInfo.document(user.getEmail())
                 .update("age", age);
         collectionReferencePersonalInfo.document(user.getEmail())

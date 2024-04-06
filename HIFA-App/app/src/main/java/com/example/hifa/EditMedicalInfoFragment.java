@@ -1,5 +1,6 @@
 package com.example.hifa;
 
+import android.app.DatePickerDialog;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -9,12 +10,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.EditText;
-import android.widget.TextView;
 
 import com.google.firebase.firestore.FirebaseFirestore;
 
-import java.util.Objects;
+import java.util.Calendar;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -32,12 +33,12 @@ public class EditMedicalInfoFragment extends Fragment {
     private String mParam1;
     private String mParam2;
     User user;
-    EditText editTextAge;
+    EditText editTextDOB;
     EditText editTextPhoneNum;
     EditText editTextDriverLicense;
     EditText editTextHealthCard;
     View view;
-    String ageInput;
+    String dobInput;
     String phoneNumInput;
     String driversLicenseInput;
     String healthcardInput;
@@ -78,13 +79,19 @@ public class EditMedicalInfoFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_edit_medical_info, container, false);
-        editTextAge = view.findViewById(R.id.editTextage);
+        editTextDOB = view.findViewById(R.id.editTextage);
         editTextDriverLicense = view.findViewById(R.id.editTextDL);
         editTextHealthCard = view.findViewById(R.id.editTextHC);
         editTextPhoneNum = view.findViewById(R.id.editTextpn);
         savechangesButton = view.findViewById(R.id.savechangesMedicalInfoButton);
 
         user = ((HomeActivity) requireActivity()).getUser();
+
+        editTextDOB.setText(user.getAge());
+        editTextDriverLicense.setText(user.getDriversLicense());
+        editTextHealthCard.setText(user.getHealthcard());
+        editTextPhoneNum.setText(user.getPhoneNumber());
+
         Log.d("MedicalFrag", user.getFirstname());
 
 //        editTextDriverLicense.setText(user.getDriversLicense());
@@ -98,25 +105,39 @@ public class EditMedicalInfoFragment extends Fragment {
         }
 
         DatabaseFirestore.databaseSetUp(FirebaseFirestore.getInstance());
-        DatabaseFirestore.editMedicalInfo(user,12,"12334","239829328","239729372", new DatabaseFirestore.CallbackEditMedicalInfo() {
-            @Override
-            public void onCallBack(User user) {
 
+        editTextDOB.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                final Calendar c = Calendar.getInstance();
+                int year = c.get(Calendar.YEAR);
+                int month = c.get(Calendar.MONTH);
+                int day = c.get(Calendar.DAY_OF_MONTH);
+
+                DatePickerDialog datePickerDialog = new DatePickerDialog(requireActivity(),
+                        new DatePickerDialog.OnDateSetListener() {
+                            @Override
+                            public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
+                                String date = year + "-" + (month + 1) + "-" + dayOfMonth;
+                                editTextDOB.setText(date);
+                            }
+                        }, year, month, day);
+                datePickerDialog.show();
             }
         });
+
         savechangesButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ageInput = editTextAge.getText().toString();
-                int ageInt = Integer.parseInt(ageInput);
+                String dateOfBirth = editTextDOB.getText().toString();
                 phoneNumInput = editTextPhoneNum.getText().toString();
                 driversLicenseInput = editTextDriverLicense.getText().toString();
                 healthcardInput = editTextHealthCard.getText().toString();
                 DatabaseFirestore.databaseSetUp(FirebaseFirestore.getInstance());
-                DatabaseFirestore.editMedicalInfo(user,ageInt,healthcardInput,driversLicenseInput,phoneNumInput, new DatabaseFirestore.CallbackEditMedicalInfo() {
+                DatabaseFirestore.editMedicalInfo(user, dateOfBirth,healthcardInput,driversLicenseInput,phoneNumInput, new DatabaseFirestore.CallbackEditMedicalInfo() {
                     @Override
                     public void onCallBack(User user) {
-                        user.setAge(ageInt);
+                        user.setAge(dateOfBirth);
                         user.setHealthcard(healthcardInput);
                         user.setDriversLicense(driversLicenseInput);
                         user.setPhoneNumber(phoneNumInput);
