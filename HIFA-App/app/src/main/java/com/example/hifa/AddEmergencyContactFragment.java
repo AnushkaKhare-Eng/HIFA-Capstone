@@ -97,7 +97,6 @@ public class AddEmergencyContactFragment extends DialogFragment {
                     // Method for saving EC - Tested
                     Log.d("AddECDBini","databaseEC"+user.getEmail());
                     DatabaseFirestore.saveEmergencyContact(user, tempMap, new DatabaseFirestore.CallbackEC() {
-
                         @Override
                         public void onCallBack(Boolean emergencyContactsExists) {
                             Log.d("AddECDBsave","databaseEC");

@@ -195,7 +195,7 @@ public class HomeFragment extends Fragment {
 
         TwilioAPIService twilioAPIService = retrofit.create(TwilioAPIService.class);
 
-        Map<String, String> emergencyContacts = new HashMap<String, String>();
+        Map<String, String> emergencyContacts = ((HomeActivity)requireActivity()).getEmergencyContacts().getEmergencyContactmap();
 
         SendMessageRequest sendMessageRequest = null;
         Call<Void> call = null;

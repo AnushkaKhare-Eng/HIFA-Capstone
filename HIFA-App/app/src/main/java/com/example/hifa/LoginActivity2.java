@@ -82,6 +82,7 @@ public class LoginActivity2 extends AppCompatActivity {
 //                                    startActivity(intent);
                                 } else {
                                     Toast.makeText(LoginActivity2.this, "Login Error: " + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
+                                    loginButton.setEnabled(true);
                                 }
                             }
                         });
