@@ -1,5 +1,7 @@
 package com.example.hifa;
 
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 
 import androidx.fragment.app.DialogFragment;
@@ -9,6 +11,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -66,6 +69,11 @@ public class EditEmergenyContactFragment extends DialogFragment {
 
         assert getArguments() != null;
         EmergencyContact contact = (EmergencyContact) getArguments().getSerializable("emergencyContact");
+
+        if (getDialog() != null && getDialog().getWindow() != null) {
+            getDialog().getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+            getDialog().getWindow().requestFeature(Window.FEATURE_NO_TITLE);
+        }
 
         saveChanges = (Button) view.findViewById(R.id.saveChangesButtonEEC);
         delete = (Button) view.findViewById(R.id.deleteButtonEEC);
@@ -140,7 +148,7 @@ public class EditEmergenyContactFragment extends DialogFragment {
         assert contacts != null;
         contacts.editExistingContact(contact.getName(), name, phoneNo);
 
-        if(contacts.checkName(name)){
+        if(!contacts.checkName(name)){
             Toast.makeText(getContext(), "Emergency contact already exists", Toast.LENGTH_SHORT).show();
             return;
         }

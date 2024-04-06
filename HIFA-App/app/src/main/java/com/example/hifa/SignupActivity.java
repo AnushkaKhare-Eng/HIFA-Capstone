@@ -23,12 +23,14 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;
 
+import org.w3c.dom.Text;
+
 public class SignupActivity extends AppCompatActivity {
     private Button datePickerButton;
     private TextView date;
     private DatePickerDialog datePickerDialog;
     private Button signUpButton;
-    private Button loginButton;
+    private TextView loginButton;
     private EditText firstNameeT;
     private EditText lastNameeT;
     private EditText emaileT;
@@ -46,7 +48,7 @@ public class SignupActivity extends AppCompatActivity {
         setContentView(R.layout.activity_signup);
         //FirebaseApp.initializeApp(SignupActivity.this);
         signUpButton= findViewById(R.id.signUpButton);
-        loginButton = findViewById(R.id.login);
+        loginButton = findViewById(R.id.login_button_signup);
         firstNameeT = findViewById(R.id.firstNameEditText);
         lastNameeT = findViewById(R.id.lastNameEditText);
         emaileT = findViewById(R.id.emailAddressEditText);

@@ -9,17 +9,40 @@
     android:background="@color/background"
     tools:context=".SettingsFragment">
 
+    <View
+        android:id="@+id/redbg"
+        android:layout_width="match_parent"
+        app:layout_constraintHeight_percent=".15"
+        android:layout_height="0dp"
+        android:background="#C94547"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/whitebg"
+        />
+
+    <View
+        android:id="@+id/whitebg"
+        android:layout_width="match_parent"
+        app:layout_constraintHeight_percent=".85"
+        android:layout_height="0dp"
+        android:background="#FFFFFF"
+        app:layout_constraintTop_toBottomOf="@id/redbg"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
+
     <LinearLayout
         android:id="@+id/linearLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="88dp"
         android:gravity="center_horizontal"
         android:orientation="horizontal"
         android:weightSum="2.5"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintEnd_toEndOf="@id/redbg"
+        app:layout_constraintStart_toStartOf="@id/redbg"
+        app:layout_constraintTop_toTopOf="@id/redbg"
+        app:layout_constraintBottom_toBottomOf="@id/redbg">
 
         <ImageView
             android:id="@+id/imageView"
@@ -49,10 +72,10 @@
         android:layout_marginHorizontal="40dp"
         android:layout_marginTop="20dp"
         android:orientation="vertical"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/linearLayout">
+        app:layout_constraintBottom_toBottomOf="@id/whitebg"
+        app:layout_constraintEnd_toEndOf="@id/whitebg"
+        app:layout_constraintStart_toStartOf="@id/whitebg"
+        app:layout_constraintTop_toTopOf="@id/whitebg">
 
         <TextView
             android:layout_width="wrap_content"
@@ -66,11 +89,13 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="20dp"
-            android:background="@drawable/textbox_shape"
+            android:background="@drawable/textbox"
             android:ems="10"
-            android:hint="Filler"
+            android:hint="First name"
             android:inputType="text"
-            android:paddingHorizontal="5dp" />
+            android:paddingHorizontal="5dp"
+            android:textSize="25sp"
+            />
 
         <TextView
             android:layout_width="wrap_content"
@@ -84,11 +109,13 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="20dp"
-            android:background="@drawable/textbox_shape"
+            android:background="@drawable/textbox"
             android:ems="10"
-            android:hint="Filler"
+            android:hint="Middle Name"
             android:inputType="text"
-            android:paddingHorizontal="5dp" />
+            android:paddingHorizontal="5dp"
+            android:textSize="25sp"
+            />
 
         <TextView
             android:layout_width="wrap_content"
@@ -102,11 +129,13 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="20dp"
-            android:background="@drawable/textbox_shape"
+            android:background="@drawable/textbox"
             android:ems="10"
-            android:hint="Filler"
+            android:hint="Last Name"
             android:inputType="text"
-            android:paddingHorizontal="5dp" />
+            android:paddingHorizontal="5dp"
+            android:textSize="25sp"
+            />
 
         <TextView
             android:layout_width="wrap_content"
@@ -120,11 +149,13 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="20dp"
-            android:background="@drawable/textbox_shape"
+            android:background="@drawable/textbox"
             android:ems="10"
-            android:hint="Filler"
+            android:hint="Email"
             android:inputType="textEmailAddress"
-            android:paddingHorizontal="5dp" />
+            android:paddingHorizontal="5dp"
+            android:textSize="25sp"
+            />
 
         <TextView
             android:layout_width="wrap_content"
@@ -138,11 +169,13 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="20dp"
-            android:background="@drawable/textbox_shape"
+            android:background="@drawable/textbox"
             android:ems="10"
-            android:hint="Filler"
+            android:hint="Phone Number"
             android:inputType="phone"
-            android:paddingHorizontal="5dp" />
+            android:paddingHorizontal="5dp"
+            android:textSize="25sp"
+            />
 
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/save_changes_account_settings"

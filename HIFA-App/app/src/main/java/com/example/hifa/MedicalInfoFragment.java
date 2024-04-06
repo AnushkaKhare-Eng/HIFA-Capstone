@@ -1,5 +1,6 @@
 package com.example.hifa;
 
+import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.os.Bundle;
 
@@ -11,6 +12,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -30,6 +32,7 @@ import java.time.LocalDate;
 import java.time.Period;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
+import java.util.Calendar;
 import java.util.Date;
 
 public class MedicalInfoFragment extends Fragment {
@@ -84,6 +87,26 @@ public class MedicalInfoFragment extends Fragment {
         healthcardnumber = view.findViewById(R.id.healtheditText);
         dateofbirth = view.findViewById(R.id.editTextDOB);
         phoneNumber = view.findViewById(R.id.editTextPhoneNumber);
+
+        dateofbirth.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                final Calendar c = Calendar.getInstance();
+                int year = c.get(Calendar.YEAR);
+                int month = c.get(Calendar.MONTH);
+                int day = c.get(Calendar.DAY_OF_MONTH);
+
+                DatePickerDialog datePickerDialog = new DatePickerDialog(requireActivity(),
+                        new DatePickerDialog.OnDateSetListener() {
+                            @Override
+                            public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
+                                String date = year + "-" + (month + 1) + "-" + dayOfMonth;
+                                dateofbirth.setText(date);
+                            }
+                        }, year, month, day);
+                datePickerDialog.show();
+            }
+        });
         saveChangesbutton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

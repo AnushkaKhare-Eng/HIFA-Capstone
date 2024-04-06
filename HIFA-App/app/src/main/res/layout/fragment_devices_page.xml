@@ -7,34 +7,55 @@
     android:background="#3DA35D"
     tools:context=".Devices_page" >
 
-    <TextView
-        android:id="@+id/myDevicestextView"
+    <View
+        android:id="@+id/redbg"
+        android:layout_width="match_parent"
+        app:layout_constraintHeight_percent=".15"
+        android:layout_height="0dp"
+        android:background="#C94547"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/whitebg"
+        />
+
+    <View
+        android:id="@+id/whitebg"
+        android:layout_width="match_parent"
+        app:layout_constraintHeight_percent=".85"
+        android:layout_height="0dp"
+        android:background="#FFFFFF"
+        app:layout_constraintTop_toBottomOf="@id/redbg"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
+
+    <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="My Devices"
-        android:textColor="@color/black"
-        android:textSize="30sp"
-        android:textStyle="bold"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.596"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.108" />
+        app:layout_constraintBottom_toBottomOf="@id/redbg"
+        app:layout_constraintTop_toTopOf="@id/redbg"
+        app:layout_constraintStart_toStartOf="@id/redbg"
+        app:layout_constraintEnd_toEndOf="@id/redbg">
 
-    <ImageView
-        android:id="@+id/imageView"
-        android:layout_width="40dp"
-        android:layout_height="39dp"
-        android:src="@android:drawable/ic_menu_always_landscape_portrait"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.301"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.108"
-        app:tint="@color/black"
-        android:contentDescription="TODO" />
+        <ImageView
+            android:id="@+id/imageView"
+            android:layout_width="40dp"
+            android:layout_height="39dp"
+            android:src="@android:drawable/ic_menu_always_landscape_portrait"
+            app:tint="@color/white"
+            android:contentDescription="TODO"/>
+
+        <TextView
+            android:id="@+id/myDevicestextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="My Devices"
+            android:textColor="@color/white"
+            android:textSize="30sp"
+            android:textStyle="bold"/>
+
+    </LinearLayout>
 
     <TextView
         android:id="@+id/mydevicesdescrptionTextView"
@@ -47,7 +68,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.565"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/myDevicestextView"
+        app:layout_constraintTop_toBottomOf="@+id/add_device_button"
         app:layout_constraintVertical_bias="0.061" />
 
     <ScrollView
@@ -121,37 +142,21 @@
                     android:layout_marginTop="8dp"
                     android:text="• Congratulations! You have paired your first device!" />
             </LinearLayout>
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:gravity="center"
-                android:orientation="vertical">
-                <androidx.appcompat.widget.AppCompatButton
-                    android:id="@+id/add_device_button"
-                    android:layout_width="300dp"
-                    android:layout_height="89dp"
-                    android:layout_marginBottom="32dp"
-                    android:background="@drawable/add_device_button_shape"
-                    android:text="Add a Device"
-                    android:textColor="@color/white"
-                    android:textSize="24sp" />
-            </LinearLayout>
-
         </LinearLayout>
     </ScrollView>
 
-    <ImageView
-        android:id="@+id/imageView2"
-        android:layout_width="38dp"
-        android:layout_height="42dp"
-        android:src="?attr/actionModeCloseDrawable"
-        app:layout_constraintBottom_toTopOf="@+id/scrollView2"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.09"
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/add_device_button"
+        android:layout_width="300dp"
+        android:layout_height="89dp"
+        android:layout_marginBottom="32dp"
+        android:background="@drawable/add_device_button_shape"
+        android:text="Add a Device"
+        android:textColor="@color/white"
+        android:textSize="24sp"
+
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.173"
-        app:tint="@color/black"
-        android:contentDescription="TODO" />
+        app:layout_constraintEnd_toEndOf="parent"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -458,7 +458,7 @@ public class BluetoothLeService extends Service {
         for(Map.Entry<String, String> entry:emergencyContacts.entrySet()){
             String name = entry.getKey();
             String phoneNo = entry.getValue();
-            String messageString = name + " https://www.google.com/maps?q=" + latitude + "," + longitude;
+            String messageString = name + " https://www.google.com/maps?q=" + latitude + "," + longitude + "\nDrivers License: " + user.getDriversLicense() + "\nHealth Card: " + user.getHealthcard();
             sendMessageRequest = new SendMessageRequest(phoneNo, messageString);
             call = twilioAPIService.createPost(BuildConfig.TWILIO_API_KEY,sendMessageRequest);
             call.enqueue(new Callback<Void>() {

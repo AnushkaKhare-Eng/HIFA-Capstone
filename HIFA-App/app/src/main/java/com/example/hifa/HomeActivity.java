@@ -39,7 +39,6 @@ public class HomeActivity extends AppCompatActivity {
     ActivityHomeBinding binding;
     FirebaseAuth mAuth;
     User userData;
-
     EmergencyContactFragment emergencyContactFragment;
     BLEScanFragment bleScanFragment;
     BluetoothLeService mainBLEService;
@@ -49,8 +48,22 @@ public class HomeActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         mAuth = FirebaseAuth.getInstance();
 
+        Intent intent = getIntent();
+
+        userData = (User) intent.getSerializableExtra("user_data");
+
+        Bundle bundle = new Bundle();
+        bundle.putString("userEmail", userData.getEmail());
+
+        // Create a new fragment instance
+        emergencyContactFragment = new EmergencyContactFragment();
+
+        // Set the arguments containing the object Bundle to the fragment
+        emergencyContactFragment.setArguments(bundle);
+
         binding = ActivityHomeBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
+
         replaceFragment(new HomeFragment());
 
         binding.bottomNavigationView.setOnItemSelectedListener(item -> {
@@ -65,19 +78,6 @@ public class HomeActivity extends AppCompatActivity {
             }
             return true;
         });
-
-        Intent intent = getIntent();
-        Bundle extras = intent.getExtras();
-
-        String userEmail = extras.getString("userEmail");
-
-        Log.d("HomeActivity", "Recieved User email"+userEmail);
-
-        // Use the object
-        if (userEmail != null) {
-            DatabaseFirestore.databaseSetUp(FirebaseFirestore.getInstance());
-            gettingUser(userEmail);
-        }
     }
 
     protected void onStart() {
@@ -111,51 +111,6 @@ public class HomeActivity extends AppCompatActivity {
             }
             return true;
         });
-    }
-
-
-    protected void gettingUser(String userEmail){
-
-        DatabaseFirestore.getUser(userEmail, new DatabaseFirestore.CallbackGetUser() {
-            @Override
-            public void onCallBack(User user) {
-                goToHome();
-                userData = user;
-                String userObjFirstname = user.getFirstname();
-                Log.d("HomeActivity", "Recieved User's first Name"+userObjFirstname);
-                // Create a Bundle and put the object into it
-                sendtoHomeFragment(userObjFirstname);
-                sendtoECFragment(userEmail);
-
-            }
-        });
-    }
-    protected void sendtoHomeFragment(String userFirstname){
-        Bundle bundle = new Bundle();
-        bundle.putString("UserFirstName", userFirstname);
-
-        // Create a new fragment instance
-        HomeFragment homefragment = new HomeFragment();
-
-        // Set the arguments containing the object Bundle to the fragment
-        homefragment.setArguments(bundle);
-
-        // Add the fragment to the activity
-        getSupportFragmentManager().beginTransaction()
-                .add(R.id.home_fragment, homefragment)
-                .commit();
-    }
-    protected void sendtoECFragment(String userEmail){
-        Bundle bundle = new Bundle();
-        bundle.putString("userEmail", userEmail);
-
-        // Create a new fragment instance
-        emergencyContactFragment = new EmergencyContactFragment();
-
-        // Set the arguments containing the object Bundle to the fragment
-        emergencyContactFragment.setArguments(bundle);
-
-
     }
 
     public void sendToBLEScanFragment() {

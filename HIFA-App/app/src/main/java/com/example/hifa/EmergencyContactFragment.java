@@ -18,6 +18,9 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
+
+import android.util.DisplayMetrics;
 
 public class EmergencyContactFragment extends Fragment implements EditEmergenyContactFragment.EditRefreshListener, AddEmergencyContactFragment.AddRefreshListener {
 
@@ -29,6 +32,10 @@ public class EmergencyContactFragment extends Fragment implements EditEmergenyCo
     Map<String, String> eCMap;
     String userEmail;
     List<EmergencyContact> items;
+
+    DisplayMetrics metrics;
+    int height;
+    int width;
 
     EmergencyContacts emergencyContacts;
     public EmergencyContactFragment() {
@@ -52,6 +59,10 @@ public class EmergencyContactFragment extends Fragment implements EditEmergenyCo
                              Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_emergency_contact, container, false);
 
+        metrics = getResources().getDisplayMetrics();
+        width = metrics.widthPixels;
+        height = metrics.heightPixels;
+
         items = new ArrayList<EmergencyContact>();
 
         emergencyContacts = new EmergencyContacts();
@@ -66,6 +77,8 @@ public class EmergencyContactFragment extends Fragment implements EditEmergenyCo
         });
 
         recyclerView = view.findViewById(R.id.emergency_contacts_recyclerview);
+
+        userEmail = ((HomeActivity) requireActivity()).getUser().getEmail();
 
         // passing information to the adapter
         Bundle bundle = getArguments();

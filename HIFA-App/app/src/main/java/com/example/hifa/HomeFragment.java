@@ -8,8 +8,11 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 
 import android.os.Looper;
 import android.util.Log;
@@ -59,6 +62,8 @@ public class HomeFragment extends Fragment {
     private double longitude = 0.0;
     private double latitude = 0.0;
 
+    User userData;
+
     public HomeFragment() {
         // Required empty public constructor
     }
@@ -106,8 +111,9 @@ public class HomeFragment extends Fragment {
 
         // Retrieve the arguments
         Bundle bundle = getArguments();
-//        userFirstName = ((HomeActivity) requireActivity()).getUser().getFirstname();
-//        userNameText.setText(userFirstName);
+        userData = ((HomeActivity)requireActivity()).getUser();
+        userFirstName = ((HomeActivity) requireActivity()).getUser().getFirstname();
+        userNameText.setText(userFirstName);
 
         if (bundle != null) {
             Log.d("HomeFrag", "Recieved User's first Name"+userFirstName);
@@ -164,10 +170,19 @@ public class HomeFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 ((HomeActivity) requireActivity()).sendToBLEScanFragment();
+                replaceFragment(new Devices_page(), view);
             }
         });
         // Inflate the layout for this fragment
         return view;
+    }
+
+    private void replaceFragment(Fragment fragment, View view){
+        AppCompatActivity activity = (AppCompatActivity) view.getContext();
+        FragmentManager fragmentManager = activity.getSupportFragmentManager();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        fragmentTransaction.replace(R.id.frame_layout, fragment);
+        fragmentTransaction.commit();
     }
 
     protected void sendSMSMessage() {
@@ -182,17 +197,13 @@ public class HomeFragment extends Fragment {
 
         Map<String, String> emergencyContacts = new HashMap<String, String>();
 
-        emergencyContacts.put("Karan", "5875963855");
-        emergencyContacts.put("Karan1", "5875963855");
-        emergencyContacts.put("Karan2", "5875963855");
-
         SendMessageRequest sendMessageRequest = null;
         Call<Void> call = null;
 
         for(Map.Entry<String, String> entry:emergencyContacts.entrySet()){
             String name = entry.getKey();
             String phoneNo = entry.getValue();
-            String messageString = name + " https://www.google.com/maps?q=" + latitude + "," + longitude;
+            String messageString = name + " https://www.google.com/maps?q=" + latitude + "," + longitude + "\nDrivers License: " + userData.getDriversLicense() + "\nHealth Card: " + userData.getHealthcard();
             sendMessageRequest = new SendMessageRequest(phoneNo, messageString);
             call = twilioAPIService.createPost(BuildConfig.TWILIO_API_KEY,sendMessageRequest);
             call.enqueue(new Callback<Void>() {

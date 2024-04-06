@@ -5,18 +5,134 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+    <View
+        android:id="@+id/redbg"
+        android:layout_width="match_parent"
+        app:layout_constraintHeight_percent=".15"
+        android:layout_height="0dp"
+        android:background="#C94547"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/whitebg"
+        />
+
+    <View
+        android:id="@+id/whitebg"
+        android:layout_width="match_parent"
+        app:layout_constraintHeight_percent=".85"
+        android:layout_height="0dp"
+        android:background="#FFFFFF"
+        app:layout_constraintTop_toBottomOf="@id/redbg"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Profile Filler"
+        android:text="Profile"
         android:textSize="32sp"
+        android:textColor="@color/white"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="@id/redbg"
+        app:layout_constraintEnd_toEndOf="@id/redbg"
+        app:layout_constraintStart_toStartOf="@id/redbg"
+        app:layout_constraintTop_toTopOf="@id/redbg"/>
+
+    <LinearLayout
+        android:id="@+id/profile_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:gravity="center"
+        app:layout_constraintTop_toTopOf="@id/whitebg"
+        app:layout_constraintStart_toStartOf="@id/whitebg"
+        app:layout_constraintEnd_toEndOf="@id/whitebg"
+        app:layout_constraintBottom_toTopOf="@id/profile_dl">
+        <TextView
+            android:id="@+id/nameProfilePrompt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Name"
+            android:textColor="@color/black"
+            android:textSize="25sp"
+            android:layout_marginTop="25dp"
+            android:textStyle="bold"/>
+        <TextView
+            android:id="@+id/userNameTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="User's Name"
+            android:textColor="@color/black"
+            android:textSize="25sp"
+            app:layout_constraintTop_toBottomOf="@id/nameProfilePrompt"
+            app:layout_constraintStart_toStartOf="@id/whitebg"
+            app:layout_constraintEnd_toEndOf="@id/whitebg"
+            app:layout_constraintBottom_toTopOf="@id/profile_dl"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/profile_dl"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:gravity="center"
+        app:layout_constraintTop_toBottomOf="@id/profile_name"
+        app:layout_constraintStart_toStartOf="@id/whitebg"
+        app:layout_constraintEnd_toEndOf="@id/whitebg"
+        app:layout_constraintBottom_toTopOf="@id/profile_hc">
+
+        <TextView
+            android:id="@+id/dLProfilePrompt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Driver's License"
+            android:textStyle="bold"
+            android:textColor="@color/black"
+            android:textSize="25sp"
+            android:layout_marginTop="25dp" />
+        <TextView
+            android:id="@+id/dLTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="User's Driver's License"
+            android:textColor="@color/black"
+            android:textSize="25sp"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/profile_hc"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:layout_marginBottom="200dp"
+        app:layout_constraintTop_toBottomOf="@id/profile_dl"
+        app:layout_constraintStart_toStartOf="@id/whitebg"
+        app:layout_constraintEnd_toEndOf="@id/whitebg"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.452"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.072" />
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/hcProfilePrompt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Health Card"
+            android:textColor="@color/black"
+            android:textSize="25sp"
+            android:textStyle="bold"
+            android:layout_marginTop="25dp"/>
+        <TextView
+            android:id="@+id/hcTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="User's Health Card"
+            android:textColor="@color/black"
+            android:textSize="25sp"
+            android:layout_marginBottom="50dp"/>
+
+    </LinearLayout>
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,14 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:background="@drawable/login_prompt_bg"
+    >
 
     <LinearLayout
         android:id="@+id/fragment_add_emergency_contact"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="#84BC86"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:minHeight="400dp"
+        android:minWidth="300dp"
         android:gravity="center"
         android:orientation="vertical">
 
@@ -72,6 +75,7 @@
             android:layout_height="wrap_content"
             android:background="@drawable/save_changes_button_shape"
             android:text="Cancel"
+            android:textColor="@color/white"
             app:backgroundTint="@color/button" />
 
     </LinearLayout>

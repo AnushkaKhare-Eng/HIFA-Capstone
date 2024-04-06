@@ -1,5 +1,7 @@
 package com.example.hifa;
 
+import android.os.Parcelable;
+
 import androidx.annotation.Keep;
 
 import java.io.Serializable;

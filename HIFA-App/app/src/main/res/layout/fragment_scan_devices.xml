@@ -7,11 +7,50 @@
     android:background="@color/green"
     tools:context=".BLEScanFragment">
 
+    <View
+        android:id="@+id/redbg"
+        android:layout_width="match_parent"
+        app:layout_constraintHeight_percent=".15"
+        android:layout_height="0dp"
+        android:background="#C94547"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/whitebg"
+        />
+
+    <View
+        android:id="@+id/whitebg"
+        android:layout_width="match_parent"
+        app:layout_constraintHeight_percent=".85"
+        android:layout_height="0dp"
+        android:background="#FFFFFF"
+        app:layout_constraintTop_toBottomOf="@id/redbg"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
+
+    <TextView
+        android:id="@+id/add_device_prompt"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Add A Device"
+        android:textSize="30sp"
+        android:textColor="@color/white"
+        android:textStyle="bold"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/ble_scan_list"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/ble_scan_list"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@color/background"></androidx.recyclerview.widget.RecyclerView>
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toTopOf="@id/button_scan_bles"
+        app:layout_constraintEnd_toEndOf="@id/whitebg"
+        app:layout_constraintStart_toStartOf="@id/whitebg"
+        app:layout_constraintTop_toTopOf="@id/whitebg" />
 
     <Button
         android:id="@+id/button_scan_bles"
@@ -19,8 +58,9 @@
         android:layout_height="wrap_content"
         android:background="@drawable/add_device_button_shape"
         android:textColor="@color/white"
-        android:text="Scan BLE's"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        android:text="Scan For Device"
+        app:layout_constraintTop_toBottomOf="@id/ble_scan_list"
+        app:layout_constraintBottom_toBottomOf="@id/whitebg"
+        app:layout_constraintEnd_toEndOf="@id/whitebg"
+        app:layout_constraintStart_toStartOf="@id/whitebg" />
 </androidx.constraintlayout.widget.ConstraintLayout>
