@@ -17,7 +17,7 @@
         android:layout_height="wrap_content"
         android:layout_centerVertical="true"
         android:id="@+id/subsetting_title"
-        android:textColor="@color/white"
+        android:textColor="@color/black"
         android:layout_toEndOf="@id/subsetting_icon"
         android:textSize="28sp"
         android:textStyle="bold"

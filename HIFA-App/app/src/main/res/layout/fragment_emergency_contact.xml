@@ -8,17 +8,40 @@
     android:background="@color/background"
     tools:context=".EmergencyContactFragment">
 
+    <View
+        android:id="@+id/redbg"
+        android:layout_width="match_parent"
+        app:layout_constraintHeight_percent=".15"
+        android:layout_height="0dp"
+        android:background="#C94547"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/whitebg"
+        />
+
+    <View
+        android:id="@+id/whitebg"
+        android:layout_width="match_parent"
+        app:layout_constraintHeight_percent=".85"
+        android:layout_height="0dp"
+        android:background="#FFFFFF"
+        app:layout_constraintTop_toBottomOf="@id/redbg"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
+
     <LinearLayout
         android:id="@+id/titleLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="88dp"
         android:gravity="center"
         android:orientation="horizontal"
         android:weightSum="2"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintEnd_toEndOf="@id/redbg"
+        app:layout_constraintStart_toStartOf="@id/redbg"
+        app:layout_constraintTop_toTopOf="@id/redbg"
+        app:layout_constraintBottom_toBottomOf="@id/redbg">
 
         <ImageView
             android:id="@+id/imageView"
@@ -48,7 +71,7 @@
         android:layout_height="0dp"
         android:layout_marginHorizontal="10dp"
         android:layout_marginVertical="20dp"
-        android:background="@drawable/emergency_contact_recyclerview_background"
+        android:background="@drawable/login_prompt_bg"
         android:paddingHorizontal="15dp"
         android:paddingVertical="10dp"
         app:layout_constraintBottom_toTopOf="@id/add_contact_button"

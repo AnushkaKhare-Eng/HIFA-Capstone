@@ -3,11 +3,14 @@ package com.example.hifa;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.widget.Button;
 import android.widget.EditText;
 import android.view.View.OnClickListener;
@@ -70,6 +73,11 @@ public class AddEmergencyContactFragment extends DialogFragment {
         Log.d("EmergencyContact", user.getFirstname());
 
         Map<String,String> tempMap2 = new HashMap<>();
+
+        if (getDialog() != null && getDialog().getWindow() != null) {
+            getDialog().getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+            getDialog().getWindow().requestFeature(Window.FEATURE_NO_TITLE);
+        }
 
         saveChanges.setOnClickListener(new View.OnClickListener() {
             @Override

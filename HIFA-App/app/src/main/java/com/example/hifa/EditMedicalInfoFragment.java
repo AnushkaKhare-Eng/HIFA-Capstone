@@ -87,6 +87,11 @@ public class EditMedicalInfoFragment extends Fragment {
         user = ((HomeActivity) requireActivity()).getUser();
         Log.d("MedicalFrag", user.getFirstname());
 
+//        editTextDriverLicense.setText(user.getDriversLicense());
+//        editTextHealthCard.setText(user.getHealthcard());
+//        editTextAge.setText((int) user.getAge());
+//        editTextPhoneNum.setText(user.getPhoneNumber());
+
         Bundle bundle2 = getArguments();
         if (bundle2 != null) {
             user = (User) bundle2.getSerializable("User");

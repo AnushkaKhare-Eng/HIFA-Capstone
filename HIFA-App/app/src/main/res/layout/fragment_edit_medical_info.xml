@@ -8,114 +8,166 @@
     android:background="@color/background"
     tools:context=".HomeActivity" >
 
-    <TextView
-        android:id="@+id/TextViewAge"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Age"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.253"
-        app:layout_constraintStart_toStartOf="parent"
+    <View
+        android:id="@+id/redbg"
+        android:layout_width="match_parent"
+        app:layout_constraintHeight_percent=".15"
+        android:layout_height="0dp"
+        android:background="#C94547"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.195" />
-
-    <TextView
-        android:id="@+id/textViewPhoneNum"
-        android:layout_width="106dp"
-        android:layout_height="24dp"
-        android:text="Phone Number"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.321"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.301" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/whitebg"
+        />
 
-    <TextView
-        android:id="@+id/textViewDL"
-        android:layout_width="wrap_content"
+    <View
+        android:id="@+id/whitebg"
+        android:layout_width="match_parent"
+        app:layout_constraintHeight_percent=".85"
+        android:layout_height="0dp"
+        android:background="#FFFFFF"
+        app:layout_constraintTop_toBottomOf="@id/redbg"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
+
+    <LinearLayout
+        android:id="@+id/linearLayout"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Driver's License"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.313"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.405" />
+        android:gravity="center_horizontal"
+        android:orientation="horizontal"
+        android:weightSum="2.5"
+        app:layout_constraintEnd_toEndOf="@id/redbg"
+        app:layout_constraintStart_toStartOf="@id/redbg"
+        app:layout_constraintTop_toTopOf="@id/redbg"
+        app:layout_constraintBottom_toBottomOf="@id/redbg">
 
-    <TextView
-        android:id="@+id/textViewHC"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Health Card"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.29"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.484" />
+        <ImageView
+            android:id="@+id/imageView"
+            android:layout_width="0dp"
+            android:layout_height="50dp"
+            android:layout_weight="0.4"
+            android:contentDescription="Medical Settings Icon"
+            android:src="@drawable/medicalhistory"
+            android:layout_gravity="center"
+            app:tint="#FFFFFF" />
 
-    <Button
-        android:id="@+id/savechangesMedicalInfoButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Button"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.521"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.667" />
+        <TextView
+            android:id="@+id/textView3"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="Medical Settings"
+            android:textColor="@color/white"
+            android:textSize="40sp"
+            android:textStyle="bold" />
 
-    <EditText
-        android:id="@+id/editTextage"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:ems="10"
-        android:inputType="text"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.502"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.23" />
+    </LinearLayout>
 
-    <EditText
-        android:id="@+id/editTextpn"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:ems="10"
-        android:inputType="text"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.497"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.345" />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginHorizontal="40dp"
+        android:layout_marginTop="20dp"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toBottomOf="@id/whitebg"
+        app:layout_constraintEnd_toEndOf="@id/whitebg"
+        app:layout_constraintStart_toStartOf="@id/whitebg"
+        app:layout_constraintTop_toTopOf="@id/whitebg">
 
-    <EditText
-        android:id="@+id/editTextDL"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:ems="10"
-        android:inputType="text"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.487"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.437" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Age"
+            android:textColor="#36454F"
+            android:textSize="20dp" />
 
-    <EditText
-        android:id="@+id/editTextHC"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:ems="10"
-        android:inputType="text"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        <EditText
+            android:id="@+id/editTextage"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="20dp"
+            android:background="@drawable/textbox"
+            android:ems="10"
+            android:hint="Age"
+            android:inputType="number"
+            android:paddingHorizontal="5dp"
+            android:textSize="25sp"
+            />
 
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Phone Number"
+            android:textColor="#36454F"
+            android:textSize="20sp" />
+
+        <EditText
+            android:id="@+id/editTextpn"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="20dp"
+            android:background="@drawable/textbox"
+            android:ems="10"
+            android:hint="Phone Number"
+            android:inputType="phone"
+            android:paddingHorizontal="5dp"
+            android:textSize="25sp"
+            />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Driver's Number"
+            android:textColor="#36454F"
+            android:textSize="20sp" />
+
+        <EditText
+            android:id="@+id/editTextDL"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="20dp"
+            android:background="@drawable/textbox"
+            android:ems="10"
+            android:hint="Driver's License"
+            android:inputType="number"
+            android:paddingHorizontal="5dp"
+            android:textSize="25sp"
+            />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Health Card"
+            android:textColor="#36454F"
+            android:textSize="20sp" />
+
+        <EditText
+            android:id="@+id/editTextHC"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="20dp"
+            android:background="@drawable/textbox"
+            android:ems="10"
+            android:hint="Health Card"
+            android:inputType="number"
+            android:paddingHorizontal="5dp"
+            android:textSize="25sp"
+            />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/savechangesMedicalInfoButton"
+            android:layout_width="150dp"
+            android:layout_height="50dp"
+            android:layout_marginBottom="64dp"
+            android:background="@drawable/save_changes_button_shape"
+            android:text="Save Changes"
+            android:textAllCaps="false"
+            android:textColor="@color/white"
+            android:textSize="16sp"
+            android:layout_gravity="center"/>
+
+    </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -57,10 +57,10 @@ public class SubSettingAdapter extends RecyclerView.Adapter<MyViewHolderSubSetti
                     case 1:
                         replaceFragment(new EditMedicalInfoFragment(), view);
                         break;
+//                    case 2:
+//                        replaceFragment(new Notification_page(), view);
+//                        break;
                     case 2:
-                        replaceFragment(new Notification_page(), view);
-                        break;
-                    case 3:
                         replaceFragment(emergencyContactFragment, view);
                         break;
                 }
