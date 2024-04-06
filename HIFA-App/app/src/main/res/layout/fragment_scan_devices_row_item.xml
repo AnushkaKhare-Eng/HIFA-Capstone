@@ -11,7 +11,8 @@
             android:layout_width="match_parent"
             android:layout_height="60dp"
             android:text="Testing View"
-            android:textSize="30dp"/>
+            android:textSize="30dp"
+            android:background="@drawable/ble_device_list_background"/>
     </LinearLayout>
 
 </FrameLayout>
