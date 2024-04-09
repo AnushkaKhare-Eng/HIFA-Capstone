@@ -10,18 +10,10 @@
 		ncs,dm-timer = &timer2;
 	};
 
-	my_gpio {
-		compatible = "gpio-leds";
-		gpioA: gpioA_subnode {
-			gpios = <&gpio0 13 GPIO_ACTIVE_LOW>;
-			label = "GPIO A";
-		};
-	};
-
 	buttons {
 		compatible = "gpio-keys";
 		buttonA: buttonA_subnode {
-			gpios = <&gpio1 10 (GPIO_PULL_UP | GPIO_ACTIVE_LOW)>;
+			gpios = <&gpio1 13 (GPIO_PULL_UP | GPIO_ACTIVE_LOW)>;
 			label = "Push button switch A";
 			zephyr,code = <INPUT_KEY_0>;
 		};
@@ -29,11 +21,11 @@
 
 	leds {
 		led_ext_0 {
-			gpios = <&gpio0 13 0>;
+			gpios = <&gpio0 29 0>;
 		};
 
 		led_ext_1 {
-			gpios = <&gpio0 15 0>;
+			gpios = <&gpio0 02 0>;
 		};
 	};
 };
