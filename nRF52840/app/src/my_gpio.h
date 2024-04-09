@@ -15,20 +15,20 @@
 #define LED_INT_RGB_RED     1
 #define LED_INT_RGB_GREEN   2
 #define LED_INT_RGB_BLUE    3
-#define LED_EXT_RED_A       4
-#define LED_EXT_RED_B       5
+#define LED_STATUS       4
+#define LED_WARNING       5
 
 #define LED_INT_GREEN_MSK          BIT(LED_INT_GREEN)
 #define LED_INT_RGB_RED_MSK        BIT(LED_INT_RGB_RED)
 #define LED_INT_RGB_GREEN_MSK      BIT(LED_INT_RGB_GREEN)
 #define LED_INT_RGB_BLUE_MSK       BIT(LED_INT_RGB_BLUE)
-#define LED_EXT_RED_A_MSK          BIT(LED_EXT_RED_A)
-#define LED_EXT_RED_B_MSK          BIT(LED_EXT_RED_B)
+#define LED_STATUS_MSK                 BIT(LED_STATUS)
+#define LED_WARNING_MSK               BIT(LED_WARNING)
 
 #define NO_LEDS_MSK    (0)
 #define ALL_LEDS_MSK   (LED_INT_GREEN_MSK |\
                         LED_INT_RGB_RED_MSK | LED_INT_RGB_GREEN_MSK | LED_INT_RGB_BLUE_MSK | \
-                        LED_EXT_RED_A_MSK | LED_EXT_RED_B_MSK)
+                        LED_STATUS_MSK | LED_WARNING_MSK)
 // ------------------ / LEDs \ ------------------
 
 // ------------------ \ BTNs / ------------------
@@ -166,6 +166,9 @@ int set_led_on(uint8_t led_idx);
 int set_led_off(uint8_t led_idx);
 
 void success_lights();
+void success_lights_alt();
+
+void error_lights();
 
 
 

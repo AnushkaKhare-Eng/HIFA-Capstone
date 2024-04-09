@@ -92,9 +92,9 @@ static void connected(struct bt_conn *conn, uint8_t err)
 	}
 	else {
 		printk("Phy update request succeeded");
-		set_led_on(LED_INT_RGB_GREEN);
 	}
 
+	set_led_on(LED_STATUS);
 	state = 'C';
 	most_recent_conn = conn;
 	k_sem_give(&new_cnx);
@@ -117,6 +117,7 @@ static void disconnected(struct bt_conn *conn, uint8_t reason)
 	k_work_submit(&advertising_work);
 
 	state = 'U';
+	set_led_off(LED_STATUS);
 }
 
 BT_CONN_CB_DEFINE(conn_callbacks) = {
@@ -233,6 +234,7 @@ bool send_msg(uint8_t *data,uint16_t len){
 	while (bt_nus_send(NULL, data, len)){
 		if (k_uptime_get() - beg_time > 5000){
 			printk("Failed to send message\n");
+			error_lights();
 			return false;
 		}
 	}

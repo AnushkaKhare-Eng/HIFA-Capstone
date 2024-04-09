@@ -17,11 +17,11 @@ static void saadc_handler(nrfx_saadc_evt_t const * p_event)
     {
         if (p_event->data.done.p_buffer[0] < LIM_L)
         {
-            set_led_on(LED_INT_RGB_RED);
+            set_led_on(LED_WARNING);
         }
         else
         {
-            set_led_off(LED_INT_RGB_RED);
+            set_led_off(LED_WARNING);
         }
     }
 }

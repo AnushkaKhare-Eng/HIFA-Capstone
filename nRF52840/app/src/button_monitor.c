@@ -63,7 +63,7 @@ void hold_press_monitor(void){
 		k_sem_take(&hold_press, K_FOREVER);
 
 		if (send_msg(hp_msg,sizeof(hp_msg))){
-			success_lights();
+			success_lights_alt();
 		}
 	}
 }

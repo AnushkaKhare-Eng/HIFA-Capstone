@@ -420,10 +420,32 @@ int set_led_off(uint8_t led_idx)
 
 void success_lights()
 {
-	for (int i = 0; i < 8 ; i++){
-		set_led_on(LED_INT_RGB_GREEN);
-		k_sleep(K_MSEC(100));
-		set_led_off(LED_INT_RGB_GREEN);
-		k_sleep(K_MSEC(100));
+	for (int i = 0; i < 20 ; i++){
+		set_led_on(LED_STATUS);
+		k_sleep(K_MSEC(50));
+		set_led_off(LED_STATUS);
+		k_sleep(K_MSEC(50));
+	}
+	set_led_on(LED_STATUS);
+}
+
+void success_lights_alt()
+{
+	for (int i = 0; i < 4 ; i++){
+		set_led_on(LED_STATUS);
+		k_sleep(K_MSEC(350));
+		set_led_off(LED_STATUS);
+		k_sleep(K_MSEC(150));
+	}
+	set_led_on(LED_STATUS);
+}
+
+void error_lights()
+{
+	for (int i = 0; i < 4 ; i++){
+		set_led_on(LED_WARNING);
+		k_sleep(K_MSEC(250));
+		set_led_off(LED_WARNING);
+		k_sleep(K_MSEC(250));
 	}
 }
