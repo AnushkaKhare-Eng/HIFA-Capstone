@@ -12,6 +12,8 @@
 static K_SEM_DEFINE(hold_press, 0, 1);
 static K_SEM_DEFINE(triple_press, 0, 1);
 
+extern bool okayed_by_user;
+
 void handler (uint32_t button_state, uint32_t has_changed);
 void hold_press_monitor(void);
 void triple_press_monitor(void);

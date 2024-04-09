@@ -31,3 +31,5 @@ K_THREAD_DEFINE(hpm, 1024, hold_press_monitor, NULL, NULL,
 		NULL, 7, 0, 0);
 K_THREAD_DEFINE(tpm, 1024, triple_press_monitor, NULL, NULL,
 	NULL, 7, 0, 0);
+K_THREAD_DEFINE(crm, 1024, connection_request_monitor, NULL, NULL,
+	NULL, 7, 0, 0);

@@ -165,6 +165,8 @@ int set_led_on(uint8_t led_idx);
  */
 int set_led_off(uint8_t led_idx);
 
+void success_lights();
+
 
 
 #endif /* MY_GPIO_H__ */

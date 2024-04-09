@@ -5,11 +5,16 @@
 
 #include "ble_manager.h"
 #include "my_gpio.h"
+#include "button_monitor.h"
 
 #define NON_CONNECTABLE_ADV_IDX 0
 #define CONNECTABLE_ADV_IDX     1
 
 #define UART_BUF_SIZE 5
+
+bool okayed_by_user = false;
+
+struct bt_conn *most_recent_conn = NULL;
 
 static void advertising_work_handle(struct k_work *work);
 
@@ -37,6 +42,8 @@ BT_UUID_128_ENCODE(0x6e4003a1, 0xb5a3, 0xf393, 0xe0a9, 0xe50e24dcca9e)
 #define BT_UUID_MYID_CHAR BT_UUID_DECLARE_128(BT_UUID_MYID_CHAR_VAL)
 
 uint64_t myid = 0x0000000000000000;
+
+char state = 'U';
 
 static void adv_connected_cb(struct bt_le_ext_adv *adv,
 			     struct bt_le_ext_adv_connected_info *info)
@@ -87,6 +94,10 @@ static void connected(struct bt_conn *conn, uint8_t err)
 		printk("Phy update request succeeded");
 		set_led_on(LED_INT_RGB_GREEN);
 	}
+
+	state = 'C';
+	most_recent_conn = conn;
+	k_sem_give(&new_cnx);
 }
 
 static void disconnected(struct bt_conn *conn, uint8_t reason)
@@ -104,6 +115,8 @@ static void disconnected(struct bt_conn *conn, uint8_t reason)
 	 * logic and advertising is possible.
 	 */
 	k_work_submit(&advertising_work);
+
+	state = 'U';
 }
 
 BT_CONN_CB_DEFINE(conn_callbacks) = {
@@ -211,14 +224,40 @@ int setup_ble(void){
 		printk("Failed to create connectable advertising (err %d)\n", err);
 		return 1;
 	}
-
 	return 0;
 }
 
-// TODO - check that we are indeed connected to user phone - in future support reaching out to "strangers" 
-void send_msg(uint8_t *data,uint16_t len){
-	// TODO - use a timeout to give up after a while
+// TODO - in future support reaching out to "strangers" if we cant connect to user 
+bool send_msg(uint8_t *data,uint16_t len){
+	int64_t beg_time = k_uptime_get();
 	while (bt_nus_send(NULL, data, len)){
+		if (k_uptime_get() - beg_time > 5000){
+			printk("Failed to send message\n");
+			return false;
+		}
 	}
-	set_led_off(LED_INT_GREEN);
+	return true;
 }	
+
+
+void connection_request_monitor(void){
+	for (;;) {
+		k_sem_take(&new_cnx, K_FOREVER);
+
+		int countdown = 10;
+		okayed_by_user = false;
+		while(!okayed_by_user){
+			set_led_on(LED_INT_RGB_BLUE);
+			k_sleep(K_MSEC(1000));
+			set_led_off(LED_INT_RGB_BLUE);
+			k_sleep(K_MSEC(1000));
+			
+			if (countdown-- == 0){
+				bt_conn_disconnect(most_recent_conn, BT_HCI_ERR_REMOTE_USER_TERM_CONN);
+				break;
+			}
+		}
+	}
+}
+
+

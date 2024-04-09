@@ -416,3 +416,14 @@ int set_led_off(uint8_t led_idx)
 {
 	return set_led(led_idx, 0);
 }
+
+
+void success_lights()
+{
+	for (int i = 0; i < 8 ; i++){
+		set_led_on(LED_INT_RGB_GREEN);
+		k_sleep(K_MSEC(100));
+		set_led_off(LED_INT_RGB_GREEN);
+		k_sleep(K_MSEC(100));
+	}
+}
