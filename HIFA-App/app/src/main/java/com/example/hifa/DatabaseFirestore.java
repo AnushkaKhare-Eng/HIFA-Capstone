@@ -198,9 +198,9 @@ public class DatabaseFirestore {
 //                });
     }
 
-    static protected void editMedicalInfo(User user,String age, String healthcard, String driversLicense, String phonenumber, CallbackEditMedicalInfo callbackEditMedicalInfo){
+    static protected void editMedicalInfo(User user,String dateOfBirth, String healthcard, String driversLicense, String phonenumber, CallbackEditMedicalInfo callbackEditMedicalInfo){
         collectionReferencePersonalInfo.document(user.getEmail())
-                .update("age", age);
+                .update("Date of Birth", dateOfBirth);
         collectionReferencePersonalInfo.document(user.getEmail())
                 .update("healthcard",healthcard);
         collectionReferencePersonalInfo.document(user.getEmail())
@@ -210,11 +210,11 @@ public class DatabaseFirestore {
                 .addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
-                        user.setAge(age);
+                        user.setAge(dateOfBirth);
                         user.setHealthcard(healthcard);
                         user.setDriversLicense(driversLicense);
                         user.setPhoneNumber(phonenumber);
-                        Log.d("Saving medical info fields ", "Age:"+ user.getAge()+ "healthcard"+ user.getHealthcard()+"phonenumber"+ user.getPhoneNumber()+"driversLicense" + user.getDriversLicense());
+                        Log.d("Saving medical info fields ", "Date of Birth:"+ user.getAge()+ "healthcard"+ user.getHealthcard()+"phonenumber"+ user.getPhoneNumber()+"driversLicense" + user.getDriversLicense());
                         callbackEditMedicalInfo.onCallBack(user);
                     }
                 });

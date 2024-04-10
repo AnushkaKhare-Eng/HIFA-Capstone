@@ -333,10 +333,11 @@ public class BluetoothLeService extends Service {
 
         String signalMessage = stringBuilder.toString();
 
-        //TODO: Insert logic to make the call based on the signal received.
-        if (this.emergencyContactPhone != null) {
-//            setUpLocation();
-            sendSMSMessage();
+        //Handling the different kinds of signals from the ND:
+        if (signalMessage.equals("H")) {
+            sendSMSMessageH();
+        } else if (signalMessage.equals("T")) {
+            sendSMSMessageT();
         }
     }
 
@@ -377,55 +378,7 @@ public class BluetoothLeService extends Service {
         this.user = user;
     }
 
-//    protected void sendSMSMessage() {
-//        Log.d("SMS", "sendSMSMessage: ");
-//
-//        Retrofit retrofit = new Retrofit.Builder()
-//                .baseUrl("https://zq9aaxp7gg.execute-api.us-east-2.amazonaws.com/")
-//                .addConverterFactory(GsonConverterFactory.create())
-//                .build();
-//
-//        TwilioAPIService twilioAPIService = retrofit.create(TwilioAPIService.class);
-//
-//        Map <String, String> emergencyContacts = new HashMap<String, String>();
-//
-//        DatabaseFirestore.databaseSetUp(FirebaseFirestore.getInstance());
-//        DatabaseFirestore.getEC(user.getEmail(), new DatabaseFirestore.CallbackGetEC() {
-//            @Override
-//            public void onCallBack(Map<String, Object> ecMap) {
-//                for (Map.Entry<String, Object> entry : ecMap.entrySet()) {
-//                    String key = entry.getKey();
-//                    Object value = entry.getValue();
-//                    emergencyContacts.put(key, (String) value);
-//                    Log.d("EmergencyContactsAdded", (String) value);
-//                }
-//            }
-//        });
-//
-//        SendMessageRequest sendMessageRequest = null;
-//        Call<Void> call = null;
-//
-//        for (Map.Entry<String, String> entry : emergencyContacts.entrySet()) {
-//            String name = entry.getKey();
-//            String phoneNo = entry.getValue();
-//            String messageString = name + " https://www.google.com/maps?q=" + latitude + "," + longitude;
-//            sendMessageRequest = new SendMessageRequest(phoneNo, messageString);
-//            call = twilioAPIService.createPost(BuildConfig.TWILIO_API_KEY, sendMessageRequest);
-//            call.enqueue(new Callback<Void>() {
-//                @Override
-//                public void onResponse(@NonNull Call<Void> call, @NonNull Response<Void> response) {
-//                    Log.d("POST", "Post successful");
-//                }
-//
-//                @Override
-//                public void onFailure(@NonNull Call<Void> call, @NonNull Throwable t) {
-//                    Log.d("POST", "Post unsuccessful");
-//                }
-//            });
-//        }
-//    }
-
-    protected void sendSMSMessage() {
+    protected void sendSMSMessageH() {
         Log.d("SMS", "sendSMSMessage: ");
 
         Map<String, String> emergencyContacts = new HashMap<String, String>();
@@ -439,12 +392,12 @@ public class BluetoothLeService extends Service {
                     Object value = entry.getValue();
                     emergencyContacts.put(key, (String) value);
                     Log.d("EmergencyContactsAdded", key);
-                    sendMessage(emergencyContacts);
+                    sendMessageH(emergencyContacts);
                 }
             }
         });
     }
-    private void sendMessage(Map<String, String> emergencyContacts){
+    private void sendMessageH(Map<String, String> emergencyContacts){
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl("https://zq9aaxp7gg.execute-api.us-east-2.amazonaws.com/")
                 .addConverterFactory(GsonConverterFactory.create())
@@ -458,7 +411,56 @@ public class BluetoothLeService extends Service {
         for(Map.Entry<String, String> entry:emergencyContacts.entrySet()){
             String name = entry.getKey();
             String phoneNo = entry.getValue();
-            String messageString = name + " https://www.google.com/maps?q=" + latitude + "," + longitude + "\nDrivers License: " + user.getDriversLicense() + "\nHealth Card: " + user.getHealthcard();
+            String messageString = name + "\nContact emergency services!" + " https://www.google.com/maps?q=" + latitude + "," + longitude + "\nDrivers License: " + user.getDriversLicense() + "\nHealth Card: " + user.getHealthcard();
+            sendMessageRequest = new SendMessageRequest(phoneNo, messageString);
+            call = twilioAPIService.createPost(BuildConfig.TWILIO_API_KEY,sendMessageRequest);
+            call.enqueue(new Callback<Void>() {
+                @Override
+                public void onResponse(@NonNull Call<Void> call, @NonNull Response<Void> response) {
+                    Log.d("POST", "Post successful");
+                }
+                @Override
+                public void onFailure(@NonNull Call<Void> call, @NonNull Throwable t) {
+                    Log.d("POST", "Post unsuccessful");
+                }
+            });
+        }
+    }
+
+    protected void sendSMSMessageT() {
+        Log.d("SMS", "sendSMSMessage: ");
+
+        Map<String, String> emergencyContacts = new HashMap<String, String>();
+
+        DatabaseFirestore.databaseSetUp(FirebaseFirestore.getInstance());
+        DatabaseFirestore.getEC(user.getEmail(), new DatabaseFirestore.CallbackGetEC() {
+            @Override
+            public void onCallBack(Map<String, Object> ecMap) {
+                for (Map.Entry<String, Object> entry : ecMap.entrySet()) {
+                    String key = entry.getKey();
+                    Object value = entry.getValue();
+                    emergencyContacts.put(key, (String) value);
+                    Log.d("EmergencyContactsAdded", key);
+                    sendMessageT(emergencyContacts);
+                }
+            }
+        });
+    }
+    private void sendMessageT(Map<String, String> emergencyContacts){
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl("https://zq9aaxp7gg.execute-api.us-east-2.amazonaws.com/")
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+
+        TwilioAPIService twilioAPIService = retrofit.create(TwilioAPIService.class);
+        SendMessageRequest sendMessageRequest = null;
+
+        Call<Void> call = null;
+
+        for(Map.Entry<String, String> entry:emergencyContacts.entrySet()){
+            String name = entry.getKey();
+            String phoneNo = entry.getValue();
+            String messageString = name + "\nCome to my location:" + " https://www.google.com/maps?q=" + latitude + "," + longitude + "\nDrivers License: " + user.getDriversLicense() + "\nHealth Card: " + user.getHealthcard();
             sendMessageRequest = new SendMessageRequest(phoneNo, messageString);
             call = twilioAPIService.createPost(BuildConfig.TWILIO_API_KEY,sendMessageRequest);
             call.enqueue(new Callback<Void>() {
