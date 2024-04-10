@@ -13,6 +13,8 @@
 #define UART_BUF_SIZE 5
 
 bool okayed_by_user = false;
+char last_addr[BT_ADDR_LE_STR_LEN];
+
 
 struct bt_conn *most_recent_conn = NULL;
 
@@ -84,8 +86,6 @@ static void connected(struct bt_conn *conn, uint8_t err)
 
 	printk("Connected %s\n", addr);
 
-	set_led_on(LED_INT_RGB_BLUE);
-
 	err = bt_conn_le_phy_update(conn, BT_CONN_LE_PHY_PARAM_CODED);
 	if (err) {
 		printk("Phy update request failed: %d",  err);
@@ -94,16 +94,14 @@ static void connected(struct bt_conn *conn, uint8_t err)
 		printk("Phy update request succeeded");
 	}
 
-	set_led_on(LED_STATUS);
 	state = 'C';
 	most_recent_conn = conn;
+	
 	k_sem_give(&new_cnx);
 }
 
 static void disconnected(struct bt_conn *conn, uint8_t reason)
 {
-	set_led_off(LED_INT_RGB_BLUE);
-	set_led_off(LED_INT_RGB_GREEN);
 	char addr[BT_ADDR_LE_STR_LEN];
 
 	bt_addr_le_to_str(bt_conn_get_dst(conn), addr, sizeof(addr));
@@ -242,6 +240,7 @@ bool send_msg(uint8_t *data,uint16_t len){
 }	
 
 
+
 void connection_request_monitor(void){
 	for (;;) {
 		k_sem_take(&new_cnx, K_FOREVER);
@@ -249,16 +248,21 @@ void connection_request_monitor(void){
 		int countdown = 10;
 		okayed_by_user = false;
 		while(!okayed_by_user){
-			set_led_on(LED_INT_RGB_BLUE);
+			set_led_off(LED_STATUS);
+			set_led_off(LED_WARNING);
 			k_sleep(K_MSEC(1000));
-			set_led_off(LED_INT_RGB_BLUE);
+			set_led_on(LED_STATUS);
+			set_led_on(LED_WARNING);
 			k_sleep(K_MSEC(1000));
 			
 			if (countdown-- == 0){
 				bt_conn_disconnect(most_recent_conn, BT_HCI_ERR_REMOTE_USER_TERM_CONN);
+				set_led_off(LED_STATUS);
+				set_led_off(LED_WARNING);
 				break;
 			}
 		}
+		set_led_off(LED_WARNING);
 	}
 }
 
